@@ -1,0 +1,828 @@
+Microwave Radio Propagation
+1/1555-FGB 101 004/1 Rev.A
+ Ericsson AB . All rights reserved. No parts of this publication may be reproduced, stored in a retrieval system, or transmitted in any form or by any means, electronic, mechanical, photocopying, recording or otherwise, without prior permission of the publisher.
+The contents of this document are subject to revision without notice due to continued progress in methodology, design, and manufacturing. Ericsson shall have no liability for any error or damage of any kind resulting from the use of this document.
+1/1555-FGB 101 004/1 Rev.A
+Microwave Radio Propagation
+Contents
+1 Introduction 	3
+1.1 Planning 	3
+1.2 Survey 	3
+1.3 Engineering 	4
+1.4 Test 	4
+1.5 Terminology 	5
+2 Radio Wave Propagation 	7
+2.1 Relationship between Wavelength and Frequency 	7
+2.2 Propagation characteristics 	7
+2.2.1 Introduction 	7
+2.2.2 Frequency Effects 	7
+2.2.3 Terrain Effects 	7
+2.2.4 Tropospheric Effects 	8
+2.2.5 Multipath Effects 	8
+2.2.6 Summary 	8
+2.3 Propagation Mechanisms 	8
+2.4 Basic Free Space Transmission Loss 	9
+2.5 Refraction 	9
+2.6 Diffraction 	11
+2.7 Reflection and Scattering 	12
+2.8 Absorption 	16
+2.9 Rain Attenuation 	17
+2.10 Fading 	18
+3 Path Planning 	19
+3.1 Objective and Scope 	19
+3.2 Initial Planning 	19
+3.3 Free Line of Sight 	20
+3.4 Line Of Sight 	20
+3.5 Clearance 	21
+1/1555-FGB 101 004/1 Rev.A 	1
+Microwave Radio Propagation
+Microwave Radio Propagation
+1 Introduction
+The purpose of this publication is to provide a brief description of microwave radio propagation. This document deals with radio transmission theory, path calculation and Quality and Availability targets. It is not intended to be a complete guide on how to plan the communication path, but rather to be an introduction to the vast and complex task of this subject.
+The description contains some equations, which can be used for planning.
+They are mainly supposed to facilitate basic understanding of the task. Extensive networks might require aspects and considerations not mentioned in this chapter. We strongly recommend you to contact your Ericsson 
+representative for this purpose. Ericsson can undertake to perform all required network design and planning.
+This section, 1 Introduction, provides a brief introduction to the main issues of network design.
+Section 2 Radio Wave Propagation provides a short and concise description of propagation mechanisms that might be involved in high frequency network planning.
+Section 3 MINI-LINK Path Planning discusses planning and engineering of a MINI-LINK communication path.
+Network design can be considered as a process comprising four main steps: planning, survey, engineering and testing.
+1.1 	Planning
+The general aspects of the planning stage cover channel capacity, radio frequency allocation, communication quality and availability and selection of suitable radio components. Preliminary site locations and paths can also be considered at this stage.
+1.2 	Survey
+The survey stage is closely related to the initial planning stage. It comprises two activities: map and field survey. The purpose of the latter is to confirm the information collected in the former activity, and to add further information not obtainable by a map survey. Suitable site locations, path geometry and topography are preliminary established at this stage.
+1/1555-FGB 101 004/1 Rev.A 	3
+Microwave Radio Propagation
+1.3 Engineering
+The engineering step is very much concerned with network realization, that is, all quality and availability requirements have to be fulfilled in accordance with the available equipment items.
+In order to achieve the final results, propagation and interference calculations should be performed. These calculations are discussed to a certain extent in this chapter. The entire process is very much similar to general iterative calculations, where parameters are adjusted in order to accomplish the performance requirements.
+This stage also comprises the final decisions and preparations for hardware installation.
+1.4 	Test
+The test is the final step. It is mainly concerned with and important to account for the occurrence of adverse network conditions occasionally experienced in transmission systems.
+At this stage only minor modifications to improve the system performance are made.
+4 	1/1555-FGB 101 004/1 Rev.A
+Microwave Radio Propagation
+1.5 	Terminology
+Assignment of a radio frequency or a radio frequency channel
+Decibel loss and gain
+An authorization to use a radio frequency or a radio frequency channel under specified conditions.
+The decibel scale was originally used to compare the intensities of sound, but in modern usage the decibel scale is primarily used to compare power or voltage levels.
+Decibel is defined as:
+where Pin/Poutor Vin/Vout is the input/output signal ratio.
+When Pin > Poutor Vin > Voutthere is a loss. When Pin < Poutor Vin < Voutthere is a gain.
+Power level
+The definition of Decibel loss and gain illustrates the convenience of expressing the ratio between two signals with respect to power using dB. The same definition can, however, be used to express absolute power or voltage levels if a fixed reference level is used.
+The power ratio can be written as:
+If Pref= 1W, then A will be given in dBW. If Pref = 1 mW, then A will be given in dBm.
+Site 	The geographical location of a station.
+Telecommunication
+Any transmission, emission or reception of signs, signals, writing, images and sounds or intelligence of any nature by wire, radio, optical or other 
+electromagnetic systems.
+1/1555-FGB 101 004/1 Rev.A 	5
+Microwave Radio Propagation
+6 	1/1555-FGB 101 004/1 Rev.A
+Microwave Radio Propagation
+2 	Radio Wave Propagation
+2.1 Relationship between Wavelength and Frequency
+The wavelength and the frequency of electromagnetic waves are related according to the following formula:
+If the frequency (f) is expressed in GHz, the wavelength will be expressed in centimeters according to the following formula:
+The propagation of radio waves is generally affected by several factors, irrespective of the radio communication service or the specified purpose of telecommunication. These factors are described below.
+2.2.2 	Frequency Effects
+Propagation of radio waves depends on the frequency band. At microwave frequencies the importance of terrain features and meteorological 
+characteristics of the troposphere are predominant. However, above about 6 GHz the effects of gas absorption and precipitation must also be taken into account. At frequencies close to 10 GHz the effects of precipitation begin to dominate. Gas absorption starts influencing at about 22 GHz, where water vapor shows a characteristic peak.
+2.2.3 	Terrain Effects
+When radio waves propagate near the surface of the Earth, their 
+characteristics are dominated by the electrical characteristics of the Earth and by the topography of the terrain, including vegetation and man-made 
+structures.
+1/1555-FGB 101 004/1 Rev.A 	7
+Microwave Radio Propagation
+2.2.4 	Tropospheric Effects
+The gaseous constituents and temperature of the atmosphere influence the propagation of radio waves both by absorbing energy and by variations in the refractive index.
+Variations in the refractive index of the atmosphere cause radio waves to reflect, to refract and to scatter. The magnitudes of these effects depend on the frequency.
+2.2.5 	Multipath Effects
+The term ”multipath effects” applies to those cases in which the effective received signal is made up of several components arriving at the receiving antenna over different paths.
+The components can have different phases and different amplitudes, and their mutual relationship might also vary continuously with time. Multipath effects result from reflections from buildings, from the surface of the Earth or from horizontal interfaces between different layers in the atmosphere. Multipath effects caused by reflections are responsible for the fast fading observed on microwave radio links. They can seriously degrade the quality of a service.
+2.2.6 	Summary
+All four factors have an impact on transmission quality. When combined, they ultimately decide whether dimensioning of the MINI-LINK Hop is satisfactory or not.
+2.3 Propagation Mechanisms
+Depending on topography and meteorological conditions, radio waves can be propagated in different ways, normally, but not always, causing attenuation. One of the main tasks of radio engineering is to evaluate the attenuation of radio signals between transmitters and receivers.
+In order to do this, it is helpful to categorize propagation mechanisms:
+• Free Space Propagation
+• Refraction
+• Diffraction
+• Reflection and Scattering
+• Absorption
+The following sections will describe propagation mechanisms in some detail. Calculation formulas will be presented to some extent in order to facilitate basic understanding of the subject.
+8 	1/1555-FGB 101 004/1 Rev.A
+Microwave Radio Propagation
+2.4 	Basic Free Space Transmission Loss
+Free space propagation refers to propagation of an electromagnetic wave in a homogenous, ideal dielectric medium, which can be considered to be infinite in all directions.
+Free space transmission loss is known as the least possible loss between a transmitter and a receiver. Radio engineers often leave out free space transmission loss, concentrating more on losses caused by other propagation mechanisms.
+Basically, calculation of free space transmission loss refers to isotropic point sources at both ends. If these isotropic point sources are replaced by half-wave dipoles or other antennas having a certain gain, the calculations will have to be adjusted for the gains.
+Some terms used to designate the radiated power reflect this situation.
+EIRP Effective Isotropic Radiated Power designates the power transmitted from an isotropic antenna in a specified direction.
+ERP Effective Radiated Power designates the power transmitted from a half-wave antenna.
+2.5 	Refraction
+Refraction through the atmosphere is possible because radio waves travel with different velocities in different parts of a medium with varying electrical characteristics. Radio waves travel slower in atmosphere where the dielectric constant is greater than the dielectric constant of free space.
+The dielectric constant depends on pressure, temperature and water vapor content (humidity) of the atmosphere. Normally the values of these 
+meteorological parameters decrease with the altitude. Since electromagnetic waves travel faster in a medium with a lower dielectric constant than in media with higher dielectric constants, the upper part of a wave front tends to travel faster than the lower part, thus causing a downwards deflection of the beam.
+In a horizontally homogenous atmosphere the vertical change of the 
+meteorological parameters (and thus the dielectric constant) is gradual. This causes a continuous deflection of the beam, and the beam is gradually deflected away from thinner to thicker air layers, following the curvature of the Earth. Consequently there is a relationship between the radius of the radio beam curvature and the true radius of the Earth. The radius of the radio beam curvature is usually called the effective of the equivalent Earth radius.
+1/1555-FGB 101 004/1 Rev.A 	9
+Microwave Radio Propagation
+There is also a relationship between the effective Earth radius factor (k) and the refractive index of the atmosphere. This means that the factor k accounts for the departure from the straight line connecting two arbitrarily separated points in the atmosphere, with an arc between the points. If an atmosphere can be described by a value k, the radio beam between two arbitrary points can be represented by a straight line. This is illustrated in Figure 1.
+Effective radio Optical line of sight
+Transmitter antenna Receiver antenna
+Effective Earth
+Figure 1. 	The Earth radius factor and the effective Earth radius
+As previously mentioned, deflection of a radio beam is related to the refractive index of the atmosphere or by its refractivity (N).
+Refractivity depends on the pressure, the temperature and the water vapor content (humidity) of the atmosphere. Its variation with respect to height (h) in the atmosphere is called the refractive gradient (dN/dh) which is related to the Earth radius.
+In practice, the measured median of the mean gradient in the first kilometer above ground in most temperate regions is approximately
+-40N units per kilometer. This gives an Earth radius factor of approximately 4/3 = 1.33 and an effective Earth radius of approximately 8,500 km. A negative refractivity gradient indicates decreasing refractivity (and refractive index) with the height in the atmosphere.
+The combined effects of refraction and diffraction, see sections 2.5 and 2.6, will cause obstacle loss. This contribution appears in the link budget as Ao, see section 3.7.
+10 	1/1555-FGB 101 004/1 Rev.A
+Microwave Radio Propagation
+2.6 	Diffraction
+Diffraction can occur and increase the transmission loss when the size of an obstacle between a transmitter and a receiver is large compared to the wavelength of the transmitted radio wave. The diffraction effects are faster and more accentuated with increased obstruction for frequencies above 1,000 MHz. This can make a path unusable for normal radio communication 
+purposes.
+The transmission loss due to an obstruction depends on the diffraction properties of the obstacle and on the area of the obstructed beam compared with the total area of the wave front. Thus, it is necessary to provide sufficient path clearance so that transmission loss can be avoided.
+If a wave front is partially obstructed by an obstacle, some energy will be diffracted into the shadow region of the obstacle. In real situations, however, diffraction effects will be complicated by the shape of the obstacle and by the effects of the atmosphere, but in many cases a simplified model can produce useful approximations of the effect an obstacle might have on the radio path.
+The models are usually employed for propagation near the surface of the Earth, which comprises the diffraction due to the bulge of the Earth and/or different obstacles on the surface of the Earth.
+Transmission loss over irregular terrain is a complicated function of frequency, path geometry, vegetation density and other less significant variables. In spite of the complexity of this problem, some simplifications and assumptions have to be made in order to deal with it. The result is that some practical methods have to be devised for the estimation of obstruction losses. One well known method is the knife edge approximation for which a sharp ridge is considered to be a perfectly absorbing knife-edge, extending infinitely downwards. This procedure is found to be reasonably accurate when there is a single well-defined peak or a sharp ridge.
+The following figure, Figure 2, illustrates some examples (as rough estimates) of knife-edge diffraction losses as compared to the penetration of the obstacle into the first Fresno zone.
+Figure 2. Rough estimates of knife edge diffraction losses in dB
+1/1555-FGB 101 004/1 Rev.A 	11
+Microwave Radio Propagation
+Figure 3 illustrates some rough estimates of diffraction losses over a smooth spherical Earth as compared to the penetration of the bulge of Earth into the first Fresnel zone.
+Earth.
+The contribution from the obstacle loss appears in the link budget as Ao, see section 3 Path Planning.
+2.7 Reflection and Scattering
+When electromagnetic waves incide on a surface they might be reflected. The reflected waves depend on the frequency, the angle of incidence and the electrical properties of the surface.
+Under some assumptions energy is neither transmitted nor absorbed by the surface, and the waves are simply reflected in a new direction. This is, of course, an ideal reflection called specular reflection, in accordance with the reflection of light waves in mirrors. Specular reflection is therefore an approximation that can be used in many applications related to radio communication.
+Specular reflection is, as mentioned above, an ideal case encountered in some applications. In practice, however, surface reflection is somewhat more complicated.
+The Rayleigh criterion is used for qualitative considerations of reflection on a surface. The main question in this case is for what values of the wavelength, surface roughness and angle of incidence does specular reflection change to diffuse scattering? In other words: when does a smooth surface become rough?
+12 	1/1555-FGB 101 004/1 Rev.A
+Microwave Radio Propagation
+According to the Rayleigh criterion a surface is considered to be smooth when
+The Rayleigh criterion is based on the assumption that the value of the phase difference between two parallel rays which incide on a surface is 90°. 
+Naturally, depending on the application, the adopted value for the phase difference can also be 45°, 22.5° and so on. Figure 4 presents a graphical illustration of the Rayleigh criterion.
+If the phase difference is small, the two rays will be almost in phase as in a perfectly smooth surface. If the phase difference increases the two rays will interfere until the difference is 180°. At this value the rays are in phase opposition and will cancel out. Having no energy flow in one specified direction, and because energy cannot disappear, one can conclude that the energy is redistributed in other directions, that is, scattered across the surface. Hence, when the phase difference equals 180°, the surface scatters energy and is considered to be rough. When the phase difference equals 0°, the surface reflects specularly and is considered to be smooth.
+Generally speaking, reflection can be characterized by its total reflection coefficientρ, which is defined by the quotient between the reflected and the incident field. The reflection coefficient quotient characterizes the capacity of the surface in question to reflect radio waves. When |ρ|  = 0 nothing will be reflected. When |ρ| = 1 we have specular reflection.
+The reflection coefficient depends on the polarization, the frequency, the electrical characteristics of the surface and on the grazing angle, 
+see Figure 4.
+1/1555-FGB 101 004/1 Rev.A 	13
+Microwave Radio Propagation
+The resulting electromagnetic field at the receiver antenna is composed of two components: the direct field and the reflected field. Thus it depends on the cosine of the phase difference between the direct wave and the reflected wave. This means that the resultant signal at the receiver, for an arbitrary value of the reflection coefficient, will oscillate and pass through a maximum and a minimum value. The amplitude of the oscillations depends on the parameters determining the phase difference: the height of the antenna, the path length, the effective Earth radius factor, the frequency and the phase angle of the reflection coefficient.
+When both components, that is the direct field and the reflected field, have the same direction, the angle between them is 0° and the signal passes through a maximum value.
+When the angle between the components is 180° they have opposite 
+directions and the signal passes through a minimum value. These extreme values are illustrated in Figure 5 as a function of the total reflection coefficient.
+-25
+total reflection coefficient
+As illustrated in the figure, the range of the reflection loss is larger than 40 dB for values of the reflection coefficient approaching 1.
+14 	1/1555-FGB 101 004/1 Rev.A
+Microwave Radio Propagation
+The total reflection coefficient can be considered as the product of three factors:
+• The Fresnel reflection coefficient, which is applicable for smooth surfaces only. The value of this coefficient depends on frequency, grazing angle, polarization and on electrical characteristics of the surface.
+• The divergence factor, which allows for the curvature of both smooth and rough surfaces. The value of this factor depends on antenna heights, path length and on the Earth radius factor.
+• The roughness factor, which accounts for the roughness of the surface. The value of this factor depends on the grade of surface roughness and on frequency.
+A rough estimation of possible values is illustrated in the following example.
+Consider a radio path over the surface of a lake. The Fresnel reflection coefficient of the lake is very close to 1 for radio link applications (grazing angles between 1mrad and 10 mrad), that is, approximately 0.90. For a radio path length of approximately 30 km, the Earth radius factor is 1.33. With a height difference between the transmitter and receiver antennas of 
+approximately 30 m the divergence factor is considered to be approximately 0.90. For frequencies above 10 GHz the roughness factor of the surface of a lake during relatively calm days is approximately 0.90.
+When multiplied, these factors produce a total reflection coefficient of
+0.90 × 0.90 × 0.90 ≅ 0.70
+Applying this result in the diagram of Figure 5 yields a reflection loss of approximately 12 dB.
+The contribution from the reflection loss appears in the link budget as AL, see section 3 Path Planning.
+1/1555-FGB 101 004/1 Rev.A 	15
+Microwave Radio Propagation
+2.8 Absorption
+At frequencies above 10 GHz the propagation of radio waves through the atmosphere of the Earth is strongly affected by the resonant absorption of electromagnetic energy by molecular water vapor and oxygen. In radio engineering it is usual to classify the chemical composition of the atmosphere in two ”gases”: water vapor and dry air.
+It is well known that nitrogen (N2) and oxygen (O2) account for approximately 99% of the volume of dry air (that is, atmosphere without water molecules), while the remaining 1% is shared by carbon dioxide (CO2) and a number of rare elements. Fortunately, nitrogen molecules do not affect the radio 
+spectrum and dry air can consequently be considered to be composed of oxygen only. Furthermore, the chemical composition of dry air does not show any significant variation through the atmosphere and can be considered to be constant from place to place. The absorption attenuation of oxygen shows a rather strong peak between 50 GHz and 70 GHz with a maximum at 
+approximately 60 GHz.
+The amount of water vapor in the atmosphere, however, strongly varies from place to place according to the local meteorological conditions. Temperature and humidity is thus two important variables when determining the attenuation caused by water vapor. The absorption attenuation of water vapor shows a characteristic peak at about 23 GHz. This peak value subsequently drops to a minimum (not zero) at approximately 29 - 31 GHz and then rises again.
+The contribution from gas attenuation appears in the link budget as AG , see section 3 Path Planning.
+16 	1/1555-FGB 101 004/1 Rev.A
+Microwave Radio Propagation
+2.9 	Rain Attenuation
+The following concept of scattering will be applied for diffuse scattering when radio waves interact with raindrops resulting in attenuation.
+The effect of precipitation, and especially rain, on radio waves can be of considerable importance depending on the frequency band and on the intensity of the precipitation. Scattering and absorption of the radio wave by raindrops cause attenuation. Although all frequencies are subject to these effects, rain attenuation is of practical importance only for frequencies above 10 GHz.
+The specific attenuation can be obtained from special charts illustrating the interdependency of the specific attenuation in dB/km and the frequency in GHz. The effect of polarization will largely be ignored here. However, for high rain rates (30 mm/h) and high frequencies (20 GHz) horizontal polarization can give a specific attenuation as much as 0.5 dB/km higher than for vertical polarization.
+The rain dependent attenuation can be evaluated by introducing a reduction factor, which takes into consideration the extent of the rain clouds in the radio path, and then determining the effective path length by multiplying the actual path length by the reduction factor.
+It should be pointed out that the rain rate is a parameter, which is very dependent on the geographical location of the path. It must be obtained from cumulative distribution of long term measurements. Furthermore, it must be obtained for very short integration times, preferably nearly instantaneous. For the purpose of network planning the Earth is divided into 16 different rain zones for which instantaneous rain rate values can be obtained.
+In spite of the random characteristics of rain events, its attenuation is not included as a contribution in the link budget. However, its value is of crucial importance in the calculation of rain fading.
+1/1555-FGB 101 004/1 Rev.A 	17
+Microwave Radio Propagation
+2.10 Fading
+Several influences can cause loss of the signal when the two terminals of a radio path are within line of sight. If the system line-of-sight is close to the ground with large sized obstacles or hills, obstacle losses can become 
+important even though the line of sight is not obscured. If there are any changes in the Earth radius factor due to refraction, the path can be subject to diffraction/refraction fading.
+Generally, radio waves travelling in the atmosphere undergo variations due to changes in meteorological and ground surface conditions. The received signal is normally not constant and ”fades” around a nominal value, and the field strength with time is commonly called fading.
+When the line-of-sight is well above the surface of the Earth, thus avoiding diffraction losses, fading might occur due to interference between the direct line-of-sight field component and the components reflected from the ground, from atmospheric layers and from buildings.
+Multipath effects might give rise to short term fading. Furthermore, at 
+frequencies above 10 GHz the attenuation due to absorption by atmospheric gases and by rain can be even more important. Rain fading effects might give rise to longer term signal attenuation.
+The relative importance of fading due to rain and that due to multipath effects depends on frequency, climate and on path length. However, in general it can be said that multipath fading is the main influential factor causing attenuation below 10 GHz, whereas heavy rain is the main influential factor above 10 GHz.
+Because multipath propagation in most climates normally occurs when there is no heavy rainfall, it is usually reasonable to add the time percentages for which the two causes produce fading of a certain level.
+The path planning training seminar presented by Ericsson provides a deeper discussion of the probability calculations for the rain fading contribution.
+18 	1/1555-FGB 101 004/1 Rev.A
+Microwave Radio Propagation
+3 Path Planning
+3.1 	Objective and Scope
+Some actions must have been performed in order to supply input data to the path calculation software before a MINI-LINK network can be configured. These actions will be discussed briefly in this section. They are mostly built on factors such as topography, climate, equipment data and site configurations. Frequency planning is also an important factor for planning a microwave radio network.
+This section will deal with a few of the requirements, provisions and 
+dependencies to be considered when planning a microwave link Hop. Considerations of terrain profile, optical line of sight installations, input signal and its variations, diversity, quality and availability targets and frequency planning will be discussed.
+Planning a microwave radio Hop cannot be performed exclusively behind the office desk. The intended Hop paths and the suggested sites must be surveyed on site. These aspects are also covered in this section.
+3.2 	Initial Planning
+The planning of a microwave radio Hop always starts with a survey of the network in which the new Hop is supposed to be a part, and the function the network or the planned new Hop is supposed to provide. Based on these facts the planner has sufficient knowledge to decide which standard to apply during dimensioning of the Hop in order to meet the requirements for the connection.
+Network planning is generally based on the operational requirements for the network. These can be expressed in terms of:
+• Traffic quality
+• Traffic availability
+• Traffic requirements and capacity
+The influence of these requirements during dimensioning of an individual microwave radio link Hop depends on the configuration and the dimensioning of the surrounding network. Each and every Hop in the network must have sufficient availability and quality to keep the entire connection from one subscriber to another within the limits of the selected overall dimensioning standard.
+1/1555-FGB 101 004/1 Rev.A 	19
+Microwave Radio Propagation
+The International Telecommunication Union (ITU) issues recommendations concerning dimensioning of parts of or entire networks for international traffic. Examples of such networks in practical life are transmission to and from radio base stations in a mobile telephone network or company networks with connections to the public network.
+3.3 Free Line of Sight
+In the frequency bands in which the MINI-LINK terminals operate 
+(7 - 38 GHz), free line of sight between the antennas is required. Obstacles protruding near or above the line of sight will cause considerable attenuation and might make the Hop unusable. These obstacles can be topographical (hilltops etc.), vegetation (forest trees etc), buildings, chimneys and other man made structures.
+When using a topographical map to survey free line of sight conditions, one must be particularly observant considering obstacles close to the intended sites (within a few hundred meters) which might not be included due to the scale dependent inherent inaccuracy of the maps. The map might also be inadequate when determining the actual height of buildings and other man made structures. An in situ determination of the line of sight conditions is therefore mandatory before finally deciding on site locations.
+3.4 Line Of Sight
+The Earth atmosphere influences the propagation of radio waves in different ways. The radio waves travel with different velocities in different parts of the atmosphere, due to the variations in the electrical characteristics, which cause refraction.
+Due to the atmospheric refraction the radio waves are usually bent slightly downwards, which allows a somewhat longer path length than the straight line. With the bending effect in mind it is customary to speak about a radio optical line of sight, rather than a geometrical line of sight. Under normal condition the radio optical line of sight reaches further than the geometrical line of sight.
+20 	1/1555-FGB 101 004/1 Rev.A
+Microwave Radio Propagation
+The standard atmosphere and other atmospheric conditions affecting the refraction factor and which occurs at a given site is described by the Earth radius factor k. The k value depending on the climatic conditions is 4/3 when applied to a standard atmosphere.
+Effective radio 	Free line of sight
+Transmitter antenna 	Receiver antenna
+Effective Earth
+Figure 6. Line of sight
+The radio optical Earth radius can be described using the effective Earth radius factor according to section 2.5 Refraction.
+Even if free line of sight is available on the entire path, close-by obstacles might have an attenuating effect if they are located close enough to the path. It is customary to define a Fresnel zone around the centerline of the path. The first Fresnel zone is defined as a zone shaped as an ellipsoid with its focal points at the antennas on both ends of the path. The first Fresnel zone is displayed in Figure 7 and 8. The Fresnel zone decreases with increasing frequency.
+Provided that there is no obstacle within the first Fresnel zone the obstacle attenuation can be ignored, and the clearance requirement is satisfied.
+Figure 7. The First Fresnel zone
+1/1555-FGB 101 004/1 Rev.A 	21
+Microwave Radio Propagation
+Calculating the Fresnel radii requires sme knowledge of the geometry of an ellipsoid.
+d
+d1 d2
+rF
+Using the units in Figure 8, the following relationship exists:
+d3 + d4 - d = λ/2
+The figure also gives us the equation for the first Fresnel zone radii (rF):
+	(km) 
+f 	The transmission frequency (GHz). The mid- band 	frequency of the band in question should be used for 	general calculations.
+Table 1 shows some examples of the Fresnel zone radii as related to Hop length and MINI-LINK frequency bands. The table gives the center radii, which serves as an indication of the required clearances.
+frequencies
+22 	1/1555-FGB 101 004/1 Rev.A
+Microwave Radio Propagation
+3.6 	Path Profiles
+The purpose of the path profile is to provide information concerning free line of sight between the selected station sites, and to decide whether there is sufficient clearance to avoid obstacle attenuation. The path profile will also be used when determining the fading of the received signal.
+The path profile is essentially a plot of the elevation of the Earth as a function of the distance along the path between the transmitting and receiving sites. The data is derived by locating the two terminals on an elevation contour map, drawing a straight line between the two points, and reading the elevation contours at suitable distance intervals.
+The topographical information used to design a path profile can also be derived from topographical map databases, which include an altitude database and a land use database.
+The path profile is plotted on a path profile chart. Also, the Earth bulge ∆h must be calculated according to the following formula:
+In a path profile chart designed with an Earth radius factor corresponding to a specific atmospheric condition, usually the “standard atmosphere”, the radio beam may be drawn as a straight line.
+With TEMS LinkPlanner it is possible to calculate local k values based on refractivity gradient.
+The elevation and distance scales of the path profile chart must be adjusted to fit the actual conditions. The elevation scale will normally cover a few hundred meters, and the distance scale will normally cover a number of kilometers.
+Now the path profile can be entered in the form. The antenna elevations can be entered, and the line of free sight can be drawn. If the first Fresnel zone is also entered, the path planner can now determine whether there is sufficient clearance and a free line of sight on the projected path. The path profile must
+1/1555-FGB 101 004/1 Rev.A 	23
+Microwave Radio Propagation
+also contain information about forests, buildings and other man made structures along the path.
+3.7 Link Budget
+A link budget must be prepared in order to calculate the received signal level during non-fading time. The link budget sums all attenuation and 
+amplifications of the signal between the transmitter output and the receiver input terminals. This can be illustrated according to Figure 10.
+Figure 10. 	Transmitted and received power
+As illustrated in the diagram of Figure 10 the received power in the radio link terminal can be calculated according to the following formula.
+Pin = Pout - ΣAF + ΣG - ABF - Ao - AG - AL
+Where
+Microwave Radio Propagation
+3.8 	Fading
+The receiver input signal varies with time due to fading. The input signal calculated with the link budget is valid for non-fading time only. The Hop must be dimensioned to provide a sufficient margin to the receiver threshold, the fading margin. The fading margin must be sufficiently large to allow the non-exceeding probability to be sufficiently small to meet the operational 
+requirements for the connection. The fading margin requirement is indirectly decided by the adopted dimensioning standard. Usually the fading margin needs to be up to 40dB. The climate, the topographical situation and the Hop length are decisive factors for the fading sensitivity of a given microwave radio path.
+The fading types normally taken into consideration are caused by precipitation (mainly rain), multipath propagation and refraction.
+The rain intensity must be described in order to enable calculation of the rain induced fading. The calculating algorithm requires a value for the rain intensity, which is exceeded during more than 0.01% of the time (annual mean value). Actual values for the 0.01% value of the rain intensity can be found in ITU-R Rec. P.837. Calculation is described in ITU-R Rec. P.530.
+The calculated probability for the occurrence of the various fading types on a given microwave radio Hop path must subsequently be translated into the quality and unavailability factors defined in the dimensioning standard. The factors usually adopted are standardized by ITU.
+3.9 	Diversity
+Diversity can be used if a projected path is severely influenced by fading due to multipath propagation. The diversity setup reduces the effects of the fading, but it also increases the amount of required hardware. The difficult 
+propagation conditions can be caused by long Hops, by severe atmospheric conditions or by reflections of the radio beam from large, plane surfaces. This is often the case for paths crossing water areas depending on an unstable atmosphere over the water and by reflections from the water surface, thus calling for a diversity arrangement.
+Diversity means that the input signal from different paths are supposed to fade independently of each other. On the receiver terminal the signal with most energy is selected (in MINI-LINK the alarms control the switching). In some cases the received signals might be combined. The most frequently used diversities are space and frequency diversity.
+Space diversity employs one transmitter antenna and two receiver antennas.
+The two receiver antennas enable reception of signals via different 
+propagation paths. This requires double antennas on each side of the Hop, a unit for the selection of the best signal and partly or fully duplicated receivers.
+In frequency diversity the same signal is transmitted simultaneously on two different frequencies. The different frequencies cause the two signals to fade with little correlation to each other. With MINI-LINK and a Power Splitter only one antenna is required on either side of the Hop, but a unit selecting the best signal and duplicate transmitters and receivers are required. The inferior
+1/1555-FGB 101 004/1 Rev.A 	25
+Microwave Radio Propagation
+frequency economy of this solution often suggests the use of space diversity instead of frequency diversity.
+In extremely difficult cases a combination of diversity schemes might have to be employed.
+The computing algorithms normally used for multipath propagation will often give a too optimistic result for paths, which largely pass over water tables. The climatic part of the algorithm should be compensated to produce a better result in these cases.
+The improvement, which can be obtained by employing diversity, is expressed by a factor, the improvement factor, which influences the calculated probability for multipath propagation. The improvement is different for different fading depths. It is greatest for a deep fading, in which case a hundredfold 
+improvement can be obtained.
+The improvement factor is calculated with different algorithms depending on which diversity method is being employed. The largest part of the 
+improvement stems from the antenna separation in space diversity and from the frequency difference in frequency diversity.
+3.10 	Availability and Quality Targets
+The basis for the dimensioning of the connections in a network often stems from an operational user requirement, which describes the required availability of a connection and the quality required during the available time. A 
+dimensioning standard developed by ITU is often used in order to obtain an internationally accepted availability and quality for parts of or the entire network to be planned. Radio wave propagation, hardware failures, resetting times after repairs and frequency dependent interference problems are among the factors to be considered when dimensioning a network which is supposed to meet the standard requirements recommended by ITU.
+The ITU target standards are based on two recommendations:
+• ITU-T Recommendation G.821, intended for digital connections with a bit rate of 64 kBit/s. Even used for digital connections with bit rates higher than 64kBit/s. G.821 will successively be replaced by G.826.
+• ITU-T Recommendation G.826, used for digital connections with bit rates of or higher than 2,048 kBit/s (European standard) or 1,544 kBit/s (USA Standard).
+26 	1/1555-FGB 101 004/1 Rev.A
+Microwave Radio Propagation
+The recommendations define the measurement terms for availability and quality and a target standard for the dimensioning of connections according to these dimensions. The dimensioning standard sets forward demands on the availability and quality of the connection from one subscriber to another, that is an end to end demand. It is also subdivided into the international, national and local parts of a network.
+The ITU-T Recommendation G.821 defines the following availability terms:
+•AT, Available Time, which starts with the first second in a period of ten consecutive seconds in which each second has a Bit Error Rate (BER) better than 1×10-3.
+•UAT, Unavailable Time, which starts when the Bit Error Rate (BER) in each second is worse than 1×10-3 during ten consecutive seconds. These seconds are considered as unavailable time.
+• Available Time + Unavailable Time = Total Time (TT) studied.
+The ITU-T Recommendation G.821 defines the following quality terms:
+•ES, Errored Second, which is defined as a second containing one or more bit errors.
+•SES, Severely Errored Second, which is defined as a one second period during which the Bit Error Rate is worse than 1×10-3. Consequently a SES is also an ES.
+• ES and SES are only calculated during AT.
+1/1555-FGB 101 004/1 Rev.A 	27
+Microwave Radio Propagation
+The ITU-T Recommendation G.826 defines the following availability terms:
+•AT, Available Time, which starts with the commencement of ten consecutive seconds with non SES events. These ten seconds are considered as available time.
+•UAT, Available Time, which starts with the commencement of ten 
+consecutive seconds with SES events. These ten seconds are considered as unavailable time.
+• Available Time + Unavailable Time = Total Time (TT) studied.
+The ITU-T Recommendation G.826 defines the following quality terms:
+•EB, Errored Block, who is defined as a block in which one or more bits are 	incorrect.
+•ES, Errored Second, which is defined as a one second period during which 	one or more blocks are distorted.
+•SES, Severely Errored Second, which is defined as a one second period 	during which 30% or more of the transmitted blocks are distorted.
+• A block is defined as a group of consecutive bits in a digital connection where each bit only belongs to a single block. Table B.2/G826 
+recommends that, for example, the bit rate 2,048 kBit/s should contain 2,048 bits per block.
+• EB, ES, and SES are only calculated during AT.
+The ITU-R recommendations specify the time scope of these availability and quality dimensions as applied to parts of or the entire microwave radio transport network.
+ITU-R has applied the radio perceptive to the older ITU-T Recommendation G.821, and has subdivided the international part (High Grade), the national part (Medium Grade) and the local part (Local Grade) into smaller parts suitable for the dimensioning of microwave radio transport network Hops.
+The dimensioning standards for these network parts can be found in the following recommendations:
+•High Grade: ITU-R Recommendations 556, 557, 594, 634 and 695.
+•Medium Grade: ITU-R Recommendation 696.
+•Local Grade: ITU-R Recommendation 697.
+28 	1/1555-FGB 101 004/1 Rev.A
+Microwave Radio Propagation
+Examples of the target standard for Medium Grade sections can be found in Table 2. The SES, ES and DM values represent percentages of available time. The sections are sub-divided into four different classes, 1 - 4, which reflect the function of the network section. A section is the smallest network part defined by ITU-R. It encompasses only a part of the network, which does not contain any multiplexing equipment or a PABX switchboard.
+The UAT assignment for class 1 - 4 sections in a Medium Grade network is as follows:
+•Class 1: 0.033%
+•Class 2: 0.05%
+•Class 3: 0.05%
+•Class 4: 0.1%
+The percentages assigned to UAT consider parts of the total time. You should note that UAT also encompasses disrupted service due to severe radio wave propagation conditions and MTTR, that is resetting times following hardware failures.
+1/1555-FGB 101 004/1 Rev.A 	29
+Microwave Radio Propagation
+3.11 		Fading Margin versus Error Performance 	and Availability
+During the dimensioning of a microwave radio link Hop the fading margin must be sufficiently high to allow for the meeting of the set availability and quality targets. This means that the time allotments for SES, ES and UAT must not be exceeded.
+When transforming fading and the time aspects of fading to availability and quality terms the designer must treat slow fading, which can have a time scope of minutes or even hours, and rapid fading, which has a time scope of seconds or parts of seconds, separately.
+Slow fading covers fading due to rain and diffraction/refraction so called k fading, where the rain usually is the dimensioning factor for frequencies above approximately 15 GHz.
+The rapid fading considered in the calculation of fading for MINI-LINK applications covers multipath flat and selective fading. According to ITU definitions, outage due to hardware failures also influence the availability of the individual hop.
+Down time due to hardware failures may be presented separated from the availability concept.
+Fading mechanisms and hardware failures versus quality and unavailability terms can be grouped as follows:
+Microwave Radio Propagation
+3.12 	Reflection
+Reflections of the radio beam from large, plane surfaces, for example lakes, can cause a degradation of connection availability and quality. The reflected wave does not follow the same path as the direct wave which, in conjunction with a phase change at the point of reflection, might cause the received waves to have different phase angles at the receiver input. Should the phase 
+difference be as much as 180° the result will be attenuation and possibly even a cancellation of the resulting signal. The seriousness of the reflection effect is also determined by the electrical properties of the reflecting surface, the incidence angle of the radio wave and the small scale variations in the 
+reflecting surface.
+A microwave radio link Hop over areas where reflection can be expected should be configured with space diversity. The distance between the antennas should be adjusted to the path geometry in order to ensure that at least one of the receivers will always have a good quality input signal.
+In order to calculate the optimum height difference between the diversity antennas in the respective mast one must first calculate the elevation difference between two signal strength minimums (or maximums) caused by reflection along the site A and site B masts be done.
+When these calculations have been performed the required elevation distance between the diversity antennas can be calculated.
+If it is possible, the reflection Hop should be planned concerning the path itself and the antenna heights so that the reflected wave is attenuated by obstacles. The attenuation will reduce or eliminate the interference risk.
+Figure 11. A reflected wave attenuated by an obstacle
+Reflection prone paths often pass over water, where there is often a great risk for the occurrence of severe atmospheric conditions. This strongly suggests that this Hop type should always be designed with space diversity, regardless of whether the reflection has been planned to be attenuated by an obstacle or not.
+1/1555-FGB 101 004/1 Rev.A 	31
+Microwave Radio Propagation
+3.13 Path and Site Survey
+During the planning of microwave radio link paths it is often necessary to closely survey the intended Hop on the location in order to evaluate the obstacles by sight. Also the intended site and antenna carrier should be checked concerning space, power availability and strength. The following checklist covers the important items to be investigated.
+Find / verify:
+• The geographical position of the intended site.
+• The antenna carrier height above ground level.
+• The antenna carrier type, strength and torsion strength.
+• The site altitude above mean sea level.
+• The possibility of installing antennas required height.
+• All obstacles in path directions, including their heights and widths.
+• Potential reflecting surfaces.
+• The radio environment, other radio installations or interfering signals.
+• The distance between indoor and outdoor equipment.
+• The floor and/or wall space available for installation of indoor equipment.
+• The mains power availability.
+• The battery backup possibilities.
+• The possibility to install antenna feeders or multi-conductor cables between indoor and outdoor equipment regarding available space, grounding, wall entrance, bending radii etc.
+• For new sites, access to roads and to power transformer stations must be 	considered.
+32 	1/1555-FGB 101 004/1 Rev.A
+Microwave Radio Propagation
+3.14 	Frequency Planning
+The objective of frequency planning is to assign as few frequencies to a network in such a way as to obtain an interference level sufficiently low not to affect the availability of the microwave radio link Hops. Frequency planning for an entirely interference free network is rarely economically viable. In many cases frequency planning is made so that the interference level gives a maximum radio link receiver threshold deterioration of 3 dB. This causes the fading margin to be 3 dB higher than the demands caused by wave 
+propagation and hardware if the dimensioning targets are to be met.
+The interference level acceptable for the radio link equipment without 
+exceeding the 3 dB threshold degradation can be obtained from the 
+MINI-LINK manual C/I matrix. This matrix illustrates the level of the 
+interference signal, I, as related to the carrier signal, C, for a given frequency interval.
+The frequency planning must consider near and far interference.
+Far interference is unwanted disturbances between transmitters and 
+receivers, which are not located on the same site. The distance between the interfering transmitter and the interfered receiver can be from a few hundred meters or a few kilometers up to tens of kilometers. The interfering transmitter will in this case cause the most severe interference if it transmits on the same frequency as the desired signal in the receiver. This is called common channel interference. In some cases a serious interference might also occur if the interfering signal frequency is different from the frequency of the desired signal. This is called neighboring channel interference. The requirements are equipment dependent and will for the neighboring channel case vary with the frequency separation between the interfering transmitter and the interfered receiver. The requirements on the C/I-relation also depend on the bandwidth of the interfering transmitter in relation to the bandwidth of the bandwidth of the interfered receiver.
+Planning an ”interference free” network regarding far interference, requires good knowledge of the geographical situation of the network sites, the configuration and dimensioning of individual Hops, equipment data, existing network frequency selections and a wave propagation model between interfering transmitters and interfered receivers. Far interference is often the limiting factor when deciding how many Hops one can combine in a star network. Good antennas, which often mean large antennas, will facilitate a good planning.
+1/1555-FGB 101 004/1 Rev.A 	33
+Microwave Radio Propagation
+Near interference refers to interference generated by transmitters which interfere with the reception in transmitters located on the same site. The cause of the interference signal might be proprietary or non-proprietary equipment, separately or in combination. The interference can be a mixture of multiple transmitter frequencies, where the products of the mixture are on or near the receiver frequencies (intermodulation). It can also be transmitter frequencies too close to receiver frequencies, thus directly interfering with the receiver or generating field strengths sufficiently high to block the receiver completely and consequently considerably deteriorating the reception 
+performance.
+For MINI-LINK the near interference is usually negligible.
+Selection of the correct duplex halves for transmitters and receivers is of prime importance to obtain control over the interference risks caused by small transmitter / receiver frequency gaps. The best frequency economy is 
+obtained by locating all transmitter frequencies on one site in one duplex half and all receiver frequencies on the same site in the other half. Generally this also covers the requirement of minimum frequency interval between 
+transmitters and receivers.
+The frequency planning will be facilitated by using one of the standardized ITU frequency matrixes. These are mostly internationally accepted by the various frequency allocation administrations.
+34 	1/1555-FGB 101 004/1 Rev.A
+Microwave Radio Propagation
+A few general points should be considered during frequency planning:
+• Re-use frequencies, that is, repeat the frequencies as often as possible.
+• Use good antennas, that is antennas with a good front-to-back ratio and great side lobe suppression. This usually ensures both good frequency economy and a good bottom line total network economy. High performance antennas can be a worthwhile option.
+• Do not mount the antennas higher than necessary.
+• Do not use higher microwave radio link transmitter output power than necessary.
+• If you have to choose between a high transmitter power output and a larger antenna, the larger antenna should be preferred if possible. The overall radiated power increases and is concentrated in the desired direction that is towards the receiver.
+1/1555-FGB 101 004/1 Rev.A 	35
+Microwave Radio Propagation
+36 	1/1555-FGB 101 004/1 Rev.A
+Microwave Radio Propagation
+4 References
+ITU-T Recommendation G.821 ITU-T Recommendation G.826 ITU-R Recommendation F.556 ITU-R Recommendation F.557 ITU-R Recommendation F.594 ITU-R Recommendation F.634 ITU-R Recommendation F.695 ITU-R Recommendation F.696 ITU-R Recommendation F.697 ITU-R Recommendation P.530 ITU-R Recommendation P.837
+(Error performance of an international digital connection…) (Error performance parameters and objectives for…) 
+(Hypothetical reference digital path for radio-relay systems…) (Availability objective for radio-relay systems over a…) 
+(Error performance objectives of the hypothetical reference…) (Error performance objectives for real digital radio-relay links..) (Availability objectives for real digital radio-relay links form..) (Error performance and availability objectives for hypo…) (Error performance and availability objectives for the local…) (Propagation data and prediction methods required for the…) (Characteristics of precipitation for propagation modeling)
+5 Performance Prediction
+Based on the ITU-R recommendations Ericsson has developed the 
+proprietary PC based MLPERF calculation software (LZY 202 334) for MINI-LINK path performance and availability calculations. The software runs under the MS-Window environment (3.0 or higher).
+The operator can make the calculations for MINI-LINK hops. All technical data for the MINI-LINK equipment is stored in data files.
+When all data has been entered (by mouse clicking and keyboard entry, depending on the data type), the program can be requested to calculate the Hop performance data and the link budget. The calculated Hop performance can be printed.
+The latest version is available on Ericsson’s Intranet. Please contact your Ericsson representative for further information.
+1/1555-FGB 101 004/1 Rev.A 	37
+3.6
+Path Profiles
+23
+3.7
+Link Budget
+24
+3.8
+Fading
+25
+3.9
+Diversity
+25
+3.10
+Availability and Quality Targets
+26
+3.11
+Fading Margin versus Error Performance and Availability
+30
+3.12
+Reflection
+31
+3.13
+Path and Site Survey
+32
+3.14
+Frequency Planning
+33
+4
+References
+37
+5
+Performance Prediction
+37
+2
+Performance Prediction
+1/1555-FGB 101 004/1 Rev.A
+A dB ]
+=
+10
+•
+log
+Pin
+ or A dB ]
+=
+20
+•
+log
+Vin
+Pout
+Vout
+Network
+A microwave radio network system consisting of terminals and hops.
+A dB ]
+=
+10
+•
+P 
+log Pr ef
+λ
+=
+c
+λ
+Wavelength (meter)
+f
+f
+Frequency, in Hz
+f
+c
+The propagation speed of electromagnetic waves
+f
+c
+in vacuum, ≅ 3 × 108 m/s
+λ
+=
+30
+2.2 
+2.2.1 
+f
+2.2 
+2.2.1 
+Propagation characteristics Introduction
+Propagation characteristics Introduction
+Propagation characteristics Introduction
+Figure 3.
+Rough estimates of diffraction losses in dB over a smooth, spherical
+h <
+λ
+h
+The height of the irregularities on the surface (m)
+8 sin
+γ
+λ
+The wavelength (m)
+8 sin
+γ
+γ
+The grazing angle (= the complement of the angle of incidence)
+Figure 4.
+The Rayleigh criterion (α = the angle of incidence)
+Reflection
+5
+AMax
+AMin
+Reflection
+-5
+AMax
+AMin
+Reflection
+-15
+AMax
+AMin
+loss dB
+-15
+AMax
+AMin
+Figure 5.
+-35
+0.2
+0.4 	0.6
+Total reflection coefficient
+0.8
+Figure 5.
+Maximum and minimum values of the reflection loss as a function of the
+Maximum and minimum values of the reflection loss as a function of the
+Maximum and minimum values of the reflection loss as a function of the
+Maximum and minimum values of the reflection loss as a function of the
+3.5 
+Re = k × R
+Re
+The radio optical Earth radius
+3.5 
+For true Earth radius k = 1
+R
+The true Earth radius (6,370km)
+3.5 
+For true Earth radius k = 1
+k
+The effective Earth radius factor
+3.5 
+Clearance
+k
+The effective Earth radius factor
+First Fresnel zone 	Free line of sight
+
+Transmitter antenna Receiver antenna
+Effective Earth
+Figure 8.
+d3
+d4
+Figure 8.
+Calculation of the First Fresnel Radii
+d4
+r F=
+17 3
+d
+1
+⋅
+d
+2
+rF
+The first Fresnel radius at a given point (m)
+r F=
+17 3
+d
+f d
+f d
+f d
+f d
+d1
+The distance from the first focal point (antenna) to the
+r F=
+17 3
+d
+f d
+f d
+f d
+f d
+d1
+point of interest (km)
+r F=
+17 3
+d
+f d
+f d
+f d
+f d
+d2
+point of interest (km)
+r F=
+17 3
+d
+f d
+f d
+f d
+f d
+d2
+The distance from the point of interest to the second focal
+r F=
+17 3
+d
+f d
+f d
+f d
+f d
+d2
+point (antenna) (km)
+r F=
+17 3
+d
+f d
+f d
+f d
+f d
+d
+point (antenna) (km)
+r F=
+17 3
+d
+f d
+f d
+f d
+f d
+d
+The total distance between the focal points (antennas)
+Path distance (km)
+MINI-LINK frequency (GHz)
+MINI-LINK frequency (GHz)
+MINI-LINK frequency (GHz)
+MINI-LINK frequency (GHz)
+MINI-LINK frequency (GHz)
+Path distance (km)
+7
+15
+23
+26
+38
+5
+7.1
+5.0
+4.0
+3.8
+3.1
+15
+12.3
+8.7
+7.0
+6.6
+5.4
+Table 1.
+Radii (m) of the first Fresnel zone (midpath) for different MINI-LINK
+∆h
+=
+d
+1
+⋅
+d
+2
+2
+∆h
+The Earth bulge at a certain point along the path (m)
+∆h
+=
+d
+1
+⋅
+d
+2
+2
+12 , 74
+12 , 74
+12 , 74
+12 , 74
+⋅
+k
+d1
+The distance from one site to the calculated point (km)
+12 , 74
+12 , 74
+12 , 74
+12 , 74
+⋅
+k
+d2
+The distance from the opposite site to the calculated point (km)
+12 , 74
+12 , 74
+12 , 74
+12 , 74
+⋅
+k
+d2
+The Earth radius factor
+12 , 74
+12 , 74
+12 , 74
+12 , 74
+⋅
+k
+k
+The Earth radius factor
+12 , 74
+12 , 74
+12 , 74
+12 , 74
+⋅
+k
+R
+The true Earth radius (6,370 km)
+Earth 
+elevation
+∆h
+
+Figure 9.
+The Earth bulge
+24
+Pin
+Received power (dBm)
+24
+Pout
+Transmitted power (dBm)
+24
+AF
+Antenna feeder loss (dB)
+24
+G
+Antenna gain (dBi)
+24
+ABF
+Free space loss (dB) (between isotropic antennas)
+24
+Ao
+Obstacle loss (dB)
+24
+AG
+Gas attenuation(dB)
+24
+AG
+Additional loss (dB)
+24
+AL
+Additional loss (dB)
+24
+AL
+1/1555-FGB 101 004/1 Rev.A
+Quality Parameter
+Percentage of Available Time (%)
+Percentage of Available Time (%)
+Percentage of Available Time (%)
+Percentage of Available Time (%)
+Quality Parameter
+Class 1 280km
+Class 2 280km
+Class 3 50km
+Class 4 50km
+SES
+0.006
+0.0075
+0.002
+0.005
+ES
+0.036
+0.16
+0.16
+0.4
+Table 2.
+Quality targets for Medium Grade sections
+30
+•UAT
+Rain, refraction (and hardware failures).
+30
+•ES
+Rain, refraction and multipath propagation.
+30
+•SES
+Multipath propagation.
+30
+•SES
+1/1555-FGB 101 004/1 Rev.A
+Figure 12.
+Far interference
