@@ -1,0 +1,159 @@
+Manual de Pruebas RFC 2544 
+Guía para pruebas - redes Ethernet/MPLS 
+1. Contexto y alcance 
+La RFC 2544 (IETF, 1999) define procedimientos para caracterizar el rendimiento de equipos de red a nivel de capa 2/3. Aunque nació para entornos de laboratorio, su uso se ha extendido a validaciones de campo y pruebas de aceptación. Este documento cubre desde conceptos esenciales hasta plantillas de plan de pruebas y criterios de aceptación. 
+Importante: RFC 2544 está centrada en un único flujo y no contempla de forma nativa escenarios multiservicio o de activación de servicios; para estos casos, ITU-T Y.1564 (Ethernet Service Activation Test) suele ser más adecuado. 
+2. Terminología y métricas clave 
+• Throughput: tasa máxima de transferencia sin pérdida de tramas. 
+• Latencia (RTT o one-way si hay sincronización): diferencia temporal entre envío y recepción. 
+• Pérdida de tramas: porcentaje de tramas no recibidas respecto de las enviadas. 
+• Back-to-Back: capacidad para procesar ráfagas sucesivas sin pérdida. 
+• Reset del sistema: tiempo hasta recuperar forwarding tras un reinicio. 
+• Responsividad: tiempo que tarda en aplicar cambios de configuración. 
+• Tamaños de trama estandarizados: 64, 128, 256, 512, 1024, 1280 y 1518 bytes (También se suele utilizar 9000 para Jumbo Frames pero no es parte de RFC 2544). 
+• Line rate: capacidad nominal del enlace (1G, 10G, 25G, 40G, 100G, 400G). 
+3. Arquitectura de prueba y equipamiento 
+Componentes típicos: generador/analizador de tráfico (p.ej., IXIA, Spirent, Viavi), equipo bajo prueba (DUT), cables y ópticas adecuadas, sincronización de tiempo si se requiere latencia one-way, y un entorno que minimice pérdidas ajenas a la prueba. 
+Figura: Topologías básicas Tester–DUT.
+Notas de cableado: verifique modos (breakout, autonegociación, FEC), transceptores compatibles y parámetros de interfaz (MTU, VLAN, pausas). 
+4. Preparación metodológica 
+• Definir alcance y criterios de aceptación. 
+• Seleccionar tamaños de trama y cargas objetivo (porcentaje de line rate). 
+• Establecer duración por punto (p.ej., 60 s) y número de repeticiones. 
+• Documentar configuraciones (versiones, perfiles QoS, colas, policing/shaping in/out). • Asegurar condiciones constantes entre corridas para comparabilidad. 
+5. Tipos de pruebas 
+5.1 Throughput 
+Determina la tasa máxima sin pérdida. Se barre la carga (p.ej., búsqueda binaria) para cada tamaño de trama hasta encontrar el punto de cero pérdida. Registrar tasa, utilización, CPU del DUT (si disponible) y colas/descartes. 
+Figura: Ejemplo ilustrativo de Throughput vs tamaño de trama (10GbE).
+5.2 Latencia 
+La latencia se mide como RTT si no hay sincronización GPS/PTP en testers. Con sincronización se puede 
+medir one-way. La latencia típica crece con el tamaño de trama y la carga; usar percentiles (p95/p99) si la 
+herramienta los provee. 
+Figura: Latencia RTT conceptual (T2 − T1). 
+5.3 Pérdida de tramas (Frame Loss) 
+Se inyecta carga creciente y se observa la tasa de pérdida. Útil para caracterizar buffers y colas. La curva 
+suele ser plana (0%) hasta un umbral a partir del cual la pérdida crece rápidamente. 
+Figura: Ejemplo de pérdida vs carga.
+5.4 Back-to-Back (Ráfagas) 
+Evalúa la capacidad del DUT para manejar ráfagas de tramas sin pérdida. Ajustar el tamaño y separación entre ráfagas y considerar mecanismos de control de congestión y buffers internos. 
+Figura: Patrón temporal de ráfagas back-to-back.
+5.5 System Reset 
+Cuantifica el tiempo de recuperación del DUT tras un reinicio o failover. Debe incluir estabilidad del plano de control y restablecimiento de forwarding, con verificaciones de ruta y estado de interfaces. 
+5.6 Responsividad (Response Time) 
+Mide el tiempo que tarda el DUT en aplicar cambios (p.ej., políticas QoS, rutas). Se recomiendan múltiples corridas y medición bajo distintas cargas para observar efectos en control-plane. 
+6. Consideraciones de configuración 
+• MTU/Jumbo: alinear MTUs entre tester y DUT. 
+• VLAN/EVPN/MPLS: etiquetado correcto y consistencia de encapsulados. • QoS: colas, scheduling, WRED, policers y shapers pueden afectar métricas. 
+• PFC/PAUSE: cuidado con pausas propensas a propagar congestión. • Rutas estáticas/VRF: verificar resolución ARP/ND y next-hops. 
+• Seguridad: ACLs/CoPP pueden limitar throughput/latencia. 
+Para escenarios L3, confirme reachability (ARP, routing) y que el tráfico de prueba no sea filtrado por firewalls/ACLs. 
+7. Limitaciones y comparación con Y.1564 
+RFC 2544 no modela múltiples servicios simultáneos ni objetivos de SLA por clase; Y.1564 permite validar activación de servicios con perfiles de CIR/EIR, verificación de KPIs (latencia, pérdida, jitter) por flujo y pruebas de rampa. 
+Figura: Escenario multiservicio ilustrativo (latencia por flujo).
+8. Buenas prácticas y errores comunes 
+Buenas prácticas: 
+• Llevar el DUT a estado de régimen. 
+• Asegurar estabilidad de reloj y temperatura. 
+• Registrar versiones de software/firmware y configuraciones. • Usar puertos dedicados y evitar tráfico parásito. 
+• Automatizar recolección de KPIs y logs. 
+• Validar resultados con repeticiones y controles negativos. 
+Errores frecuentes: 
+• Probar la carga bidireccional sin aclararlo. 
+• Ignorar impacto de tamaño de trama. 
+• No resetear contadores entre corridas. 
+• Tomar un único valor “pico” sin estadísticas. 
+• No alinear QoS/encapsulados entre extremos. 
+9. Criterios de aceptación típicos (ejemplo) 
+• Throughput ≥ 99% de line rate a MTU estándar sin pérdida. 
+• Latencia RTT ≤ 1 ms a 1G, ≤ 300 µs a 10G, proporcional a plataforma. 
+• Pérdida ≤ 0.01% hasta 90% de carga. 
+• Back-to-Back: sin pérdida hasta N tramas en ráfaga (definir N por plataforma). • Reset: recuperación de forwarding < 60 s (definir según HA). 
+10. Plantilla de plan de pruebas 
+1) Objetivo y alcance 
+2) Topología y equipamiento 
+3) Matriz de casos (tamaños, cargas, duración, repeticiones) 4) Procedimiento paso a paso 
+5) KPIs a recolectar 
+6) Criterios de aceptación 
+7) Gestión de riesgos y retrocesos 
+8) Evidencia (capturas, logs, archivos de resultados) 
+11. Procedimiento paso a paso 
+1. Configurar interfaces en tester y DUT (speed/duplex, MTU, VLAN/L3). 2. Verificar conectividad (ARP/ND, ping) y counters en cero. 
+3. Ejecutar Throughput por tamaño de trama con búsqueda binaria. 4. Medir latencia a diferentes cargas (25/50/75/100%). 
+5. Realizar prueba de pérdida vs carga (rampa 10→100%). 
+6. Ejecutar Back-to-Back con ráfagas crecientes. 
+7. (Opcional) Prueba de reset y responsividad. 
+8. Exportar resultados y generar informe con tablas y gráficos. 
+12. Interpretación y reporte 
+Recomendaciones: incluir para cada caso media, p95, p99, desviación estándar, y capturas de colas/descartes. Comparar contra baseline histórico y valores del fabricante cuando estén disponibles. Resaltar hallazgos, limitaciones y próximos pasos. 
+13. Apéndice A: Tabla modelo de resultados 
+14. Apéndice B: Glosario 
+• DUT: Device Under Test. 
+• KPIs: Indicadores clave de rendimiento. 
+• CIR/EIR: Tasa comprometida y excedente (Y.1564). 
+• PTP: Precision Time Protocol (IEEE 1588). 
+Caso 
+Tamaño (B) 
+Carga (%) 
+Duración (s) 
+Repeticiones 
+Prueba #1 
+64..1518 
+10..100 
+60 
+3 
+Prueba #2 
+64..1518 
+10..100 
+60 
+3 
+Prueba #3 
+64..1518 
+10..100 
+60 
+3 
+Prueba #4 
+64..1518 
+10..100 
+60 
+3 
+Tamaño (B) 
+Carga (%) 
+Throughput (Gbps) 
+Latencia p95 (µs) 
+Pérdida (%) 
+Notas 
+64 
+90 
+— 
+— 
+— 
+128 
+90 
+— 
+— 
+— 
+256 
+90 
+— 
+— 
+— 
+512 
+90 
+— 
+— 
+— 
+1024 
+90 
+— 
+— 
+— 
+1280 
+90 
+— 
+— 
+— 
+1518 
+90 
+— 
+— 
+— 
