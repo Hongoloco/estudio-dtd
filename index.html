@@ -836,19 +836,19 @@
                     <div class="stat-label">Materiales</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">420+</div>
+                    <div class="stat-value">480+</div>
                     <div class="stat-label">Preguntas</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">200+</div>
+                    <div class="stat-value">240+</div>
                     <div class="stat-label">Flashcards</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">170+</div>
+                    <div class="stat-value">225+</div>
                     <div class="stat-label">V/F</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">6</div>
+                    <div class="stat-value">7</div>
                     <div class="stat-label">Calculadoras</div>
                 </div>
             </div>
@@ -858,7 +858,7 @@
                     <div class="home-card-icon">🎴</div>
                     <h3>Flashcards</h3>
                     <p>Tarjetas de memoria interactivas con repaso espaciado</p>
-                    <span class="home-card-tag">200+ tarjetas</span>
+                    <span class="home-card-tag">240+ tarjetas</span>
                 </div>
                 
                 <div class="home-card" onclick="showSection('pruebas')">
@@ -872,7 +872,7 @@
                     <div class="home-card-icon">✅</div>
                     <h3>Verdadero/Falso</h3>
                     <p>Decide si cada afirmación es correcta o incorrecta</p>
-                    <span class="home-card-tag">170+ preguntas</span>
+                    <span class="home-card-tag">225+ preguntas</span>
                 </div>
                 
                 <div class="home-card" onclick="showSection('ejercicios')">
@@ -1194,6 +1194,7 @@
             <div class="tabs" id="calc-tabs">
                 <button class="tab active" data-calc="fresnel">📡 Fresnel</button>
                 <button class="tab" data-calc="power">💡 Power Budget</button>
+                <button class="tab" data-calc="pon">🔱 PON/FTTH</button>
                 <button class="tab" data-calc="subnet">🌐 Subnetting</button>
                 <button class="tab" data-calc="link">📶 Link Budget</button>
                 <button class="tab" data-calc="wavelength">🌊 Longitud Onda</button>
@@ -1372,6 +1373,98 @@
                     </div>
                 </div>
                 
+                <!-- Calculadora PON/FTTH -->
+                <div class="calculator-card" id="calc-pon" style="display: none;">
+                    <h3 style="text-align: center; margin-bottom: 20px;">🔱 Pérdidas PON/FTTH</h3>
+                    <div class="formula-display">Pérdida Total = Fibra + Splitters + Conectores + Empalmes</div>
+                    
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Distancia fibra (km)</label>
+                            <input type="number" class="input" id="pon-dist" placeholder="Ej: 15" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label>Atenuación (dB/km)</label>
+                            <input type="number" class="input" id="pon-att" value="0.35" step="0.01">
+                        </div>
+                    </div>
+                    
+                    <h4 style="margin: 15px 0 10px; opacity: 0.8;">Splitters (seleccionar los usados):</h4>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Splitter 1:2 (3.5 dB)</label>
+                            <input type="number" class="input" id="pon-sp2" placeholder="0" min="0" value="0">
+                        </div>
+                        <div class="input-group">
+                            <label>Splitter 1:4 (7 dB)</label>
+                            <input type="number" class="input" id="pon-sp4" placeholder="0" min="0" value="0">
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Splitter 1:8 (10.5 dB)</label>
+                            <input type="number" class="input" id="pon-sp8" placeholder="0" min="0" value="0">
+                        </div>
+                        <div class="input-group">
+                            <label>Splitter 1:16 (14 dB)</label>
+                            <input type="number" class="input" id="pon-sp16" placeholder="0" min="0" value="0">
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Splitter 1:32 (17 dB)</label>
+                            <input type="number" class="input" id="pon-sp32" placeholder="0" min="0" value="0">
+                        </div>
+                        <div class="input-group">
+                            <label>Splitter 1:64 (20 dB)</label>
+                            <input type="number" class="input" id="pon-sp64" placeholder="0" min="0" value="0">
+                        </div>
+                    </div>
+                    
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Conectores (0.5 dB c/u)</label>
+                            <input type="number" class="input" id="pon-conn" placeholder="Ej: 4" min="0" value="4">
+                        </div>
+                        <div class="input-group">
+                            <label>Empalmes (0.1 dB c/u)</label>
+                            <input type="number" class="input" id="pon-splice" placeholder="Ej: 3" min="0" value="3">
+                        </div>
+                    </div>
+                    
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>OLT Tx mínimo (dBm)</label>
+                            <input type="number" class="input" id="pon-olt-tx" value="3" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label>ONT Rx sensibilidad (dBm)</label>
+                            <input type="number" class="input" id="pon-ont-rx" value="-28" step="0.1">
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" style="width: 100%;" onclick="calcPON()">Calcular Pérdidas</button>
+                    
+                    <div class="result-box" id="pon-result">
+                        <div class="result-value" id="pon-value">0 dB</div>
+                        <div class="result-label" id="pon-status">Pérdida Total</div>
+                        <div class="result-details" id="pon-details"></div>
+                    </div>
+                    
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px;">
+                        <h4 style="margin-bottom: 10px;">📋 Referencia de Pérdidas por Splitter:</h4>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; font-size: 0.9em;">
+                            <div>1:2 → <strong>3.5 dB</strong></div>
+                            <div>1:4 → <strong>7 dB</strong></div>
+                            <div>1:8 → <strong>10.5 dB</strong></div>
+                            <div>1:16 → <strong>14 dB</strong></div>
+                            <div>1:32 → <strong>17 dB</strong></div>
+                            <div>1:64 → <strong>20 dB</strong></div>
+                        </div>
+                        <p style="margin-top: 10px; opacity: 0.7; font-size: 0.85em;">Power Budget típico GPON Clase B+: <strong>28 dB</strong></p>
+                    </div>
+                </div>
+                
                 <!-- Calculadora BER -->
                 <div class="calculator-card" id="calc-ber" style="display: none;">
                     <h3 style="text-align: center; margin-bottom: 20px;">📊 Tasa de Error (BER)</h3>
@@ -1409,6 +1502,7 @@
             <div class="tabs" id="map-tabs">
                 <button class="tab active" data-map="osi">🌐 OSI/TCP-IP</button>
                 <button class="tab" data-map="ethernet">🔌 Ethernet/Redes</button>
+                <button class="tab" data-map="gpon">🔱 GPON/FTTH</button>
                 <button class="tab" data-map="fibra">💡 Fibra</button>
                 <button class="tab" data-map="radio">📡 Config. Radio</button>
                 <button class="tab" data-map="transceptores">🔌 Transceptores</button>
@@ -1416,6 +1510,197 @@
             </div>
             
             <div id="map-container">
+                <!-- Mapa GPON/FTTH -->
+                <div class="card" id="map-gpon" style="display: none;">
+                    <h3 style="text-align: center; margin-bottom: 30px;">🔱 Arquitectura GPON / FTTH</h3>
+                    
+                    <!-- Diagrama Visual -->
+                    <div style="background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(118,75,162,0.1)); border-radius: 15px; padding: 25px; margin-bottom: 25px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                            <!-- OLT -->
+                            <div style="text-align: center; flex: 1; min-width: 120px;">
+                                <div style="font-size: 3em;">🏢</div>
+                                <div style="font-weight: bold; color: var(--primary);">OLT</div>
+                                <div style="font-size: 0.8em; opacity: 0.8;">Central</div>
+                                <div style="font-size: 0.75em; background: rgba(255,255,255,0.1); padding: 5px; border-radius: 5px; margin-top: 5px;">
+                                    Tx: 1490nm ↓<br>Rx: 1310nm ↑
+                                </div>
+                            </div>
+                            
+                            <!-- Fibra Troncal -->
+                            <div style="flex: 0.5; text-align: center;">
+                                <div style="height: 4px; background: linear-gradient(90deg, #ffc107, #ff9800); margin: 20px 0;"></div>
+                                <div style="font-size: 0.8em;">Fibra Troncal<br>(hasta 20km)</div>
+                            </div>
+                            
+                            <!-- Splitter -->
+                            <div style="text-align: center; flex: 1; min-width: 120px;">
+                                <div style="font-size: 2.5em;">🔀</div>
+                                <div style="font-weight: bold; color: var(--warning);">SPLITTER</div>
+                                <div style="font-size: 0.8em; opacity: 0.8;">Pasivo (sin energía)</div>
+                                <div style="font-size: 0.75em; background: rgba(255,255,255,0.1); padding: 5px; border-radius: 5px; margin-top: 5px;">
+                                    1:32 = 17dB<br>1:64 = 20dB
+                                </div>
+                            </div>
+                            
+                            <!-- Fibra Distribución -->
+                            <div style="flex: 0.5; text-align: center;">
+                                <div style="height: 4px; background: linear-gradient(90deg, #4caf50, #8bc34a); margin: 20px 0;"></div>
+                                <div style="font-size: 0.8em;">Fibra Drop</div>
+                            </div>
+                            
+                            <!-- ONTs -->
+                            <div style="text-align: center; flex: 1; min-width: 120px;">
+                                <div style="font-size: 2em;">🏠 🏠 🏠</div>
+                                <div style="font-weight: bold; color: var(--success);">ONT/ONU</div>
+                                <div style="font-size: 0.8em; opacity: 0.8;">Usuarios</div>
+                                <div style="font-size: 0.75em; background: rgba(255,255,255,0.1); padding: 5px; border-radius: 5px; margin-top: 5px;">
+                                    Hasta 128 por PON
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Velocidades GPON -->
+                    <h4 style="text-align: center; margin: 25px 0 15px;">📊 Velocidades PON</h4>
+                    <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));">
+                        <div class="card" style="text-align: center; border-top: 4px solid #2196f3;">
+                            <h4 style="color: #2196f3;">GPON</h4>
+                            <div style="font-size: 1.1em;">↓ 2.488 Gbps</div>
+                            <div style="font-size: 1.1em;">↑ 1.244 Gbps</div>
+                            <div style="font-size: 0.8em; opacity: 0.7; margin-top: 5px;">ITU-T G.984</div>
+                        </div>
+                        <div class="card" style="text-align: center; border-top: 4px solid #9c27b0;">
+                            <h4 style="color: #9c27b0;">XG-PON</h4>
+                            <div style="font-size: 1.1em;">↓ 10 Gbps</div>
+                            <div style="font-size: 1.1em;">↑ 2.5 Gbps</div>
+                            <div style="font-size: 0.8em; opacity: 0.7; margin-top: 5px;">ITU-T G.987</div>
+                        </div>
+                        <div class="card" style="text-align: center; border-top: 4px solid #4caf50;">
+                            <h4 style="color: #4caf50;">XGS-PON</h4>
+                            <div style="font-size: 1.1em;">↓ 10 Gbps</div>
+                            <div style="font-size: 1.1em;">↑ 10 Gbps</div>
+                            <div style="font-size: 0.8em; opacity: 0.7; margin-top: 5px;">Simétrico</div>
+                        </div>
+                        <div class="card" style="text-align: center; border-top: 4px solid #ff9800;">
+                            <h4 style="color: #ff9800;">NG-PON2</h4>
+                            <div style="font-size: 1.1em;">↓ 40 Gbps</div>
+                            <div style="font-size: 1.1em;">↑ 10 Gbps</div>
+                            <div style="font-size: 0.8em; opacity: 0.7; margin-top: 5px;">TWDM</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Características -->
+                    <h4 style="text-align: center; margin: 25px 0 15px;">⚙️ Características GPON</h4>
+                    <div class="cards-grid">
+                        <div class="card" style="border-left: 4px solid var(--primary);">
+                            <h4>📤 Downstream (OLT→ONT)</h4>
+                            <ul style="list-style: none; opacity: 0.9;">
+                                <li>• Broadcast a todas las ONTs</li>
+                                <li>• Cada ONT filtra sus datos</li>
+                                <li>• Cifrado AES por seguridad</li>
+                                <li>• λ = 1490 nm</li>
+                            </ul>
+                        </div>
+                        <div class="card" style="border-left: 4px solid var(--success);">
+                            <h4>📥 Upstream (ONT→OLT)</h4>
+                            <ul style="list-style: none; opacity: 0.9;">
+                                <li>• TDMA (ventanas de tiempo)</li>
+                                <li>• OLT asigna slots a cada ONT</li>
+                                <li>• Ranging para sincronización</li>
+                                <li>• λ = 1310 nm</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Elementos -->
+                    <h4 style="text-align: center; margin: 25px 0 15px;">🔧 Elementos de Red PON</h4>
+                    <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                        <div class="card" style="text-align: center;">
+                            <div style="font-size: 2em;">🏢</div>
+                            <h4>OLT</h4>
+                            <p style="font-size: 0.9em;">Optical Line Terminal</p>
+                            <ul style="list-style: none; font-size: 0.85em; opacity: 0.9;">
+                                <li>En la central</li>
+                                <li>Gestiona toda la PON</li>
+                                <li>Conexión a red core</li>
+                            </ul>
+                        </div>
+                        <div class="card" style="text-align: center;">
+                            <div style="font-size: 2em;">🔀</div>
+                            <h4>Splitter</h4>
+                            <p style="font-size: 0.9em;">Divisor Óptico Pasivo</p>
+                            <ul style="list-style: none; font-size: 0.85em; opacity: 0.9;">
+                                <li>No requiere energía</li>
+                                <li>1:2 hasta 1:128</li>
+                                <li>Divide potencia óptica</li>
+                            </ul>
+                        </div>
+                        <div class="card" style="text-align: center;">
+                            <div style="font-size: 2em;">📦</div>
+                            <h4>ONT/ONU</h4>
+                            <p style="font-size: 0.9em;">Optical Network Terminal</p>
+                            <ul style="list-style: none; font-size: 0.85em; opacity: 0.9;">
+                                <li>En casa del cliente</li>
+                                <li>Conversión óptico-eléctrico</li>
+                                <li>Puertos ETH, WiFi, Tel</li>
+                            </ul>
+                        </div>
+                        <div class="card" style="text-align: center;">
+                            <div style="font-size: 2em;">🏗️</div>
+                            <h4>MDU</h4>
+                            <p style="font-size: 0.9em;">Multi Dwelling Unit</p>
+                            <ul style="list-style: none; font-size: 0.85em; opacity: 0.9;">
+                                <li>Para edificios</li>
+                                <li>Múltiples puertos</li>
+                                <li>VDSL2 o Ethernet</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Power Budget -->
+                    <h4 style="text-align: center; margin: 25px 0 15px;">💡 Power Budget GPON</h4>
+                    <div class="card" style="background: linear-gradient(135deg, rgba(76,175,80,0.2), rgba(33,150,243,0.2));">
+                        <div style="text-align: center; margin-bottom: 15px;">
+                            <span style="font-size: 1.3em; font-weight: bold;">Clase B+ = 28 dB</span>
+                            <span style="margin: 0 15px;">|</span>
+                            <span style="font-size: 1.3em; font-weight: bold;">Clase C+ = 32 dB</span>
+                        </div>
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">
+                            <tr style="background: rgba(255,255,255,0.1);">
+                                <th style="padding: 8px; text-align: left;">Elemento</th>
+                                <th style="padding: 8px; text-align: center;">Pérdida típica</th>
+                            </tr>
+                            <tr><td style="padding: 8px;">Fibra SM @1310nm</td><td style="text-align: center;">0.35 dB/km</td></tr>
+                            <tr style="background: rgba(255,255,255,0.05);"><td style="padding: 8px;">Fibra SM @1490nm</td><td style="text-align: center;">0.25 dB/km</td></tr>
+                            <tr><td style="padding: 8px;">Splitter 1:32</td><td style="text-align: center;">17 dB</td></tr>
+                            <tr style="background: rgba(255,255,255,0.05);"><td style="padding: 8px;">Splitter 1:64</td><td style="text-align: center;">20 dB</td></tr>
+                            <tr><td style="padding: 8px;">Conector SC/APC</td><td style="text-align: center;">0.3-0.5 dB</td></tr>
+                            <tr style="background: rgba(255,255,255,0.05);"><td style="padding: 8px;">Empalme fusión</td><td style="text-align: center;">0.1 dB</td></tr>
+                        </table>
+                    </div>
+                    
+                    <!-- Protocolos -->
+                    <h4 style="text-align: center; margin: 25px 0 15px;">📡 Protocolos y Gestión</h4>
+                    <div class="cards-grid">
+                        <div class="card" style="text-align: center; background: rgba(156,39,176,0.1);">
+                            <h4>GEM</h4>
+                            <p>GPON Encapsulation Method</p>
+                            <div style="font-size: 0.85em; opacity: 0.8;">Encapsula Ethernet, TDM, etc.</div>
+                        </div>
+                        <div class="card" style="text-align: center; background: rgba(33,150,243,0.1);">
+                            <h4>OMCI</h4>
+                            <p>ONT Management & Control</p>
+                            <div style="font-size: 0.85em; opacity: 0.8;">Gestión remota de ONTs</div>
+                        </div>
+                        <div class="card" style="text-align: center; background: rgba(76,175,80,0.1);">
+                            <h4>PLOAM</h4>
+                            <p>Physical Layer OAM</p>
+                            <div style="font-size: 0.85em; opacity: 0.8;">Activación, ranging, alarmas</div>
+                        </div>
+                    </div>
+                </div>
+                
                 <!-- Mapa OSI -->
                 <div class="card" id="map-osi">
                     <h3 style="text-align: center; margin-bottom: 30px;">Modelo OSI vs TCP/IP</h3>
@@ -2220,7 +2505,59 @@
             { category: "fibra", q: "¿Para qué sirve el gel?", a: "Anticongelante\n\nNo se escurre, protege" },
             { category: "fibra", q: "¿Cuántas fibras en cable exterior?", a: "8 a 36 fibras típico\n\nEn tubos holgados" },
             { category: "fibra", q: "¿Material protección mecánica?", a: "Kevlar\n\nResistente y ligero" },
-            { category: "fibra", q: "¿Color fibra multimodo?", a: "Naranja\n\n(Monomodo: amarillo/azul)" }
+            { category: "fibra", q: "¿Color fibra multimodo?", a: "Naranja\n\n(Monomodo: amarillo/azul)" },
+            
+            // GPON/FTTH
+            { category: "fibra", q: "¿Qué significa GPON?", a: "Gigabit Passive Optical Network\n\nRed óptica pasiva gigabit" },
+            { category: "fibra", q: "¿Velocidades de GPON?", a: "Downstream: 2.488 Gbps\nUpstream: 1.244 Gbps\n\nAsimétrica" },
+            { category: "fibra", q: "¿Qué es un splitter óptico?", a: "Divisor pasivo 1:N\n\nNo requiere energía eléctrica" },
+            { category: "fibra", q: "¿Pérdida splitter 1:2?", a: "~3.5 dB\n\nTeórico: 3 dB" },
+            { category: "fibra", q: "¿Pérdida splitter 1:4?", a: "~7 dB\n\nTeórico: 6 dB" },
+            { category: "fibra", q: "¿Pérdida splitter 1:8?", a: "~10.5 dB\n\nTeórico: 9 dB" },
+            { category: "fibra", q: "¿Pérdida splitter 1:16?", a: "~14 dB\n\nTeórico: 12 dB" },
+            { category: "fibra", q: "¿Pérdida splitter 1:32?", a: "~17.5 dB\n\nTeórico: 15 dB" },
+            { category: "fibra", q: "¿Pérdida splitter 1:64?", a: "~21 dB\n\nTeórico: 18 dB" },
+            { category: "fibra", q: "¿Qué es OLT?", a: "Optical Line Terminal\n\nEquipo en central (CO)" },
+            { category: "fibra", q: "¿Qué es ONT/ONU?", a: "Optical Network Terminal/Unit\n\nEquipo en cliente" },
+            { category: "fibra", q: "¿Longitudes de onda GPON?", a: "Downstream: 1490 nm\nUpstream: 1310 nm\n\nVideo RF: 1550 nm" },
+            { category: "fibra", q: "¿Distancia máxima GPON?", a: "20 km (máx 60 km clase C+)\n\nDepende del power budget" },
+            { category: "fibra", q: "¿Qué es XGS-PON?", a: "10G simétrico\n\n10 Gbps down y up" },
+            { category: "fibra", q: "¿Power budget típico GPON?", a: "Clase B+: 28 dB\nClase C+: 32 dB" },
+            
+            // METRO ETHERNET
+            { category: "ip", q: "¿Qué es Metro Ethernet?", a: "Servicios Carrier Ethernet\n\nEthernet como WAN" },
+            { category: "ip", q: "¿Qué es E-Line?", a: "Punto a punto\n\nConexión dedicada entre 2 sitios" },
+            { category: "ip", q: "¿Qué es E-LAN?", a: "Multipunto a multipunto\n\nTodos se comunican entre sí" },
+            { category: "ip", q: "¿Qué es E-Tree?", a: "Punto a multipunto\n\nHub-and-spoke, raíz y hojas" },
+            { category: "ip", q: "¿Qué es EVC?", a: "Ethernet Virtual Connection\n\nConexión lógica Ethernet" },
+            { category: "ip", q: "¿Qué es MEF?", a: "Metro Ethernet Forum\n\nDefine estándares Carrier Ethernet" },
+            { category: "ip", q: "¿Qué es CIR?", a: "Committed Information Rate\n\nAncho de banda garantizado" },
+            { category: "ip", q: "¿Qué es EIR?", a: "Excess Information Rate\n\nAncho de banda extra permitido" },
+            
+            // IPv6
+            { category: "ip", q: "¿Cuántos bits tiene IPv6?", a: "128 bits\n\nFormato: 8 grupos de 16 bits hex" },
+            { category: "ip", q: "¿Prefijo link-local IPv6?", a: "FE80::/10\n\nNo ruteable, solo enlace local" },
+            { category: "ip", q: "¿Prefijo global unicast IPv6?", a: "2000::/3\n\nDirecciones públicas ruteables" },
+            { category: "ip", q: "¿Qué es ::1 en IPv6?", a: "Loopback\n\nEquivalente a 127.0.0.1" },
+            { category: "ip", q: "¿Qué es :: en IPv6?", a: "Dirección no especificada\n\nEquivalente a 0.0.0.0" },
+            { category: "ip", q: "¿Cuántas direcciones IPv6?", a: "2^128\n\n340 undecillones de direcciones" },
+            
+            // SEGURIDAD
+            { category: "ip", q: "¿Qué es 802.1X?", a: "Control de acceso por puerto\n\nAutenticación basada en EAP" },
+            { category: "ip", q: "¿Qué es MACsec?", a: "802.1AE\n\nCifrado capa 2 Ethernet" },
+            { category: "ip", q: "¿Qué es DHCP Snooping?", a: "Seguridad DHCP\n\nFiltra mensajes no autorizados" },
+            { category: "ip", q: "¿Qué es IP Source Guard?", a: "Filtra IP falsificadas\n\nUsa binding table de DHCP Snooping" },
+            { category: "ip", q: "¿Qué es DAI?", a: "Dynamic ARP Inspection\n\nPreviene ARP spoofing" },
+            { category: "ip", q: "¿Qué es BPDU Guard?", a: "Protección STP\n\nDesactiva puerto si recibe BPDU" },
+            
+            // SNMP/GESTIÓN
+            { category: "bert", q: "¿Qué es SNMP?", a: "Simple Network Management Protocol\n\nProtocolo de gestión de red" },
+            { category: "bert", q: "¿Puertos SNMP?", a: "UDP 161 (queries)\nUDP 162 (traps)" },
+            { category: "bert", q: "¿Qué es una MIB?", a: "Management Information Base\n\nBase de datos de objetos gestionables" },
+            { category: "bert", q: "¿Qué es un OID?", a: "Object Identifier\n\nIdentificador único de objeto MIB" },
+            { category: "bert", q: "¿Qué es un trap SNMP?", a: "Notificación asíncrona\n\nAgente informa al manager" },
+            { category: "bert", q: "¿Versiones de SNMP?", a: "v1: básico, inseguro\nv2c: mejoras, community\nv3: seguro, autenticación" },
+            { category: "bert", q: "¿Qué es syslog?", a: "System Logging Protocol\n\nEnvía logs a servidor centralizado" }
         ];
         
         // Preguntas por tema
@@ -2676,7 +3013,74 @@
             { category: "bert", statement: "Un analizador de espectro óptico (OSA) ve canales DWDM", answer: true, explanation: "Correcto. Muestra potencia vs longitud de onda." },
             { category: "bert", statement: "Wireshark captura y analiza tráfico de red", answer: true, explanation: "Correcto. Analizador de protocolos." },
             { category: "bert", statement: "Ping usa el protocolo ICMP", answer: true, explanation: "Correcto. Internet Control Message Protocol." },
-            { category: "bert", statement: "Traceroute muestra la ruta de paquetes a un destino", answer: true, explanation: "Correcto. Usa TTL incremental para descubrir saltos." }
+            { category: "bert", statement: "Traceroute muestra la ruta de paquetes a un destino", answer: true, explanation: "Correcto. Usa TTL incremental para descubrir saltos." },
+            
+            // ============ GPON Y FTTH (NUEVAS) ============
+            { category: "fibra", statement: "En GPON la velocidad downstream es 2.488 Gbps", answer: true, explanation: "Correcto. Upstream es 1.244 Gbps." },
+            { category: "fibra", statement: "El splitter 1:32 tiene una pérdida de 17 dB", answer: true, explanation: "Correcto. 1:64 tiene ~20 dB de pérdida." },
+            { category: "fibra", statement: "En GPON el tráfico downstream usa multicast real", answer: false, explanation: "Falso. Es broadcast, todas las ONTs reciben todo pero filtran/descifran solo sus datos." },
+            { category: "fibra", statement: "La longitud de onda downstream en GPON es 1490 nm", answer: true, explanation: "Correcto. Upstream usa 1310 nm." },
+            { category: "fibra", statement: "El alcance máximo lógico de GPON es 60 km", answer: true, explanation: "Correcto. Aunque físicamente se recomienda máximo 20 km." },
+            { category: "fibra", statement: "El splitter óptico requiere alimentación eléctrica", answer: false, explanation: "Falso. El splitter es PASIVO, no requiere energía." },
+            { category: "fibra", statement: "GPON Clase B+ tiene power budget de 28 dB", answer: true, explanation: "Correcto. Clase C+ tiene 32 dB." },
+            { category: "fibra", statement: "OMCI gestiona las ONT de forma remota desde la OLT", answer: true, explanation: "Correcto. ONT Management and Control Interface, ITU G.984.4." },
+            { category: "fibra", statement: "El número de serie de ONT tiene 4 bytes", answer: false, explanation: "Falso. Tiene 8 bytes (64 bits): 4 fabricante + 4 ONT." },
+            { category: "fibra", statement: "XGS-PON es simétrico 10G/10G", answer: true, explanation: "Correcto. A diferencia de XG-PON que es asimétrico 10G/2.5G." },
+            { category: "fibra", statement: "El protocolo PLOAM se usa para ranging y activación", answer: true, explanation: "Correcto. Physical Layer OAM." },
+            { category: "fibra", statement: "En GPON upstream cada ONT transmite cuando quiere", answer: false, explanation: "Falso. Usa TDMA, la OLT asigna ventanas de tiempo a cada ONT." },
+            { category: "fibra", statement: "GEM permite encapsular tráfico Ethernet y TDM", answer: true, explanation: "Correcto. GPON Encapsulation Method es multiservicio." },
+            { category: "fibra", statement: "El conector más usado en GPON es SC/APC", answer: true, explanation: "Correcto. El color verde indica APC (Angled Physical Contact)." },
+            { category: "fibra", statement: "Un splitter 1:8 tiene pérdida aproximada de 10.5 dB", answer: true, explanation: "Correcto. Cada división por 2 agrega ~3.5 dB." },
+            { category: "fibra", statement: "MDU se instala en la central telefónica", answer: false, explanation: "Falso. MDU se instala en edificios para dar servicio a múltiples usuarios." },
+            { category: "fibra", statement: "NG-PON2 usa TWDM para alcanzar 40 Gbps", answer: true, explanation: "Correcto. Time and Wavelength Division Multiplexing, 4 canales x 10G." },
+            { category: "fibra", statement: "La atenuación de fibra a 1310nm es menor que a 1550nm", answer: false, explanation: "Falso. 1310nm ~0.35 dB/km, 1550nm ~0.22 dB/km (menor)." },
+            
+            // ============ METRO ETHERNET (NUEVAS) ============
+            { category: "ip", statement: "E-Line es un servicio Ethernet punto a punto", answer: true, explanation: "Correcto. Equivalente a una línea dedicada." },
+            { category: "ip", statement: "E-LAN es un servicio multipunto a multipunto", answer: true, explanation: "Correcto. Todos los sitios pueden comunicarse entre sí." },
+            { category: "ip", statement: "E-Tree es un servicio donde las hojas pueden comunicarse entre sí", answer: false, explanation: "Falso. En E-Tree las hojas solo se comunican con la raíz, no entre ellas." },
+            { category: "ip", statement: "MEF significa Metro Ethernet Forum", answer: true, explanation: "Correcto. Define estándares para servicios Carrier Ethernet." },
+            { category: "ip", statement: "CIR garantiza un ancho de banda mínimo", answer: true, explanation: "Correcto. Committed Information Rate es la tasa garantizada." },
+            { category: "ip", statement: "EIR es la tasa de información que siempre se entrega", answer: false, explanation: "Falso. EIR (Excess) es tráfico adicional que se entrega si hay capacidad disponible." },
+            { category: "ip", statement: "Un EVC es un circuito virtual Ethernet", answer: true, explanation: "Correcto. Ethernet Virtual Connection, conexión entre UNIs." },
+            { category: "ip", statement: "UNI es la interfaz entre cliente y proveedor", answer: true, explanation: "Correcto. User Network Interface." },
+            { category: "ip", statement: "NNI conecta dos redes de diferentes proveedores", answer: true, explanation: "Correcto. Network to Network Interface." },
+            { category: "ip", statement: "Carrier Ethernet requiere switches de capa 2 solamente", answer: false, explanation: "Falso. Puede involucrar equipos de capa 2 y 3, incluyendo MPLS." },
+            
+            // ============ IPv6 (NUEVAS) ============
+            { category: "ip", statement: "IPv6 tiene direcciones de 128 bits", answer: true, explanation: "Correcto. Comparado con 32 bits de IPv4." },
+            { category: "ip", statement: "Una dirección IPv6 link-local comienza con FE80::", answer: true, explanation: "Correcto. Válida solo en el enlace local." },
+            { category: "ip", statement: "IPv6 usa ARP para resolver direcciones", answer: false, explanation: "Falso. IPv6 usa NDP (Neighbor Discovery Protocol) con ICMPv6." },
+            { category: "ip", statement: "La cabecera IPv6 es más simple que la de IPv4", answer: true, explanation: "Correcto. Tiene menos campos, extensiones van en headers opcionales." },
+            { category: "ip", statement: "IPv6 Global Unicast comienza con 2000::/3", answer: true, explanation: "Correcto. Direcciones públicas rutables globalmente." },
+            { category: "ip", statement: "El campo TTL en IPv6 se llama Hop Limit", answer: true, explanation: "Correcto. Mismo propósito, diferente nombre." },
+            { category: "ip", statement: "IPv6 requiere NAT para funcionar en Internet", answer: false, explanation: "Falso. IPv6 tiene suficientes direcciones, NAT no es necesario." },
+            { category: "ip", statement: "Dual-stack permite ejecutar IPv4 e IPv6 simultáneamente", answer: true, explanation: "Correcto. El dispositivo tiene ambos stacks de protocolo." },
+            { category: "ip", statement: "El prefijo /64 es estándar para subredes IPv6", answer: true, explanation: "Correcto. 64 bits red + 64 bits interfaz." },
+            { category: "ip", statement: "ICMPv6 es opcional en IPv6", answer: false, explanation: "Falso. ICMPv6 es obligatorio, necesario para NDP y funciones básicas." },
+            
+            // ============ SEGURIDAD AVANZADA (NUEVAS) ============
+            { category: "ip", statement: "802.1X proporciona autenticación de acceso a puertos", answer: true, explanation: "Correcto. Port-based Network Access Control." },
+            { category: "ip", statement: "RADIUS es un protocolo de autenticación centralizada", answer: true, explanation: "Correcto. Remote Authentication Dial-In User Service." },
+            { category: "ip", statement: "Una ACL estándar filtra solo por IP origen", answer: true, explanation: "Correcto. ACL extendida filtra por origen, destino, puerto, protocolo." },
+            { category: "ip", statement: "MACsec encripta tráfico en capa 2", answer: true, explanation: "Correcto. IEEE 802.1AE, seguridad a nivel de enlace." },
+            { category: "ip", statement: "Port Security limita MACs permitidas en un puerto", answer: true, explanation: "Correcto. Previene MAC flooding attacks." },
+            { category: "ip", statement: "DHCP Snooping previene servidores DHCP no autorizados", answer: true, explanation: "Correcto. Filtra mensajes DHCP maliciosos." },
+            { category: "ip", statement: "Dynamic ARP Inspection previene ARP spoofing", answer: true, explanation: "Correcto. Valida paquetes ARP contra tabla DHCP Snooping." },
+            { category: "ip", statement: "Un IPS solo detecta pero no bloquea ataques", answer: false, explanation: "Falso. IPS (Intrusion Prevention) bloquea. IDS solo detecta." },
+            { category: "ip", statement: "VPN SSL opera típicamente en puerto 443", answer: true, explanation: "Correcto. Usa HTTPS, fácil de pasar firewalls." },
+            
+            // ============ SNMP Y GESTIÓN (NUEVAS) ============
+            { category: "bert", statement: "SNMP significa Simple Network Management Protocol", answer: true, explanation: "Correcto. Protocolo para gestión de dispositivos de red." },
+            { category: "bert", statement: "Un OID identifica una variable en la MIB", answer: true, explanation: "Correcto. Object Identifier, estructura jerárquica tipo árbol." },
+            { category: "bert", statement: "Las traps SNMP son enviadas del manager al agente", answer: false, explanation: "Falso. Las traps van del agente al manager (notificaciones asíncronas)." },
+            { category: "bert", statement: "SNMPv1 y v2c usan community strings en texto plano", answer: true, explanation: "Correcto. Por eso SNMPv3 es recomendado para seguridad." },
+            { category: "bert", statement: "GET solicita información del agente SNMP", answer: true, explanation: "Correcto. GET, GET-NEXT, GET-BULK para consultar." },
+            { category: "bert", statement: "SET modifica configuración en el agente SNMP", answer: true, explanation: "Correcto. Permite escritura de variables." },
+            { category: "bert", statement: "La MIB es la base de datos de objetos gestionables", answer: true, explanation: "Correcto. Management Information Base." },
+            { category: "bert", statement: "Syslog usa puerto UDP 514 por defecto", answer: true, explanation: "Correcto. Para envío de mensajes de log." },
+            { category: "bert", statement: "SNMP usa puerto UDP 161 para consultas", answer: true, explanation: "Correcto. Puerto 162 para traps." },
+            { category: "bert", statement: "NetFlow captura cabeceras de flujos de tráfico", answer: true, explanation: "Correcto. Para análisis y facturación, desarrollado por Cisco." }
         ];
         
         // ============ EXAMEN COMPLETO 20 PREGUNTAS CON EJEMPLOS ============
@@ -3347,6 +3751,57 @@
                 <p>Pérdida empalmes <span>${spliceLoss.toFixed(2)} dB</span></p>
                 <p>Pérdida conectores <span>${connLoss.toFixed(2)} dB</span></p>
                 <p>Pérdida total (+ 3 dB margen) <span>${totalLoss.toFixed(2)} dB</span></p>
+            `;
+        }
+        
+        function calcPON() {
+            const txPower = parseFloat(document.getElementById('pon-tx').value);
+            const rxSens = parseFloat(document.getElementById('pon-rx').value);
+            const fiberDist = parseFloat(document.getElementById('pon-dist').value);
+            const fiberAtt = parseFloat(document.getElementById('pon-att').value);
+            const splitter1 = parseFloat(document.getElementById('pon-splitter1').value);
+            const splitter2 = parseFloat(document.getElementById('pon-splitter2').value) || 0;
+            const connectors = parseInt(document.getElementById('pon-conn').value) || 0;
+            const splices = parseInt(document.getElementById('pon-splices').value) || 0;
+            
+            if (isNaN(txPower) || isNaN(rxSens) || isNaN(fiberDist) || isNaN(fiberAtt) || isNaN(splitter1)) {
+                return showCalcError('pon-result');
+            }
+            
+            // Cálculos
+            const powerBudget = txPower - rxSens;
+            const fiberLoss = fiberDist * fiberAtt;
+            const splitter1Loss = splitter1;
+            const splitter2Loss = splitter2;
+            const totalSplitterLoss = splitter1Loss + splitter2Loss;
+            const connLoss = connectors * 0.5;
+            const spliceLoss = splices * 0.1;
+            const margin = 3; // Margen de seguridad
+            const totalLoss = fiberLoss + totalSplitterLoss + connLoss + spliceLoss + margin;
+            const remaining = powerBudget - totalLoss;
+            
+            const result = document.getElementById('pon-result');
+            result.classList.remove('error');
+            result.classList.add('show');
+            
+            if (remaining >= 0) {
+                document.getElementById('pon-value').textContent = remaining.toFixed(2) + ' dB';
+                document.getElementById('pon-status').textContent = '✅ Enlace PON viable';
+            } else {
+                result.classList.add('error');
+                document.getElementById('pon-value').textContent = remaining.toFixed(2) + ' dB';
+                document.getElementById('pon-status').textContent = '❌ Enlace PON NO viable';
+            }
+            
+            document.getElementById('pon-details').innerHTML = `
+                <p>Power Budget disponible <span>${powerBudget.toFixed(2)} dB</span></p>
+                <p>Pérdida fibra (${fiberDist} km × ${fiberAtt} dB/km) <span>${fiberLoss.toFixed(2)} dB</span></p>
+                <p>Pérdida splitter 1 <span>${splitter1Loss.toFixed(2)} dB</span></p>
+                ${splitter2Loss > 0 ? `<p>Pérdida splitter 2 <span>${splitter2Loss.toFixed(2)} dB</span></p>` : ''}
+                <p>Pérdida conectores (${connectors} × 0.5 dB) <span>${connLoss.toFixed(2)} dB</span></p>
+                <p>Pérdida empalmes (${splices} × 0.1 dB) <span>${spliceLoss.toFixed(2)} dB</span></p>
+                <p>Margen de seguridad <span>${margin.toFixed(2)} dB</span></p>
+                <p><strong>Pérdida total</strong> <span><strong>${totalLoss.toFixed(2)} dB</strong></span></p>
             `;
         }
         
