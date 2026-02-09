@@ -1172,6 +1172,86 @@
         
         .flashcard-content { font-size: 1.4em; line-height: 1.6; }
         .flashcard-hint { position: absolute; bottom: 20px; font-size: 0.9em; opacity: 0.8; }
+
+        .fc-tools {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .tag-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag-chip {
+            padding: 6px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: #f3f5ff;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tag-chip.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: transparent;
+        }
+
+        .fc-options {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .fc-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95em;
+            color: var(--text-muted);
+        }
+
+        .fc-toggle input {
+            accent-color: var(--primary);
+        }
+
+        .fc-timer {
+            padding: 8px 12px;
+            border-radius: 10px;
+            background: rgba(91,140,255,0.15);
+            border: 1px solid rgba(91,140,255,0.25);
+            font-weight: 600;
+        }
+
+        .fc-progress-row {
+            display: grid;
+            grid-template-columns: 140px 1fr 50px;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            color: var(--text-muted);
+        }
+
+        .fc-progress-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .fc-progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            width: 0%;
+        }
         
         /* Controls */
         .controls {
@@ -3622,6 +3702,14 @@
                     <div class="stat-value" id="fc-remaining">0</div>
                     <div class="stat-label">📚 Restantes</div>
                 </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="fc-due-today">0</div>
+                    <div class="stat-label">⏰ Pendientes hoy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="fc-streak">0</div>
+                    <div class="stat-label">🔥 Racha</div>
+                </div>
             </div>
             
             <div class="tabs" id="fc-tabs" style="flex-wrap: wrap;">
@@ -3633,10 +3721,52 @@
                 <button class="tab" data-category="troubleshooting">🔧 Troubleshoot</button>
                 <button class="tab" data-category="checklist">📋 Checklists</button>
             </div>
+
+            <div class="fc-tools">
+                <div class="tag-filter" id="fc-tags"></div>
+                <div class="fc-options">
+                    <label class="fc-toggle">
+                        <input type="checkbox" id="fc-due-only">
+                        <span>Solo pendientes de hoy</span>
+                    </label>
+                    <div class="fc-timer" id="fc-timer" style="display: none;">
+                        ⏱️ <span id="fc-timer-display">05:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" id="fc-sprint" style="margin-bottom: 20px;">
+                <h3 style="margin-bottom: 10px;">⚡ Sprint de Flashcards</h3>
+                <p style="opacity: 0.75; margin-bottom: 15px;">Sesión rápida cronometrada con número fijo de tarjetas.</p>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Cantidad</label>
+                        <select class="input" id="fc-sprint-count">
+                            <option value="10">10 tarjetas</option>
+                            <option value="20" selected>20 tarjetas</option>
+                            <option value="30">30 tarjetas</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Tiempo</label>
+                        <select class="input" id="fc-sprint-time">
+                            <option value="5">5 minutos</option>
+                            <option value="10" selected>10 minutos</option>
+                            <option value="15">15 minutos</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn btn-primary" onclick="startFlashcardSprint()">▶️ Iniciar sprint</button>
+                    <button class="btn btn-secondary" onclick="stopFlashcardSprint()">⏹️ Detener</button>
+                </div>
+            </div>
             
             <div class="progress-bar">
                 <div class="progress-fill" id="fc-progress" style="width: 0%"></div>
             </div>
+
+            <div class="card" id="fc-category-progress" style="margin-top: 15px;"></div>
             
             <div class="flashcard-container">
                 <div class="flashcard" id="flashcard" onclick="flipCard()">
@@ -3656,9 +3786,10 @@
             </div>
             
             <div class="controls">
-                <button class="btn btn-danger" onclick="markCard(false)">❌ No lo sabía</button>
-                <button class="btn btn-warning" onclick="skipCard()">⏭️ Saltar</button>
-                <button class="btn btn-success" onclick="markCard(true)">✅ Lo sabía</button>
+                <button class="btn btn-danger" onclick="rateCard(1)">😣 Difícil</button>
+                <button class="btn btn-warning" onclick="rateCard(3)">😐 Medio</button>
+                <button class="btn btn-success" onclick="rateCard(5)">🙂 Fácil</button>
+                <button class="btn btn-secondary" onclick="skipCard()">⏭️ Saltar</button>
             </div>
             
             <div style="text-align: center; margin-top: 30px;">
@@ -8954,6 +9085,198 @@
         }
         
         // ============ FLASHCARDS ============
+        const fcIntervals = [1, 3, 7, 14, 30];
+        let fcCurrentCategory = 'all';
+        let fcSelectedTags = new Set();
+        let fcDueOnly = false;
+        let fcSprintActive = false;
+        let fcSprintTimerId = null;
+        let fcSprintEnd = 0;
+        let fcSprintLimit = 0;
+        let flashcardSRS = JSON.parse(localStorage.getItem('flashcardSRS') || '{}');
+        let flashcardStats = JSON.parse(localStorage.getItem('flashcardStats') || '{}');
+
+        function hashString(str) {
+            let h = 0;
+            for (let i = 0; i < str.length; i++) {
+                h = ((h << 5) - h) + str.charCodeAt(i);
+                h |= 0;
+            }
+            return `fc_${Math.abs(h)}`;
+        }
+
+        function getCardId(card) {
+            if (!card.__id) {
+                card.__id = hashString(`${card.category}|${card.q}|${card.a}`);
+            }
+            return card.__id;
+        }
+
+        function getCardTags(card) {
+            if (card.__tags) return card.__tags;
+            const tags = new Set();
+            const base = {
+                radio: 'Radio',
+                ip: 'IP',
+                fibra: 'Fibra',
+                formulas: 'Fórmulas',
+                troubleshooting: 'Troubleshooting',
+                checklist: 'Checklist'
+            };
+            if (base[card.category]) tags.add(base[card.category]);
+            const text = `${card.q} ${card.a}`.toLowerCase();
+            const keywordTags = [
+                ['5g', '5G'], ['lte', '5G'], ['gpon', 'GPON'], ['dwdm', 'DWDM'], ['mpls', 'MPLS'],
+                ['seguridad', 'Seguridad'], ['firewall', 'Seguridad'], ['802.1x', 'Seguridad'],
+                ['radius', 'Seguridad'], ['tacacs', 'Seguridad'], ['rfc 2544', 'Testing'],
+                ['y.1564', 'Testing'], ['ber', 'Testing'], ['transceptor', 'Transceptores'],
+                ['sfp', 'Transceptores'], ['qsfp', 'Transceptores'], ['ethernet', 'IP'], ['ospf', 'IP'],
+                ['bgp', 'IP'], ['tcp', 'IP'], ['udp', 'IP'], ['vlan', 'IP'], ['fresnel', 'Radio'],
+                ['xpic', 'Radio']
+            ];
+            keywordTags.forEach(([k, tag]) => { if (text.includes(k)) tags.add(tag); });
+            card.__tags = Array.from(tags);
+            return card.__tags;
+        }
+
+        function getSrsEntry(cardId) {
+            return flashcardSRS[cardId] || { stage: 0, nextDue: 0, lastReviewed: 0 };
+        }
+
+        function isDue(cardId) {
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            const entry = getSrsEntry(cardId);
+            return !entry.nextDue || entry.nextDue <= today.getTime();
+        }
+
+        function updateSrs(cardId, quality) {
+            const entry = getSrsEntry(cardId);
+            const today = new Date();
+            today.setHours(0,0,0,0);
+
+            if (quality <= 1) {
+                entry.stage = 0;
+            } else if (quality >= 5) {
+                entry.stage = Math.min(entry.stage + 1, fcIntervals.length - 1);
+            } else {
+                entry.stage = Math.min(entry.stage + 1, fcIntervals.length - 1);
+            }
+
+            const days = fcIntervals[entry.stage] || 1;
+            const next = new Date(today);
+            next.setDate(next.getDate() + days);
+            entry.nextDue = next.getTime();
+            entry.lastReviewed = today.getTime();
+            flashcardSRS[cardId] = entry;
+            localStorage.setItem('flashcardSRS', JSON.stringify(flashcardSRS));
+        }
+
+        function updateCategoryStats(card, quality) {
+            const cat = card.category || 'otros';
+            if (!flashcardStats[cat]) {
+                flashcardStats[cat] = { correct: 0, incorrect: 0, streak: 0, lastDate: 0, bestStreak: 0 };
+            }
+            const st = flashcardStats[cat];
+            const today = new Date();
+            today.setHours(0,0,0,0);
+
+            const isCorrect = quality >= 3;
+            if (isCorrect) st.correct++; else st.incorrect++;
+
+            const yesterday = new Date(today);
+            yesterday.setDate(yesterday.getDate() - 1);
+            if (isCorrect) {
+                if (st.lastDate === today.getTime()) {
+                    // misma fecha, no cambia
+                } else if (st.lastDate === yesterday.getTime()) {
+                    st.streak += 1;
+                } else {
+                    st.streak = 1;
+                }
+            } else {
+                st.streak = 0;
+            }
+
+            st.bestStreak = Math.max(st.bestStreak, st.streak);
+            st.lastDate = today.getTime();
+            flashcardStats[cat] = st;
+            localStorage.setItem('flashcardStats', JSON.stringify(flashcardStats));
+        }
+
+        function renderTagFilters() {
+            const tags = new Set();
+            flashcardsDB.forEach(c => getCardTags(c).forEach(t => tags.add(t)));
+            const tagList = ['Todas', ...Array.from(tags).sort()];
+            const container = document.getElementById('fc-tags');
+            if (!container) return;
+            container.innerHTML = tagList.map(t => {
+                const key = t === 'Todas' ? 'all' : t;
+                const active = (key === 'all' && fcSelectedTags.size === 0) || fcSelectedTags.has(key);
+                return `<button class="tag-chip ${active ? 'active' : ''}" data-tag="${key}">${t}</button>`;
+            }).join('');
+
+            container.querySelectorAll('.tag-chip').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tag = btn.dataset.tag;
+                    if (tag === 'all') {
+                        fcSelectedTags.clear();
+                    } else {
+                        if (fcSelectedTags.has(tag)) fcSelectedTags.delete(tag);
+                        else fcSelectedTags.add(tag);
+                    }
+                    renderTagFilters();
+                    filterFlashcards(fcCurrentCategory);
+                });
+            });
+        }
+
+        function getFilteredFlashcards(category) {
+            let cards = category === 'all' ? [...flashcardsDB] : flashcardsDB.filter(c => c.category === category);
+
+            if (fcSelectedTags.size > 0) {
+                cards = cards.filter(c => {
+                    const tags = getCardTags(c);
+                    return Array.from(fcSelectedTags).some(t => tags.includes(t));
+                });
+            }
+
+            if (fcDueOnly) {
+                cards = cards.filter(c => isDue(getCardId(c)));
+            }
+
+            return cards;
+        }
+
+        function renderCategoryProgress() {
+            const container = document.getElementById('fc-category-progress');
+            if (!container) return;
+
+            const categories = ['radio','ip','fibra','formulas','troubleshooting','checklist'];
+            const labels = { radio: 'Radio', ip: 'IP', fibra: 'Fibra', formulas: 'Fórmulas', troubleshooting: 'Troubleshooting', checklist: 'Checklist' };
+
+            const rows = categories.map(cat => {
+                const cards = flashcardsDB.filter(c => c.category === cat);
+                const total = cards.length || 1;
+                const reviewed = cards.filter(c => getSrsEntry(getCardId(c)).lastReviewed).length;
+                const percent = Math.round((reviewed / total) * 100);
+                const st = flashcardStats[cat] || { correct: 0, incorrect: 0, streak: 0 };
+                const streak = st.streak || 0;
+                return `
+                    <div class="fc-progress-row">
+                        <div>${labels[cat]} <span style="opacity:0.6; font-size:0.85em;">(✔ ${st.correct || 0} / ✖ ${st.incorrect || 0}, racha ${streak})</span></div>
+                        <div class="fc-progress-bar"><div class="fc-progress-fill" style="width:${percent}%;"></div></div>
+                        <div style="text-align:right;">${percent}%</div>
+                    </div>
+                `;
+            }).join('');
+
+            container.innerHTML = `
+                <h4 style="margin-bottom: 10px;">📊 Progreso por categoría</h4>
+                ${rows}
+            `;
+        }
+
         function initFlashcards() {
             document.querySelectorAll('#fc-tabs .tab').forEach(tab => {
                 tab.addEventListener('click', function() {
@@ -8962,11 +9285,20 @@
                     filterFlashcards(this.dataset.category);
                 });
             });
+            const dueToggle = document.getElementById('fc-due-only');
+            if (dueToggle) {
+                dueToggle.addEventListener('change', (e) => {
+                    fcDueOnly = e.target.checked;
+                    filterFlashcards(fcCurrentCategory);
+                });
+            }
+            renderTagFilters();
             filterFlashcards('all');
         }
         
         function filterFlashcards(category) {
-            fcCards = category === 'all' ? [...flashcardsDB] : flashcardsDB.filter(c => c.category === category);
+            fcCurrentCategory = category;
+            fcCards = getFilteredFlashcards(category);
             shuffleArray(fcCards);
             fcIndex = 0; fcCorrect = 0; fcIncorrect = 0;
             updateFcStats();
@@ -8974,9 +9306,17 @@
         }
         
         function showFlashcard() {
+            if (fcCards.length === 0) {
+                alert('No hay flashcards para los filtros seleccionados.');
+                return;
+            }
             if (fcIndex >= fcCards.length) {
-                alert(`¡Terminaste! Correctas: ${fcCorrect}, A repasar: ${fcIncorrect}`);
-                filterFlashcards('all');
+                const msg = fcSprintActive
+                    ? `Sprint finalizado. Correctas: ${fcCorrect}, A repasar: ${fcIncorrect}`
+                    : `¡Terminaste! Correctas: ${fcCorrect}, A repasar: ${fcIncorrect}`;
+                alert(msg);
+                stopFlashcardSprint(true);
+                filterFlashcards(fcCurrentCategory);
                 return;
             }
             
@@ -9000,8 +9340,12 @@
             document.getElementById('flashcard').classList.toggle('flipped');
         }
         
-        function markCard(correct) {
+        function rateCard(quality) {
+            const card = fcCards[fcIndex];
+            const correct = quality >= 3;
             if (correct) fcCorrect++; else fcIncorrect++;
+            updateSrs(getCardId(card), quality);
+            updateCategoryStats(card, quality);
             fcIndex++;
             updateFcStats();
             showFlashcard();
@@ -9010,12 +9354,64 @@
         
         function skipCard() { fcIndex++; showFlashcard(); }
         
-        function resetFlashcards() { filterFlashcards('all'); }
+        function resetFlashcards() { filterFlashcards(fcCurrentCategory); }
         
         function updateFcStats() {
             document.getElementById('fc-correct').textContent = fcCorrect;
             document.getElementById('fc-incorrect').textContent = fcIncorrect;
             document.getElementById('fc-remaining').textContent = Math.max(0, fcCards.length - fcIndex);
+            const dueToday = flashcardsDB.filter(c => isDue(getCardId(c))).length;
+            document.getElementById('fc-due-today').textContent = dueToday;
+            const streak = Math.max(...Object.values(flashcardStats).map(s => s.streak || 0), 0);
+            document.getElementById('fc-streak').textContent = streak;
+            renderCategoryProgress();
+        }
+
+        function startFlashcardSprint() {
+            const count = parseInt(document.getElementById('fc-sprint-count').value);
+            const minutes = parseInt(document.getElementById('fc-sprint-time').value);
+            fcSprintActive = true;
+            fcSprintLimit = count;
+            fcSprintEnd = Date.now() + minutes * 60 * 1000;
+
+            const list = getFilteredFlashcards(fcCurrentCategory);
+            shuffleArray(list);
+            fcCards = list.slice(0, count);
+            fcIndex = 0; fcCorrect = 0; fcIncorrect = 0;
+            updateFcStats();
+            showFlashcard();
+
+            document.getElementById('fc-timer').style.display = 'inline-flex';
+            updateSprintTimer();
+            if (fcSprintTimerId) clearInterval(fcSprintTimerId);
+            fcSprintTimerId = setInterval(updateSprintTimer, 1000);
+        }
+
+        function updateSprintTimer() {
+            const remaining = Math.max(0, Math.floor((fcSprintEnd - Date.now()) / 1000));
+            const mins = Math.floor(remaining / 60);
+            const secs = remaining % 60;
+            const display = `${mins}:${secs.toString().padStart(2, '0')}`;
+            const el = document.getElementById('fc-timer-display');
+            if (el) el.textContent = display;
+            if (remaining <= 0) {
+                stopFlashcardSprint(true);
+                alert(`Tiempo terminado. Correctas: ${fcCorrect}, A repasar: ${fcIncorrect}`);
+                filterFlashcards(fcCurrentCategory);
+            }
+        }
+
+        function stopFlashcardSprint(silent = false) {
+            if (fcSprintTimerId) clearInterval(fcSprintTimerId);
+            fcSprintTimerId = null;
+            if (!silent && fcSprintActive) {
+                alert('Sprint detenido.');
+            }
+            fcSprintActive = false;
+            fcSprintEnd = 0;
+            fcSprintLimit = 0;
+            const timer = document.getElementById('fc-timer');
+            if (timer) timer.style.display = 'none';
         }
         
         // ============ PRUEBAS ============
@@ -9746,8 +10142,9 @@
         document.addEventListener('keydown', function(e) {
             if (document.getElementById('section-flashcards').classList.contains('active')) {
                 if (e.code === 'Space') { e.preventDefault(); flipCard(); }
-                else if (e.code === 'ArrowLeft') markCard(false);
-                else if (e.code === 'ArrowRight') markCard(true);
+                else if (e.code === 'ArrowLeft') rateCard(1);
+                else if (e.code === 'ArrowUp') rateCard(3);
+                else if (e.code === 'ArrowRight') rateCard(5);
                 else if (e.code === 'ArrowDown') skipCard();
             }
         });
