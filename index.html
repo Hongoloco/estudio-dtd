@@ -7451,17 +7451,18 @@
         function prepareExamenQuestions(categoria, cantidad) {
             let questions = [];
             
-            // 1. Agregar preguntas de pruebas (testsDB)
-            testsDB.forEach(test => {
-                if (categoria === 'all' || test.cat === categoria) {
-                    test.questions.forEach(q => {
+            // 1. Agregar preguntas del banco general (questionsDB)
+            Object.keys(questionsDB).forEach(topic => {
+                const topicCat = mapTopicToCategory(topic);
+                if (categoria === 'all' || topicCat === categoria) {
+                    questionsDB[topic].forEach(q => {
                         questions.push({
                             question: q.q,
-                            options: q.options,
-                            correct: q.answer,
-                            explanation: q.exp || '',
-                            category: test.cat,
-                            source: 'test'
+                            options: q.o,
+                            correct: q.a,
+                            explanation: q.e || '',
+                            category: topicCat,
+                            source: 'questionsDB'
                         });
                     });
                 }
@@ -7506,7 +7507,6 @@
                             
                             // Crear array de opciones y mezclar
                             const options = [correctAnswer, ...incorrectOptions];
-                            const correctIndex = 0;
                             
                             // Mezclar opciones manteniendo el índice correcto
                             const shuffledOptions = options.map((opt, i) => ({ opt, isCorrect: i === 0 }));
@@ -7524,23 +7524,6 @@
                                 source: 'flashcard'
                             });
                         }
-                    });
-                }
-            });
-            
-            // 4. Agregar preguntas del banco general (questionsDB)
-            Object.keys(questionsDB).forEach(topic => {
-                const topicCat = mapTopicToCategory(topic);
-                if (categoria === 'all' || topicCat === categoria) {
-                    questionsDB[topic].forEach(q => {
-                        questions.push({
-                            question: q.q,
-                            options: q.o,
-                            correct: q.a,
-                            explanation: q.e || '',
-                            category: topicCat,
-                            source: 'questionsDB'
-                        });
                     });
                 }
             });
