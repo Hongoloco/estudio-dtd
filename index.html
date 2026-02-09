@@ -6826,8 +6826,7 @@
                 t.classList.remove('active');
                 if (t.dataset.category === category) t.classList.add('active');
             });
-            currentFcCategory = category;
-            loadFlashcards();
+            filterFlashcards(category);
         }
         
         function goToVoF(category) {
