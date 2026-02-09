@@ -7451,7 +7451,7 @@
         function prepareExamenQuestions(categoria, cantidad) {
             let questions = [];
             
-            // Combinar preguntas de pruebas y flashcards convertidas
+            // 1. Agregar preguntas de pruebas (testsDB)
             testsDB.forEach(test => {
                 if (categoria === 'all' || test.cat === categoria) {
                     test.questions.forEach(q => {
@@ -7467,7 +7467,7 @@
                 }
             });
             
-            // Agregar V/F convertidas a opciones
+            // 2. Agregar V/F convertidas a opciones
             vofQuestionsDB.forEach(vof => {
                 if (categoria === 'all' || vof.category === categoria) {
                     questions.push({
@@ -7481,8 +7481,98 @@
                 }
             });
             
+            // 3. Convertir flashcards a preguntas de opción múltiple
+            const flashcardsByCategory = {};
+            flashcardsDB.forEach(fc => {
+                if (!flashcardsByCategory[fc.category]) {
+                    flashcardsByCategory[fc.category] = [];
+                }
+                flashcardsByCategory[fc.category].push(fc);
+            });
+            
+            Object.keys(flashcardsByCategory).forEach(cat => {
+                if (categoria === 'all' || cat === categoria) {
+                    const fcList = flashcardsByCategory[cat];
+                    fcList.forEach(fc => {
+                        // Generar opciones incorrectas de la misma categoría
+                        const otherAnswers = fcList
+                            .filter(other => other.a !== fc.a)
+                            .map(other => other.a.substring(0, 80) + (other.a.length > 80 ? '...' : ''));
+                        
+                        if (otherAnswers.length >= 3) {
+                            shuffleArray(otherAnswers);
+                            const incorrectOptions = otherAnswers.slice(0, 3);
+                            const correctAnswer = fc.a.substring(0, 80) + (fc.a.length > 80 ? '...' : '');
+                            
+                            // Crear array de opciones y mezclar
+                            const options = [correctAnswer, ...incorrectOptions];
+                            const correctIndex = 0;
+                            
+                            // Mezclar opciones manteniendo el índice correcto
+                            const shuffledOptions = options.map((opt, i) => ({ opt, isCorrect: i === 0 }));
+                            shuffleArray(shuffledOptions);
+                            
+                            const finalOptions = shuffledOptions.map(o => o.opt);
+                            const finalCorrect = shuffledOptions.findIndex(o => o.isCorrect);
+                            
+                            questions.push({
+                                question: fc.q,
+                                options: finalOptions,
+                                correct: finalCorrect,
+                                explanation: fc.a,
+                                category: cat,
+                                source: 'flashcard'
+                            });
+                        }
+                    });
+                }
+            });
+            
+            // 4. Agregar preguntas del banco general (questionsDB)
+            Object.keys(questionsDB).forEach(topic => {
+                const topicCat = mapTopicToCategory(topic);
+                if (categoria === 'all' || topicCat === categoria) {
+                    questionsDB[topic].forEach(q => {
+                        questions.push({
+                            question: q.q,
+                            options: q.o,
+                            correct: q.a,
+                            explanation: q.e || '',
+                            category: topicCat,
+                            source: 'questionsDB'
+                        });
+                    });
+                }
+            });
+            
+            // Eliminar duplicados por pregunta
+            const seen = new Set();
+            questions = questions.filter(q => {
+                const key = q.question.toLowerCase().trim();
+                if (seen.has(key)) return false;
+                seen.add(key);
+                return true;
+            });
+            
             shuffleArray(questions);
             return questions.slice(0, cantidad);
+        }
+        
+        function mapTopicToCategory(topic) {
+            const map = {
+                'propagacion': 'radio',
+                'minilink': 'radio',
+                'radio': 'radio',
+                'redes': 'ip',
+                'ip': 'ip',
+                'ethernet': 'ip',
+                'fibra': 'fibra',
+                'transceptores': 'fibra',
+                'optica': 'fibra',
+                'bert': 'bert',
+                'rfc2544': 'bert'
+            };
+            return map[topic.toLowerCase()] || 'ip';
         }
         
         function showExamenQuestion() {
