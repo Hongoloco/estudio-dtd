@@ -102,18 +102,24 @@
         
         .toggle-sidebar {
             position: fixed;
-            top: 20px;
-            left: 20px;
+            top: 15px;
+            left: 15px;
             z-index: 1001;
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             border: none;
             color: white;
             width: 50px;
             height: 50px;
-            border-radius: 50%;
+            border-radius: 15px;
             cursor: pointer;
             font-size: 1.5em;
             display: none;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .toggle-sidebar:active {
+            transform: scale(0.95);
         }
         
         /* Secciones */
@@ -1447,79 +1453,358 @@
         }
         
         @media (max-width: 768px) {
+            /* Layout general móvil */
+            .main-content {
+                padding: 15px;
+                padding-top: 70px;
+            }
+            
+            .section-header {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            
+            .section-header h2 {
+                font-size: 1.5em;
+            }
+            
+            .section-header p {
+                font-size: 0.9em;
+            }
+            
+            /* Cards y grids */
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            
+            .stat-card {
+                padding: 12px;
+            }
+            
+            .stat-value {
+                font-size: 1.8em;
+            }
+            
+            .stat-label {
+                font-size: 0.75em;
+            }
+            
+            /* Tabs responsivos */
+            .tabs {
+                flex-wrap: wrap;
+                gap: 5px;
+                padding: 10px;
+                justify-content: center;
+            }
+            
+            .tab {
+                padding: 10px 14px;
+                font-size: 0.85em;
+                flex: 0 0 auto;
+            }
+            
+            /* Inputs y formularios */
             .input-row { grid-template-columns: 1fr; }
-            .layer { flex-direction: column; }
-            .layer-content { flex-direction: column; width: 100%; }
-            .fiber-section { flex-direction: column; text-align: center; }
-            .flashcard-content { font-size: 1.1em; }
-            .controls { flex-direction: column; }
-            .controls .btn { width: 100%; justify-content: center; }
+            
+            .input-group {
+                margin-bottom: 10px;
+            }
+            
+            .input {
+                padding: 12px;
+                font-size: 16px; /* Evita zoom en iOS */
+            }
+            
+            /* Botones */
+            .btn {
+                padding: 14px 20px;
+                font-size: 1em;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .controls .btn {
+                width: 100%;
+            }
+            
+            /* Flashcards móvil */
+            .flashcard {
+                min-height: 250px;
+                margin: 10px 0;
+            }
+            
+            .flashcard-content {
+                font-size: 1.1em;
+                padding: 20px;
+            }
+            
+            /* Card general */
+            .card {
+                padding: 18px;
+                border-radius: 15px;
+            }
+            
+            /* Calculadoras móvil */
+            .calculator-card {
+                padding: 18px;
+            }
+            
+            .formula-display {
+                font-size: 0.9em;
+                padding: 12px;
+                overflow-x: auto;
+            }
+            
+            .result-box {
+                padding: 18px;
+            }
+            
+            .result-value {
+                font-size: 2em;
+            }
+            
+            /* Mapas conceptuales móvil */
+            .layer {
+                flex-direction: column;
+            }
+            
+            .layer-content {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .fiber-section {
+                flex-direction: column;
+                text-align: center;
+            }
             
             /* Conceptos responsivo */
             .filter-tabs {
                 padding: 10px;
                 gap: 8px;
+                flex-wrap: wrap;
             }
+            
             .filter-tab {
-                padding: 8px 12px;
+                padding: 10px 14px;
                 font-size: 0.85em;
             }
+            
             .concepto-card {
                 padding: 18px;
             }
+            
             .concepto-card h3 {
-                font-size: 1.1em;
+                font-size: 1.15em;
             }
+            
+            .concepto-card p {
+                font-size: 0.95em;
+                line-height: 1.7;
+            }
+            
             .concepto-card table {
-                font-size: 0.85em;
+                font-size: 0.8em;
+                display: block;
+                overflow-x: auto;
             }
+            
             .concepto-card th, .concepto-card td {
                 padding: 8px 6px;
             }
             
-            /* Desafío Rápido responsivo */
+            .concepto-card .formula-box {
+                font-size: 0.95em;
+                padding: 12px;
+                overflow-x: auto;
+            }
+            
+            /* V/F móvil */
+            #vof-statement {
+                font-size: 1.15em !important;
+                line-height: 1.5;
+            }
+            
+            #btn-verdadero, #btn-falso {
+                padding: 18px !important;
+                font-size: 1.1em !important;
+            }
+            
+            #vof-feedback {
+                font-size: 0.95em;
+            }
+            
+            /* Examen móvil */
+            .exam-question {
+                font-size: 1.05em;
+            }
+            
+            .exam-option {
+                padding: 14px;
+                font-size: 0.95em;
+            }
+            
+            /* Juegos responsivos */
             .desafio-rules, .game-rules {
                 grid-template-columns: 1fr;
             }
+            
             .desafio-hud, .memoria-hud, .supervivencia-hud {
                 flex-direction: row;
                 flex-wrap: wrap;
                 gap: 10px;
+                padding: 15px;
             }
+            
             .hud-item {
                 flex: 1;
-                min-width: 80px;
+                min-width: 70px;
             }
+            
             .hud-value {
-                font-size: 1.5em;
+                font-size: 1.4em;
             }
+            
+            .hud-label {
+                font-size: 0.7em;
+            }
+            
             .desafio-options, .supervivencia-options {
                 grid-template-columns: 1fr;
+                gap: 10px;
             }
+            
             .desafio-question, .supervivencia-question {
-                font-size: 1.1em;
+                font-size: 1.05em;
+                padding: 15px;
             }
+            
             .results-stats {
                 flex-direction: column;
                 gap: 15px;
             }
+            
             .results-buttons {
                 flex-direction: column;
             }
+            
             .results-buttons .btn {
                 width: 100%;
             }
+            
+            /* Memoria móvil */
             .memoria-grid {
                 grid-template-columns: repeat(3, 1fr);
                 gap: 8px;
             }
-            .memoria-card-back {
-                font-size: 0.75em;
+            
+            .memoria-card {
+                height: 80px;
             }
+            
+            .memoria-card-back {
+                font-size: 0.7em;
+                padding: 5px;
+            }
+            
+            /* Home cards móvil */
+            .home-card {
+                padding: 20px;
+            }
+            
+            .home-card-icon {
+                font-size: 2.5em;
+            }
+            
+            .home-card h3 {
+                font-size: 1.1em;
+            }
+            
+            /* Progress bar */
+            .progress-bar {
+                height: 6px;
+            }
+            
+            /* Ejercicios móvil */
+            .blank-input {
+                width: 60px;
+                padding: 8px;
+                font-size: 14px;
+            }
+        }
+        
+        /* Pantallas muy pequeñas */
+        @media (max-width: 400px) {
+            .main-content {
+                padding: 10px;
+                padding-top: 65px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            
+            .stat-value {
+                font-size: 1.5em;
+            }
+            
+            .tabs {
+                gap: 4px;
+            }
+            
+            .tab {
+                padding: 8px 10px;
+                font-size: 0.8em;
+            }
+            
+            .memoria-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .flashcard {
+                min-height: 220px;
+            }
+            
+            .concepto-card h3 {
+                font-size: 1.05em;
+            }
+            
+            #vof-statement {
+                font-size: 1.05em !important;
+            }
+        }
+        
+        /* Overlay para cerrar sidebar en móvil */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        
+        .sidebar-overlay.visible {
+            display: block;
         }
     </style>
 </head>
 <body>
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
     <button class="toggle-sidebar" onclick="toggleSidebar()">☰</button>
     
     <nav class="sidebar" id="sidebar">
@@ -5324,11 +5609,20 @@
             // Cerrar sidebar en móvil
             if (window.innerWidth <= 992) {
                 document.getElementById('sidebar').classList.remove('visible');
+                document.getElementById('sidebar-overlay').classList.remove('visible');
             }
         }
         
         function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('visible');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.toggle('visible');
+            overlay.classList.toggle('visible');
+        }
+        
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('visible');
+            document.getElementById('sidebar-overlay').classList.remove('visible');
         }
         
         // ============ DESAFÍO RÁPIDO - JUEGO ============
