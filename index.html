@@ -3395,12 +3395,14 @@
                 </div>
             </div>
             
-            <div class="tabs" id="fc-tabs">
+            <div class="tabs" id="fc-tabs" style="flex-wrap: wrap;">
                 <button class="tab active" data-category="all">📚 Todas</button>
                 <button class="tab" data-category="radio">📡 Radio</button>
                 <button class="tab" data-category="ip">🌐 IP/Redes</button>
                 <button class="tab" data-category="fibra">💡 Fibra</button>
                 <button class="tab" data-category="formulas">🧮 Fórmulas</button>
+                <button class="tab" data-category="troubleshooting">🔧 Troubleshoot</button>
+                <button class="tab" data-category="checklist">📋 Checklists</button>
             </div>
             
             <div class="progress-bar">
@@ -5030,7 +5032,74 @@
             { category: "fibra", q: "¿Gel en estructura holgada?", a: "Anticongelante\n\nProtege fibras en tubo" },
             { category: "fibra", q: "¿Cable exterior típico?", a: "8-36 fibras\n\nEn tubos holgados" },
             { category: "fibra", q: "¿Función del Kevlar?", a: "Protección mecánica\n\nResistencia a tracción" },
-            { category: "fibra", q: "¿Pérdida empalme fusión?", a: "~0.1 dB\n\nConector: 0.5-0.75 dB" }
+            { category: "fibra", q: "¿Pérdida empalme fusión?", a: "~0.1 dB\n\nConector: 0.5-0.75 dB" },
+            
+            // ============ TROUBLESHOOTING - ESCENARIOS REALES ============
+            { category: "troubleshooting", q: "Enlace fibra: Rx = -35 dBm, umbral = -28 dBm. ¿Problema?", a: "Señal muy baja (7 dB bajo umbral)\n\n• Verificar conectores sucios\n• Buscar curvaturas excesivas\n• Medir con OTDR para localizar falla" },
+            { category: "troubleshooting", q: "Ping funciona pero web no carga. ¿Qué revisar?", a: "1. DNS: nslookup dominio\n2. Puerto 80/443: telnet host 80\n3. Firewall bloqueando HTTP\n4. Proxy mal configurado" },
+            { category: "troubleshooting", q: "OTDR muestra pico reflexivo a 2.3 km. ¿Qué significa?", a: "Conector o empalme mecánico\n\n• Conector: reflexión alta\n• Empalme fusión: sin reflexión\n• Rotura: reflexión + pérdida total" },
+            { category: "troubleshooting", q: "Radio: RSL -10 dB peor que cálculo. ¿Causas?", a: "• Desalineación de antenas\n• Obstrucción zona Fresnel\n• Pérdidas en cables/conectores\n• Fading atmosférico" },
+            { category: "troubleshooting", q: "Latencia 150ms en enlace de 5km. ¿Normal?", a: "NO, muy alta\n\n• Velocidad luz: 5km ≈ 0.025ms\n• Causa: congestión, buffering\n• Revisar QoS y utilización" },
+            { category: "troubleshooting", q: "CRC errors aumentando en switch. ¿Causas?", a: "• Cable dañado o mal terminado\n• Interferencia electromagnética\n• Puerto o SFP defectuoso\n• Duplex mismatch" },
+            { category: "troubleshooting", q: "GPON: ONT no registra en OLT. ¿Pasos?", a: "1. Verificar número serie ONT\n2. Medir potencia óptica (-8 a -28 dBm)\n3. Revisar VLAN y perfil\n4. Verificar splitter correcto" },
+            { category: "troubleshooting", q: "BER alto (10⁻⁶) en BERT. ¿Acciones?", a: "• Verificar conexiones/cables\n• Revisar niveles de señal\n• Buscar interferencia\n• Cambiar SFP/transceiver" },
+            { category: "troubleshooting", q: "Radio con alarma Low RSL. ¿Diagnóstico?", a: "1. Verificar alineación antenas\n2. Revisar conectores y cables\n3. Medir potencia Tx remoto\n4. Buscar obstrucciones nuevas" },
+            { category: "troubleshooting", q: "Usuario reporta velocidad lenta. ¿Metodología?", a: "1. Speedtest local vs remoto\n2. Verificar utilización enlaces\n3. Revisar errores en interfaces\n4. Analizar QoS y priorización" },
+            { category: "troubleshooting", q: "Enlace MPLS down. ¿Verificaciones?", a: "1. Ping a PE vecino\n2. show mpls ldp neighbor\n3. Verificar LSP establecido\n4. Revisar rutas IGP" },
+            { category: "troubleshooting", q: "Switch no aprende MACs en puerto. ¿Causas?", a: "• Puerto en error-disabled\n• Port Security violation\n• VLAN incorrecta\n• Cable o dispositivo malo" },
+            { category: "troubleshooting", q: "OSPF vecino stuck en EXSTART. ¿Solución?", a: "• MTU mismatch entre interfaces\n• Verificar MTU idéntica\n• Ajustar ip ospf mtu-ignore si necesario" },
+            { category: "troubleshooting", q: "Transceiver muestra Tx Fault. ¿Acciones?", a: "1. Retirar y reinsertar SFP\n2. Limpiar conector\n3. Verificar fibra conectada\n4. Reemplazar transceiver" },
+            { category: "troubleshooting", q: "Pérdida de paquetes intermitente. ¿Diagnóstico?", a: "• Usar ping extendido (1000 pings)\n• Correlacionar con utilización\n• Revisar logs de errores\n• Monitorear en horas pico" },
+            
+            // ============ CHECKLISTS DE CAMPO ============
+            { category: "checklist", q: "Checklist: Comisionamiento radioenlace", a: "□ Verificar alineación antenas\n□ Medir Tx power (dBm)\n□ Medir RSL (dBm)\n□ Calcular margen vs diseño\n□ Test BER 24h\n□ Verificar alarmas\n□ Documentar configuración" },
+            { category: "checklist", q: "Checklist: Verificación fibra nueva", a: "□ Inspección visual conectores\n□ Limpieza con cassette\n□ Medición OTDR (pérdidas, eventos)\n□ Medición potencia Tx/Rx\n□ Verificar Power Budget\n□ Test de continuidad\n□ Etiquetar puntas" },
+            { category: "checklist", q: "Checklist: Instalación ONT GPON", a: "□ Verificar señal óptica (>-28 dBm)\n□ Registrar serial en OLT\n□ Asignar perfil de servicio\n□ Configurar VLANs\n□ Test de velocidad\n□ Verificar voz si aplica\n□ Entregar credenciales WiFi" },
+            { category: "checklist", q: "Checklist: Pruebas RFC 2544", a: "□ Conectar equipo loopback\n□ Configurar line rate\n□ Ejecutar Throughput\n□ Ejecutar Latency\n□ Ejecutar Frame Loss\n□ Ejecutar Back-to-Back\n□ Generar reporte PDF" },
+            { category: "checklist", q: "Checklist: Alineación de antenas", a: "□ Verificar azimut calculado\n□ Ajustar elevación gruesa\n□ Maximizar RSL en azimut\n□ Ajustar elevación fina\n□ Confirmar RSL ambos lados\n□ Fijar tornillos\n□ Documentar ángulos finales" },
+            { category: "checklist", q: "Checklist: Mantenimiento preventivo radio", a: "□ Revisar alarmas históricas\n□ Verificar RSL vs baseline\n□ Inspeccionar antenas/cables\n□ Limpiar conectores\n□ Verificar respaldo energía\n□ Actualizar firmware si necesario\n□ Respaldar configuración" },
+            { category: "checklist", q: "Checklist: Troubleshooting conectividad", a: "□ Verificar capa física (LEDs)\n□ Ping gateway local\n□ Ping servidor remoto\n□ Traceroute al destino\n□ Verificar DNS\n□ Revisar logs/alarmas\n□ Escalar si no resuelve" },
+            { category: "checklist", q: "Checklist: Instalación switch nuevo", a: "□ Verificar firmware actualizado\n□ Configurar hostname/IP gestión\n□ Configurar VLANs requeridas\n□ Habilitar spanning tree\n□ Configurar puertos troncales\n□ Habilitar seguridad puertos\n□ Guardar configuración" },
+            
+            // ============ 5G Y REDES MÓVILES ============
+            { category: "radio", q: "¿Qué es 5G NR?", a: "5G New Radio\n\nNueva interfaz aérea 5G\nFrecuencias: sub-6GHz y mmWave" },
+            { category: "radio", q: "¿Bandas mmWave 5G?", a: "24-100 GHz\n\n• Mayor ancho de banda\n• Menor alcance\n• Requiere densificación" },
+            { category: "radio", q: "¿Qué es Massive MIMO?", a: "64-256+ antenas\n\n• Beamforming preciso\n• Mayor capacidad\n• Eficiencia espectral" },
+            { category: "radio", q: "¿Latencia objetivo 5G?", a: "1 ms (URLLC)\n\n• eMBB: alta velocidad\n• mMTC: IoT masivo\n• URLLC: ultra-baja latencia" },
+            { category: "radio", q: "¿Velocidad pico 5G?", a: "Hasta 20 Gbps (teórico)\n\n• Real: 1-3 Gbps\n• Depende de espectro y condiciones" },
+            { category: "radio", q: "¿Qué es Network Slicing?", a: "Redes virtuales dedicadas\n\n• Slice para IoT\n• Slice para video\n• Slice para misión crítica" },
+            { category: "radio", q: "¿Diferencia gNodeB vs eNodeB?", a: "gNodeB = 5G NR\neNodeB = LTE/4G\n\nSimilar función, diferente tecnología" },
+            { category: "radio", q: "¿Qué es Beamforming?", a: "Dirigir señal al usuario\n\n• Aumenta ganancia\n• Reduce interferencia\n• Clave en 5G/mmWave" },
+            { category: "radio", q: "¿Qué es Small Cell?", a: "Celda de baja potencia\n\n• Femto: hogar\n• Pico: edificio\n• Micro: outdoor" },
+            { category: "radio", q: "¿Qué es fronthaul?", a: "Conexión RRU ↔ BBU\n\n• Alta capacidad, baja latencia\n• Fibra típicamente\n• CPRI o eCPRI" },
+            { category: "radio", q: "¿Qué es backhaul?", a: "Conexión sitio ↔ core\n\n• Fibra, microondas o satélite\n• Agrega tráfico de usuarios" },
+            { category: "radio", q: "¿OFDMA en LTE/5G?", a: "Orthogonal Frequency Division\nMultiple Access\n\n• Divide espectro en subportadoras\n• Downlink en LTE" },
+            
+            // ============ GPON/DWDM AMPLIADO ============
+            { category: "fibra", q: "¿Clases de potencia GPON?", a: "B+: 28 dB budget\nC+: 32 dB budget\n\n• C+ para mayor distancia\n• Tx más potente, Rx más sensible" },
+            { category: "fibra", q: "¿Qué es TWDM-PON?", a: "Time and Wavelength Division\n\n• 4-8 longitudes de onda\n• NG-PON2: 4x10G = 40G" },
+            { category: "fibra", q: "¿Diferencia CWDM vs DWDM?", a: "CWDM: 20nm spacing, ~8-16 canales\nDWDM: 0.8nm spacing, 40-160 canales\n\n• CWDM más económico\n• DWDM mayor capacidad" },
+            { category: "fibra", q: "¿Qué es un EDFA?", a: "Amplificador de fibra dopada Erbio\n\n• Amplifica 1530-1565nm (banda C)\n• Permite >1000km sin regeneración" },
+            { category: "fibra", q: "¿Banda C vs Banda L?", a: "C: 1530-1565nm (convencional)\nL: 1565-1625nm (extendida)\n\n• DWDM usa ambas bandas" },
+            { category: "fibra", q: "¿Qué es un ROADM?", a: "Reconfigurable Optical Add-Drop\n\n• Agrega/extrae λ remotamente\n• Clave para redes ópticas flexibles" },
+            { category: "fibra", q: "¿Protocolo GPON upstream?", a: "TDMA\n\n• OLT asigna slots de tiempo\n• Ranging para sincronización\n• Evita colisiones" },
+            { category: "fibra", q: "¿Qué es ONU vs ONT?", a: "ONU: termina en caja externa\nONT: termina en equipo cliente\n\n• Funcionalmente similares" },
+            { category: "fibra", q: "¿Alcance físico vs lógico GPON?", a: "Físico: 20km recomendado\nLógico: 60km máximo\n\n• Limitado por power budget" },
+            { category: "fibra", q: "¿Para qué es λ 1550nm en GPON?", a: "RF Video overlay\n\n• TV analógica/digital\n• Opcional, no todos lo usan" },
+            
+            // ============ SEGURIDAD DE RED AVANZADA ============
+            { category: "ip", q: "¿Tipos de ACL Cisco?", a: "Standard: solo IP origen\nExtended: origen, destino, puerto, protocolo\n\n• Numbered o Named" },
+            { category: "ip", q: "¿Qué es AAA?", a: "Authentication, Authorization, Accounting\n\n• Quién eres, qué puedes hacer, qué hiciste\n• RADIUS, TACACS+" },
+            { category: "ip", q: "¿Diferencia IDS vs IPS?", a: "IDS: detecta y alerta\nIPS: detecta y BLOQUEA\n\n• IPS inline, IDS pasivo" },
+            { category: "ip", q: "¿Qué es DDoS?", a: "Distributed Denial of Service\n\n• Múltiples fuentes atacan\n• Satura recursos/ancho de banda\n• Mitigación: scrubbing centers" },
+            { category: "ip", q: "¿Qué es TACACS+?", a: "Terminal Access Controller\n\n• Cisco, TCP puerto 49\n• Separa AAA\n• Encripta todo el paquete" },
+            { category: "ip", q: "¿Qué es RADIUS?", a: "Remote Authentication Dial-In\n\n• UDP 1812/1813\n• Combina authn/authz\n• Solo encripta password" },
+            { category: "ip", q: "¿Qué es 802.1X?", a: "Port-based Network Access Control\n\n• Supplicant → Authenticator → Server\n• EAP para autenticación" },
+            { category: "ip", q: "¿Qué es Storm Control?", a: "Limita broadcast/multicast/unicast\n\n• Previene tormentas de tráfico\n• Configurable por umbral %" },
+            { category: "ip", q: "¿Qué es Root Guard?", a: "Protección STP\n\n• Previene que puerto se vuelva root\n• Protege topología diseñada" },
+            { category: "ip", q: "¿Qué es BPDU Guard?", a: "Desactiva puerto si recibe BPDU\n\n• Para puertos de acceso\n• Previene loops accidentales" },
+            { category: "ip", q: "¿Qué es Private VLAN?", a: "Aislamiento dentro de VLAN\n\n• Isolated: sin comunicación\n• Community: grupos\n• Promiscuous: gateway" },
+            { category: "ip", q: "¿Qué es IP Source Guard?", a: "Filtra IPs no autorizadas\n\n• Usa tabla DHCP Snooping\n• Previene IP spoofing" }
         ];
         
         // Preguntas por tema
@@ -5634,7 +5703,49 @@
             { category: "fibra", statement: "La cubierta amarilla indica fibra multimodo", answer: false, explanation: "Falso. Amarillo/Azul = Monomodo, Naranja = Multimodo." },
             { category: "fibra", statement: "Un cable de exterior típico tiene de 8 a 36 fibras", answer: true, explanation: "Correcto. En tubos holgados con gel." },
             { category: "fibra", statement: "El Kevlar en los cables protege contra tracción mecánica", answer: true, explanation: "Correcto. Fibra aramida de alta resistencia." },
-            { category: "fibra", statement: "La pérdida por empalme de fusión es típicamente 0.1 dB", answer: true, explanation: "Correcto. Los conectores son ~0.5-0.75 dB." }
+            { category: "fibra", statement: "La pérdida por empalme de fusión es típicamente 0.1 dB", answer: true, explanation: "Correcto. Los conectores son ~0.5-0.75 dB." },
+            
+            // ============ TROUBLESHOOTING (NUEVAS) ============
+            { category: "troubleshooting", statement: "Si el Rx está 7 dB bajo el umbral, el enlace fallará", answer: true, explanation: "Correcto. El receptor no detectará la señal correctamente." },
+            { category: "troubleshooting", statement: "Un pico reflexivo en OTDR siempre indica una rotura", answer: false, explanation: "Falso. Los conectores también generan reflexiones. Una rotura muestra reflexión + pérdida total." },
+            { category: "troubleshooting", statement: "CRC errors indican problemas en capa física", answer: true, explanation: "Correcto. Cables dañados, interferencia, puertos defectuosos." },
+            { category: "troubleshooting", statement: "Latencia alta siempre indica distancia física grande", answer: false, explanation: "Falso. Puede ser congestión, buffering excesivo o problemas de QoS." },
+            { category: "troubleshooting", statement: "El comando traceroute usa incrementos de TTL para descubrir la ruta", answer: true, explanation: "Correcto. Cada router decrementa TTL y responde con ICMP Time Exceeded." },
+            { category: "troubleshooting", statement: "Si ping funciona pero HTTP no, el problema es capa 3", answer: false, explanation: "Falso. Ping = capa 3 OK. Problema está en capas superiores (DNS, firewall, aplicación)." },
+            { category: "troubleshooting", statement: "OSPF stuck en EXSTART usualmente indica MTU mismatch", answer: true, explanation: "Correcto. Las interfaces deben tener la misma MTU." },
+            { category: "troubleshooting", statement: "Un transceiver con Tx Fault debe reemplazarse inmediatamente", answer: false, explanation: "Falso. Primero reinsertar, limpiar conector, verificar fibra. Luego reemplazar si persiste." },
+            { category: "troubleshooting", statement: "Para diagnosticar pérdida intermitente, usar ping extendido", answer: true, explanation: "Correcto. 1000+ pings para detectar patrones." },
+            { category: "troubleshooting", statement: "Error-disabled en un puerto indica violación de seguridad o error", answer: true, explanation: "Correcto. BPDU Guard, Port Security u otras protecciones activadas." },
+            
+            // ============ 5G Y REDES MÓVILES (NUEVAS) ============
+            { category: "radio", statement: "5G NR significa 5G New Radio", answer: true, explanation: "Correcto. Nueva interfaz aérea definida por 3GPP." },
+            { category: "radio", statement: "Las bandas mmWave de 5G operan entre 24-100 GHz", answer: true, explanation: "Correcto. Mayor ancho de banda pero menor alcance." },
+            { category: "radio", statement: "Massive MIMO usa típicamente 64 o más antenas", answer: true, explanation: "Correcto. Permite beamforming preciso y alta capacidad." },
+            { category: "radio", statement: "La latencia objetivo de 5G URLLC es 100 ms", answer: false, explanation: "Falso. URLLC (Ultra Reliable Low Latency) objetivo es 1 ms." },
+            { category: "radio", statement: "Network Slicing permite crear redes virtuales dedicadas", answer: true, explanation: "Correcto. Diferentes slices para IoT, video, misión crítica." },
+            { category: "radio", statement: "gNodeB es la estación base de LTE", answer: false, explanation: "Falso. gNodeB es 5G NR. eNodeB es LTE." },
+            { category: "radio", statement: "Beamforming dirige la señal hacia el usuario específico", answer: true, explanation: "Correcto. Aumenta ganancia y reduce interferencia." },
+            { category: "radio", statement: "Fronthaul conecta la RRU con la BBU", answer: true, explanation: "Correcto. Usa fibra con CPRI o eCPRI." },
+            { category: "radio", statement: "Small Cells son celdas de alta potencia para cobertura rural", answer: false, explanation: "Falso. Son de baja potencia para densificación urbana." },
+            { category: "radio", statement: "OFDMA divide el espectro en múltiples subportadoras ortogonales", answer: true, explanation: "Correcto. Usado en downlink de LTE y 5G." },
+            
+            // ============ DWDM AMPLIADO (NUEVAS) ============
+            { category: "fibra", statement: "DWDM puede combinar hasta 160 canales en una fibra", answer: true, explanation: "Correcto. Con espaciado de 25 GHz en bandas C y L." },
+            { category: "fibra", statement: "EDFA amplifica señales ópticas en la banda C", answer: true, explanation: "Correcto. Erbium Doped Fiber Amplifier, 1530-1565nm." },
+            { category: "fibra", statement: "CWDM tiene espaciado de 0.8nm entre canales", answer: false, explanation: "Falso. CWDM tiene 20nm. DWDM tiene 0.8nm (100GHz) o 0.4nm (50GHz)." },
+            { category: "fibra", statement: "Un ROADM permite agregar/extraer longitudes de onda remotamente", answer: true, explanation: "Correcto. Reconfigurable Optical Add-Drop Multiplexer." },
+            { category: "fibra", statement: "La banda L extiende DWDM hasta 1625nm", answer: true, explanation: "Correcto. Banda C: 1530-1565nm, Banda L: 1565-1625nm." },
+            { category: "fibra", statement: "TWDM-PON combina división de tiempo y longitud de onda", answer: true, explanation: "Correcto. NG-PON2 usa 4 lambdas x 10G = 40G." },
+            
+            // ============ SEGURIDAD AMPLIADA (NUEVAS) ============
+            { category: "ip", statement: "AAA significa Authentication, Authorization, Accounting", answer: true, explanation: "Correcto. Modelo de control de acceso." },
+            { category: "ip", statement: "TACACS+ encripta todo el paquete de autenticación", answer: true, explanation: "Correcto. A diferencia de RADIUS que solo encripta password." },
+            { category: "ip", statement: "RADIUS usa TCP para comunicación", answer: false, explanation: "Falso. RADIUS usa UDP puertos 1812/1813. TACACS+ usa TCP 49." },
+            { category: "ip", statement: "Storm Control limita el tráfico broadcast en un puerto", answer: true, explanation: "Correcto. También multicast y unicast unknown." },
+            { category: "ip", statement: "Root Guard permite que un puerto se convierta en root", answer: false, explanation: "Falso. Root Guard PREVIENE que un puerto se vuelva root." },
+            { category: "ip", statement: "Private VLAN permite aislar hosts dentro de la misma VLAN", answer: true, explanation: "Correcto. Isolated, Community y Promiscuous." },
+            { category: "ip", statement: "Un ataque DDoS proviene de múltiples fuentes", answer: true, explanation: "Correcto. Distributed = distribuido desde muchos orígenes." },
+            { category: "ip", statement: "IP Source Guard usa la tabla de DHCP Snooping", answer: true, explanation: "Correcto. Valida que IP coincida con binding." }
         ];
         
         // ============ EXAMEN COMPLETO 20 PREGUNTAS CON EJEMPLOS ============
@@ -7561,6 +7672,7 @@
             return balanced.slice(0, cantidad);
         }
         
+        
         function mapTopicToCategory(topic) {
             const map = {
                 'propagacion': 'radio',
@@ -7573,7 +7685,9 @@
                 'transceptores': 'fibra',
                 'optica': 'fibra',
                 'bert': 'bert',
-                'rfc2544': 'bert'
+                'rfc2544': 'bert',
+                'troubleshooting': 'ip',
+                'checklist': 'ip'
             };
             return map[topic.toLowerCase()] || 'ip';
         }
@@ -7585,7 +7699,7 @@
             document.getElementById('examen-question-num').textContent = `Pregunta ${examenCurrentQ + 1} de ${total}`;
             document.getElementById('examen-progress').style.width = `${((examenCurrentQ + 1) / total) * 100}%`;
             
-            const catIcons = { radio: '📡', ip: '🌐', fibra: '💡', bert: '📊' };
+            const catIcons = { radio: '📡', ip: '🌐', fibra: '💡', bert: '📊', troubleshooting: '🔧', checklist: '📋' };
             document.getElementById('examen-question-cat').textContent = `${catIcons[q.category] || '📚'} ${q.category.charAt(0).toUpperCase() + q.category.slice(1)}`;
             
             document.getElementById('examen-question-text').textContent = q.question;
@@ -7984,7 +8098,7 @@
             }
             
             const card = fcCards[fcIndex];
-            const cats = { radio: '📡 Radio', ip: '🌐 IP', fibra: '💡 Fibra', formulas: '🧮 Fórmulas' };
+            const cats = { radio: '📡 Radio', ip: '🌐 IP', fibra: '💡 Fibra', formulas: '🧮 Fórmulas', troubleshooting: '🔧 Troubleshoot', checklist: '📋 Checklist' };
             
             document.getElementById('fc-category').textContent = cats[card.category] || card.category;
             document.getElementById('fc-category-back').textContent = cats[card.category] || card.category;
