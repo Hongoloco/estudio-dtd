@@ -1621,15 +1621,15 @@
                     <div class="stat-label">Materiales</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">480+</div>
+                    <div class="stat-value">600+</div>
                     <div class="stat-label">Preguntas</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">240+</div>
+                    <div class="stat-value">300+</div>
                     <div class="stat-label">Flashcards</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">225+</div>
+                    <div class="stat-value">290+</div>
                     <div class="stat-label">V/F</div>
                 </div>
                 <div class="stat-card">
@@ -3721,7 +3721,72 @@
             { category: "bert", q: "¿Qué es un OID?", a: "Object Identifier\n\nIdentificador único de objeto MIB" },
             { category: "bert", q: "¿Qué es un trap SNMP?", a: "Notificación asíncrona\n\nAgente informa al manager" },
             { category: "bert", q: "¿Versiones de SNMP?", a: "v1: básico, inseguro\nv2c: mejoras, community\nv3: seguro, autenticación" },
-            { category: "bert", q: "¿Qué es syslog?", a: "System Logging Protocol\n\nEnvía logs a servidor centralizado" }
+            { category: "bert", q: "¿Qué es syslog?", a: "System Logging Protocol\n\nEnvía logs a servidor centralizado" },
+            
+            // TRANSCEPTORES ÓPTICOS (NUEVOS)
+            { category: "fibra", q: "¿Qué hace un transceiver?", a: "Convierte señales\n\nEléctrica ↔ Óptica (conversión fotoeléctrica)" },
+            { category: "fibra", q: "¿En qué capa opera un transceiver?", a: "Capa 1 - Física\n\nNivel más bajo del modelo OSI" },
+            { category: "fibra", q: "¿Velocidad de SFP+?", a: "10 Gbps\n\nSFP=1G, SFP+=10G, SFP28=25G" },
+            { category: "fibra", q: "¿Velocidad de QSFP28?", a: "100 Gbps\n\n4 canales × 25G" },
+            { category: "fibra", q: "¿Alcances transceptores?", a: "SR~300m, LR~10km\nER~40km, ZR~80km+" },
+            { category: "fibra", q: "¿Conector más compacto?", a: "LC (Lucent Connector)\n\nMás pequeño que SC" },
+            { category: "fibra", q: "¿Qué guarda la EEPROM del transceiver?", a: "Info del módulo\n\nFabricante, modelo, serie, parámetros" },
+            { category: "fibra", q: "¿Fórmula Power Budget?", a: "Tx mínimo - Rx sensibilidad\n\nResultado = margen para pérdidas" },
+            { category: "fibra", q: "¿Pérdida por conector TIA?", a: "0.75 dB\n\nEmpalmes ~0.1 dB" },
+            { category: "fibra", q: "¿Margen seguridad óptico?", a: "1.7 - 3 dB\n\nPor envejecimiento, temperatura, imprevistos" },
+            { category: "fibra", q: "¿Atenuación típica fibra?", a: "0.22-0.5 dB/km\n\nMenor a 1550nm (~0.22 dB/km)" },
+            { category: "fibra", q: "¿Alcance máximo multimodo?", a: "~5 km\n\nTípico 300m-2km" },
+            
+            // RFC 2544 DETALLADO (NUEVOS)
+            { category: "bert", q: "¿Origen de RFC 2544?", a: "IETF 1999\n\nOriginalmente para laboratorio" },
+            { category: "bert", q: "¿Tamaños trama RFC 2544?", a: "64, 128, 256, 512\n1024, 1280, 1518 bytes" },
+            { category: "bert", q: "¿Qué prueba Back-to-Back?", a: "Capacidad de ráfagas\n\nProcesar sin pérdida" },
+            { category: "bert", q: "¿Cuándo usar Y.1564?", a: "Multiservicio\n\nCIR/EIR por flujo, SLAs" },
+            { category: "bert", q: "¿Qué prueba Throughput?", a: "Tasa máxima sin pérdida\n\nUsando búsqueda binaria" },
+            { category: "bert", q: "¿Qué mide System Reset?", a: "Tiempo recuperación\n\nTras reinicio o failover" },
+            { category: "bert", q: "¿Criterio throughput?", a: "≥99% del line rate\n\nSin pérdida de tramas" },
+            { category: "bert", q: "¿Criterio frame loss?", a: "≤0.01%\n\nHasta 90% de carga" },
+            { category: "bert", q: "¿Latencia @10G?", a: "≤300 μs\n\n@1G es ≤1 ms" },
+            
+            // EQUIPOS MINILINK (NUEVOS)
+            { category: "radio", q: "¿Qué es configuración split?", a: "RAU + AMM\n\nExterior + Interior por cable" },
+            { category: "radio", q: "¿Familia 6300?", a: "Outdoor (RAU)\n\nReemplaza RAU de TN" },
+            { category: "radio", q: "¿Familia 6600?", a: "Indoor (AMM)\n\nReemplaza AMM de TN" },
+            { category: "radio", q: "¿Qué es XPIC?", a: "Cross-Polar Interference Canceller\n\nRequerido para CCDP" },
+            { category: "radio", q: "¿Qué es ACCP?", a: "Adjacent Channel Co-Polarization\n\nMisma polarización" },
+            { category: "radio", q: "¿Qué es ACAP?", a: "Adjacent Channel Alternate Polarized\n\nPolarizaciones alternadas" },
+            { category: "radio", q: "¿Qué es CCDP?", a: "Co-Channel Dual Polarized\n\nMismo canal, H y V" },
+            { category: "radio", q: "¿Modulación máx MMU4A?", a: "4096 QAM\n\nAnchos: 80, 112 MHz" },
+            { category: "radio", q: "¿PTx RAU alta potencia?", a: "≤30 dBm\n\nMedia potencia: ≤26 dBm" },
+            { category: "radio", q: "¿Bandas RAU 6365?", a: "6-42 GHz\n\nCubre todo el rango" },
+            { category: "radio", q: "¿Qué es Multi-band booster?", a: "Combina 2 bandas\n\nPrioridad en banda baja" },
+            { category: "radio", q: "¿Qué es Carrier Aggregation?", a: "Suma anchos de banda\n\nMúltiples carriers" },
+            { category: "radio", q: "¿Qué es Radio Link Bonding?", a: "Múltiples enlaces paralelos\n\nAumenta capacidad" },
+            { category: "radio", q: "¿Qué es MIMO 2x2?", a: "2 Tx × 2 Rx antenas\n\nDuplica capacidad" },
+            { category: "radio", q: "¿Modulación adaptativa?", a: "Cambia QAM según señal\n\nAlta señal=alta QAM" },
+            
+            // PROPAGACIÓN DETALLADA (NUEVOS)
+            { category: "radio", q: "¿Gradiente refractividad?", a: "-40 N/km\n\nEn primer km sobre suelo" },
+            { category: "radio", q: "¿Radio efectivo Tierra k=4/3?", a: "~8500 km\n\nReal: ~6400 km" },
+            { category: "radio", q: "¿Criterio de Rayleigh?", a: "Superficie lisa vs rugosa\n\nBasado en diferencia de fase" },
+            { category: "radio", q: "¿Coeficiente reflexión ρ=1?", a: "Reflexión especular perfecta\n\nρ=0: sin reflexión" },
+            { category: "radio", q: "¿Qué domina bajo 10 GHz?", a: "Multipath fading\n\nSobre 10 GHz: lluvia" },
+            { category: "radio", q: "¿Qué define G.821?", a: "SES, ES, UAT\n\nDisponibilidad y calidad" },
+            { category: "radio", q: "¿SES según G.821?", a: "Severely Errored Second\n\nBER peor que 10⁻³" },
+            { category: "radio", q: "¿Diversidad frecuencia?", a: "2 frecuencias distintas\n\nMisma señal" },
+            { category: "radio", q: "¿Componentes Link Budget?", a: "ABF, Ao, AG, AL\n\nFree space, obstáculo, gas, reflexión" },
+            { category: "radio", q: "¿Fórmula zona Fresnel?", a: "rF = 17.3√(d₁×d₂/f×d)\n\nResultado en metros" },
+            { category: "radio", q: "¿Por qué diversidad en agua?", a: "Reflexiones + atmósfera\n\nCondiciones inestables" },
+            
+            // FIBRA DETALLADA (NUEVOS)
+            { category: "fibra", q: "¿Recubrimiento primario?", a: "250 μm\n\nBuffer primario" },
+            { category: "fibra", q: "¿Protección ajustada?", a: "900 μm\n\nVs tubo holgado con gel" },
+            { category: "fibra", q: "¿Núcleo monomodo?", a: "8-10 μm\n\nMultimodo: 50 o 62.5 μm" },
+            { category: "fibra", q: "¿Color fibra monomodo?", a: "Amarillo o Azul\n\nMultimodo: Naranja" },
+            { category: "fibra", q: "¿Gel en estructura holgada?", a: "Anticongelante\n\nProtege fibras en tubo" },
+            { category: "fibra", q: "¿Cable exterior típico?", a: "8-36 fibras\n\nEn tubos holgados" },
+            { category: "fibra", q: "¿Función del Kevlar?", a: "Protección mecánica\n\nResistencia a tracción" },
+            { category: "fibra", q: "¿Pérdida empalme fusión?", a: "~0.1 dB\n\nConector: 0.5-0.75 dB" }
         ];
         
         // Preguntas por tema
@@ -3986,7 +4051,22 @@
             "SR~300m, LR~10km, ER~40km, ZR~80km+.",
             "Recubrimiento primario fibra: 250 μm, ajustado: 900 μm.",
             "Multimodo alcanza hasta 5 km (típico 300m-2km).",
-            "Núcleo monomodo: 8-10 μm de diámetro."
+            "Núcleo monomodo: 8-10 μm de diámetro.",
+            "SFP=1G, SFP+=10G, SFP28=25G, QSFP28=100G.",
+            "ACCP=misma polarización, ACAP=alternada, CCDP=co-canal dual.",
+            "Carrier Aggregation suma ancho de banda de múltiples carriers.",
+            "Radio Link Bonding agrega Packet Links en paralelo.",
+            "Back-to-Back RFC2544 prueba capacidad de ráfagas.",
+            "Y.1564 es mejor para escenarios multiservicio con SLAs.",
+            "El gradiente de refractividad estándar es -40 N/km.",
+            "UAT = Unavailable Time, SES = Severely Errored Second.",
+            "G.826 define calidad para conexiones ≥2048 kbps.",
+            "Conector LC es más compacto que SC.",
+            "La EEPROM del transceiver guarda info del fabricante.",
+            "Fibra amarilla/azul = monomodo, naranja = multimodo.",
+            "Gel anticongelante protege fibras en tubo holgado.",
+            "Kevlar proporciona resistencia mecánica al cable.",
+            "Diversidad de frecuencia: misma señal en 2 frecuencias."
         ];
         
         // ============ VERDADERO O FALSO ============
@@ -4244,7 +4324,73 @@
             { category: "bert", statement: "La MIB es la base de datos de objetos gestionables", answer: true, explanation: "Correcto. Management Information Base." },
             { category: "bert", statement: "Syslog usa puerto UDP 514 por defecto", answer: true, explanation: "Correcto. Para envío de mensajes de log." },
             { category: "bert", statement: "SNMP usa puerto UDP 161 para consultas", answer: true, explanation: "Correcto. Puerto 162 para traps." },
-            { category: "bert", statement: "NetFlow captura cabeceras de flujos de tráfico", answer: true, explanation: "Correcto. Para análisis y facturación, desarrollado por Cisco." }
+            { category: "bert", statement: "NetFlow captura cabeceras de flujos de tráfico", answer: true, explanation: "Correcto. Para análisis y facturación, desarrollado por Cisco." },
+            
+            // ============ TRANSCEPTORES ÓPTICOS (NUEVAS) ============
+            { category: "fibra", statement: "Un transceiver realiza conversión fotoeléctrica", answer: true, explanation: "Correcto. Convierte señales eléctricas a ópticas y viceversa." },
+            { category: "fibra", statement: "Los transceptores operan en la capa 2 del modelo OSI", answer: false, explanation: "Falso. Operan en la capa 1 (física)." },
+            { category: "fibra", statement: "SFP+ soporta velocidades de hasta 10 Gbps", answer: true, explanation: "Correcto. SFP = 1G, SFP+ = 10G, SFP28 = 25G." },
+            { category: "fibra", statement: "QSFP28 significa Quad SFP y soporta 100G", answer: true, explanation: "Correcto. 4 canales de 25G = 100G." },
+            { category: "fibra", statement: "Un transceiver SR tiene mayor alcance que LR", answer: false, explanation: "Falso. SR (Short) ~300m, LR (Long) ~10km." },
+            { category: "fibra", statement: "El conector LC es más pequeño que el SC", answer: true, explanation: "Correcto. LC = Lucent Connector, más compacto." },
+            { category: "fibra", statement: "La EEPROM del transceiver almacena información del fabricante", answer: true, explanation: "Correcto. También modelo, número de serie y parámetros." },
+            { category: "fibra", statement: "El Power Budget se calcula como Tx mínimo menos Rx sensibilidad", answer: true, explanation: "Correcto. El resultado indica el margen disponible para pérdidas." },
+            { category: "fibra", statement: "La pérdida típica por conector es de 0.75 dB según TIA", answer: true, explanation: "Correcto. Estándar TIA, los empalmes son ~0.1 dB." },
+            { category: "fibra", statement: "La atenuación típica de fibra varía entre 0.22 y 0.5 dB/km", answer: true, explanation: "Correcto. Depende de la longitud de onda y tipo de fibra." },
+            { category: "fibra", statement: "El margen de seguridad recomendado es de 10 dB", answer: false, explanation: "Falso. Se recomienda 1.7 a 3 dB de margen de seguridad." },
+            { category: "fibra", statement: "Si las pérdidas superan el Power Budget, el enlace fallará", answer: true, explanation: "Correcto. El receptor no recibirá suficiente potencia." },
+            { category: "fibra", statement: "Los transceptores ZR pueden alcanzar 80 km o más", answer: true, explanation: "Correcto. ZR = alcance muy extendido." },
+            { category: "fibra", statement: "La fibra multimodo típicamente alcanza hasta 5 km", answer: true, explanation: "Correcto. Típico 300m-2km, máximo ~5km." },
+            
+            // ============ RFC 2544 DETALLADO (NUEVAS) ============
+            { category: "bert", statement: "RFC 2544 fue diseñada originalmente para pruebas de laboratorio", answer: true, explanation: "Correcto. IETF 1999, luego adaptada a trabajo de campo." },
+            { category: "bert", statement: "Los tamaños de trama estándar en RFC 2544 incluyen 64 y 1518 bytes", answer: true, explanation: "Correcto. También 128, 256, 512, 1024, 1280 bytes." },
+            { category: "bert", statement: "La prueba Back-to-Back evalúa la capacidad para procesar ráfagas", answer: true, explanation: "Correcto. Sin pérdida entre ráfagas sucesivas." },
+            { category: "bert", statement: "Y.1564 es mejor que RFC 2544 para escenarios multiservicio", answer: true, explanation: "Correcto. Y.1564 valida CIR/EIR por flujo con SLAs." },
+            { category: "bert", statement: "La prueba de Throughput determina la tasa máxima sin pérdida", answer: true, explanation: "Correcto. Se usa búsqueda binaria para encontrar el punto." },
+            { category: "bert", statement: "System Reset mide el tiempo de recuperación tras reinicio", answer: true, explanation: "Correcto. Incluye estabilidad del plano de control." },
+            { category: "bert", statement: "Jumbo Frames de 9000 bytes son parte del estándar RFC 2544", answer: false, explanation: "Falso. 9000 bytes es opcional, no está en el estándar original." },
+            { category: "bert", statement: "El criterio de aceptación típico de throughput es ≥99%", answer: true, explanation: "Correcto. 99% del line rate sin pérdida." },
+            { category: "bert", statement: "La pérdida de tramas aceptable es típicamente ≤0.01%", answer: true, explanation: "Correcto. Hasta 90% de carga." },
+            { category: "bert", statement: "La latencia típica máxima a 10G es ≤300 μs", answer: true, explanation: "Correcto. A 1G es ≤1 ms." },
+            
+            // ============ EQUIPOS ERICSSON MINILINK (NUEVAS) ============
+            { category: "radio", statement: "Los equipos TN tienen configuración split con RAU y AMM", answer: true, explanation: "Correcto. RAU exterior + AMM interior conectados por cable." },
+            { category: "radio", statement: "La familia 6300 son equipos outdoor (RAU)", answer: true, explanation: "Correcto. 6300 = outdoor, 6600 = indoor." },
+            { category: "radio", statement: "XPIC significa Cross-Polar Interference Canceller", answer: true, explanation: "Correcto. Minimiza interferencia entre polarizaciones H y V." },
+            { category: "radio", statement: "La configuración CCDP requiere XPIC", answer: true, explanation: "Correcto. Co-Channel Dual Polarized usa el mismo canal con H y V." },
+            { category: "radio", statement: "ACCP significa canales adyacentes con polarizaciones alternadas", answer: false, explanation: "Falso. ACCP = Adjacent Channel Co-Polarization (misma polarización)." },
+            { category: "radio", statement: "La modulación adaptativa cambia QAM según condiciones de señal", answer: true, explanation: "Correcto. Sube a alta QAM con buena señal, baja con mala señal." },
+            { category: "radio", statement: "Las placas MMU4A soportan hasta 4096 QAM", answer: true, explanation: "Correcto. Con anchos de banda hasta 112 MHz." },
+            { category: "radio", statement: "La diversidad de espacio usa dos antenas receptoras", answer: true, explanation: "Correcto. Una Tx, dos Rx para combatir multipath." },
+            { category: "radio", statement: "Las RAU 6365 soportan bandas de 6 a 42 GHz", answer: true, explanation: "Correcto. Cubren todo el rango de frecuencias." },
+            { category: "radio", statement: "Multi-band booster combina dos radioenlaces en diferentes bandas", answer: true, explanation: "Correcto. Tráfico prioritario en banda baja, el resto en alta." },
+            { category: "radio", statement: "MIMO 2x2 puede duplicar la capacidad del radioenlace", answer: true, explanation: "Correcto. Mediante multiplexación espacial." },
+            { category: "radio", statement: "La banda de 7 GHz usa canalizaciones de 28 MHz y 56 MHz", answer: true, explanation: "Correcto. Según ITU-R F.385." },
+            { category: "radio", statement: "Las RAU de alta potencia tienen PTx ≤ 30 dBm", answer: true, explanation: "Correcto. Media potencia tiene ≤ 26 dBm." },
+            { category: "radio", statement: "Radio Link Bonding permite transportar tráfico sobre múltiples enlaces", answer: true, explanation: "Correcto. Aumenta capacidad agregando Packet Links." },
+            
+            // ============ PROPAGACIÓN DETALLADA (NUEVAS) ============
+            { category: "radio", statement: "El gradiente de refractividad típico es -40 N/km", answer: true, explanation: "Correcto. En el primer kilómetro sobre el suelo." },
+            { category: "radio", statement: "El radio efectivo de la Tierra con k=4/3 es ~8500 km", answer: true, explanation: "Correcto. El radio real es ~6400 km." },
+            { category: "radio", statement: "El criterio de Rayleigh determina si una superficie es lisa o rugosa", answer: true, explanation: "Correcto. Basado en diferencia de fase entre rayos." },
+            { category: "radio", statement: "Cuando el coeficiente de reflexión ρ=1, hay reflexión especular perfecta", answer: true, explanation: "Correcto. ρ=0 significa sin reflexión." },
+            { category: "radio", statement: "El multipath fading domina a frecuencias menores de 10 GHz", answer: true, explanation: "Correcto. Por encima de 10 GHz domina la lluvia." },
+            { category: "radio", statement: "G.821 define SES como un segundo con BER peor que 10⁻³", answer: true, explanation: "Correcto. Severely Errored Second." },
+            { category: "radio", statement: "La diversidad de frecuencia transmite la misma señal en dos frecuencias", answer: true, explanation: "Correcto. Las diferentes frecuencias desvanecen con poca correlación." },
+            { category: "radio", statement: "El Link Budget incluye pérdidas ABF, Ao, AG y AL", answer: true, explanation: "Correcto. Free space, obstáculo, gases y reflexión." },
+            { category: "radio", statement: "La fórmula de Fresnel es rF = 17.3√(d₁×d₂)/(f×d)", answer: true, explanation: "Correcto. Con d en km y f en GHz, resultado en metros." },
+            { category: "radio", statement: "UAT significa Unavailable Time", answer: true, explanation: "Correcto. Tiempo de indisponibilidad según ITU." },
+            { category: "radio", statement: "Los radioenlaces sobre agua requieren diversidad de espacio", answer: true, explanation: "Correcto. Por reflexiones y condiciones atmosféricas." },
+            
+            // ============ FIBRA ÓPTICA DETALLADA (NUEVAS) ============
+            { category: "fibra", statement: "El recubrimiento primario de la fibra es de 250 μm", answer: true, explanation: "Correcto. Buffer primario, protección ajustada es 900 μm." },
+            { category: "fibra", statement: "El gel en estructura holgada es anticongelante", answer: true, explanation: "Correcto. Protege las fibras dentro del tubo." },
+            { category: "fibra", statement: "El núcleo de fibra monomodo es de 8-10 μm", answer: true, explanation: "Correcto. Mucho menor que multimodo (50 o 62.5 μm)." },
+            { category: "fibra", statement: "La cubierta amarilla indica fibra multimodo", answer: false, explanation: "Falso. Amarillo/Azul = Monomodo, Naranja = Multimodo." },
+            { category: "fibra", statement: "Un cable de exterior típico tiene de 8 a 36 fibras", answer: true, explanation: "Correcto. En tubos holgados con gel." },
+            { category: "fibra", statement: "El Kevlar en los cables protege contra tracción mecánica", answer: true, explanation: "Correcto. Fibra aramida de alta resistencia." },
+            { category: "fibra", statement: "La pérdida por empalme de fusión es típicamente 0.1 dB", answer: true, explanation: "Correcto. Los conectores son ~0.5-0.75 dB." }
         ];
         
         // ============ EXAMEN COMPLETO 20 PREGUNTAS CON EJEMPLOS ============
