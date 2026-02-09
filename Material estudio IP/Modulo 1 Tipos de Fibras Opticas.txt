@@ -1,0 +1,65 @@
+Introducción a la Transmisión 
+por Fibras Ópticas
+Módulo 1
+Ing. Martín Ayerza – Ing. Guzmán Moratorio
+Ing. Alejandro Jorcin - Ing. Ricardo Mazzeo
+Ing. Tecnól. Esteban Rodríguez - Año 2023
+Tipos de Fibras Ópticas y Cables
+Tipos de Fibras Ópticas
+• Las Fibras Ópticas se pueden clasificar en dos grandes tipos:• Monomodo (SM).
+• Multimodo (MM).
+• La diferencia fundamental es su estructura, ya que  están diseñadas en forma distinta y tienen distintos usos.
+Tipos de Fibras Ópticas
+La estructura de las mismas es la siguiente:
+Siendo estas dos capas (el núcleo y el revestimiento) de vidrio con distintos índices de
+refracción.
+Esto permitirá la Reflexión Total en el núcleo.
+Tipos de Fibras Ópticas
+Las cubiertas en fibras Monomodo suelen ser de  color Amarillo o Azul y en Multimodo 
+suelen ser de color  Naranja:
+Tipos de Fibras Ópticas
+Todas las FO tendrán la siguiente estructura:
+Tipos de Fibras Ópticas
+En las Fibras Ópticas Monomodo que utiliza Antel tienen  las siguientes dimensiones:
+• Buffer – Recubrimiento 
+o Protección Primaria.
+• Cladding – Revestimiento.
+• Core – Núcleo (entre 8 y 10μm).
+Tipos de Cables de Fibras Ópticas
+Las protecciones secundarias en Fibras Ópticas pueden ser ajustadas u 
+holgadas, de la siguiente forma:
+Tipos de Cables de Fibras Ópticas
+Elementos de las protecciones Holgadas u Ajustadas:
+Dimensiones para protección ajustada y holgada
+fibra con recubrimiento 
+primario de 250 µm
+La fibra está suelta 
+dentro del tubo
+Tipos de Cables de Fibras Ópticas
+Los tubos en la estructura holgada, contienen un Gel que  protege a las fibras, éstas estarán 
+“sueltas” dentro de ese tubo, sin rozamiento ni efectos que la degraden.
+Este gel es anticongelante, y no se escurre. Debemos ser  cautelosos al retirarlo.
+Tipos de Cables de Fibras Ópticas
+1.Elemento central de tracción o soporte de fuerza central.
+2.Fibras ópticas con recubrimiento primario de 250 micrones.
+3.Tubos de plástico rellenos con gel donde están las fibras ópticas holgadas. 4.Cinta que envuelve los tubos, protege contra humedad.
+5.Cubierta interna con su correspondiente hilo de rasgado.
+6.Kevlar para protección mecánica.
+7.Cubierta externa  con su correspondiente hilo de rasgado.
+Tipos de Cables de Fibras Ópticas
+Cable ajustado para exterior
+• De 8 a 36 fibras.
+• Uso en exterior, se recomienda en ducto.
+• Cubierta resistente a la intemperie.
+• Protegido contra roedores.
+protección de  900 µm
+tubo de 2 a 3 mm
+Protección
+Protección
+Gel
+ajustada
+Protección
+Gel
+ajustada
+holgada
+Gel

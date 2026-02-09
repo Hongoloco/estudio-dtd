@@ -1,0 +1,85 @@
+Transceptores ópticos 
+Guía para pruebas - redes Ethernet/MPLS 
+Definición 
+Un transceiver óptico (también llamado módulo óptico o transceptor óptico) es un dispositivo que convierte señales eléctricas en señales ópticas (para transmitir por fibra) y viceversa (para recibir) datos a través de fibra óptica. O sea que combina las funciones de transmisor y receptor en un solo módulo. 
+Trabaja en la capa física, que es la capa más baja en el modelo OSI. Su función es realizar conversión fotoeléctrica. 
+Es un componente crítico en las infraestructuras de comunicación óptica, cuya función principal consiste en viabilizar la transmisión de datos a muy alta velocidad y sobre largas distancias. Para ello, realiza la conversión de señales eléctricas en pulsos de luz modulados que se propagan a través del medio físico de fibra óptica, minimizando la atenuación y la interferencia electromagnética. En el extremo receptor, dichos pulsos son nuevamente convertidos en señales eléctricas, preservando la integridad y sincronización de la información transmitida. Su aplicación resulta indispensable en arquitecturas de red de alta capacidad, tales como los centros de datos, redes troncales de proveedores de servicios de Internet (ISP), sistemas de transporte óptico y enlaces de telecomunicaciones de larga distancia, donde se requiere un rendimiento sostenido, baja latencia y elevada confiabilidad. 
+•	Transmisión (Tx):convierte la señal eléctrica del equipo en un haz de luz mediante un 	láser o LED.
+•	Recepción (Rx):convierte la luz recibida desde la fibra óptica nuevamente en señales 	eléctricas.
+El módulo contiene componentes electrónicos y ópticos que permiten mantener la calidad de la señal y compensar pérdidas. 
+Componentes básicos 
+1.Láser o LED transmisor (Tx) → genera la señal óptica.
+2.Fotodiodo receptor (Rx) → detecta la señal óptica entrante.
+3.Circuito de control → regula potencia, temperatura y conversión de señal. 4.Conector óptico → para la fibra (por ejemplo, LC, SC, MPO).
+Clasificación principal 
+Los transceivers de fibra óptica se clasifican principalmente por el tipo de fibra que utilizan, como monomodo (para largas distancias) o multimodo (para cortas distancias), y por el formato del módulo, como SFP y QSFP28, que definen la velocidad y el tipo de conexión. Otros tipos se definen por su alcance , longitud de onda  o si usan tecnologías comoo 
+•	Por tipo de fibra: 
+1.Monomodo (SMF): Utilizan un solo haz de luz para transmitir datos. 2.Multimodo (MMF): Utilizan múltiples haces de luz y son adecuados para 	distancias más cortas, hasta 5 km.
+•Por formato del módulo:
+1.(Small Form-Factor Pluggable): Un tipo común y versátil. Incluye 	variantes como SFP+, SFP28 para diferentes velocidades.
+2.(Quad Small Form-Factor Pluggable): Diseñado para velocidades más 	altas, como 40G y 100G.
+•Por tipo de conexión/alcance:
+1.SR (Short Reach): Corto alcance.
+2.LR (Long Reach): Alcance largo (hasta 10 km).
+3.ER (Extended Reach): Alcance extendido (hasta 40 km). 4.ZR (ZR reach): Alcance extendido (80 km o más).
+•Por velocidad de transferencia:
+Se clasifican por la velocidad de datos que transmiten, como 100G, 40G, 10G, 1000 Base y 100 Base. 
+Tipos comunes de transceivers: 
+SMF (Single Mode Fiber):fibra monomodo para largas distancias.
+MMF (Multi Mode Fiber):fibra multimodo para distancias cortas.
+Componentes internos 
+1.Láser transmisor (Tx): genera la señal de luz. 
+2.Fotodiodo receptor (Rx): detecta la luz recibida. 
+3.PCB (Placa de circuito impreso): gestiona la conversión eléctrica-óptica. 4.EEPROM: almacena información de fabricante, modelo y configuración. 5.Conectores ópticos (LC, SC, MPO, etc.): permiten la conexión con la fibra. 
+⚠️Consideraciones de uso
+•	Compatibilidad: el tipo de transceiver debe coincidir con el puerto del equipo. •	Temperatura: los módulos industriales soportan mayores rangos térmicos. 
+•	Presupuesto óptico: se debe calcular la pérdida total del enlace (dB). •	Conectores y limpieza: la suciedad o pérdida por conector puede afectar 	severamente la transmisión. 
+Diseño de enlace de fibra óptica 
+La tarea más importante en el diseño de un enlace de fibra óptica es determinar el alcance máximo de la trayectoria de transmisión óptica, que es, de hecho, el equilibrio de potencia óptica en el enlace. El equilibrio de potencia es una comparación de la potencia a la entrada del enlace óptico con las pérdidas en los cables de fibra óptica y otros componentes de la trayectoria. Esto ayudará a determinar los parámetros óptimos de los dispositivos de transmisión y recepción para garantizar una transmisión de señal adecuada. 
+Para realizar el balance de potencia es necesario discutir el concepto de decibelio (dB) y de decibelio referenciado a un milivatio (dBm) - las unidades utilizadas para medir la atenuación de los cables ópticos y la sensibilidad de los fotodetectores. 
+El decibelio es una unidad logarítmica que se utiliza para comparar dos niveles del mismo parámetro físico, donde uno de ellos es el nivel de referencia. En las fibras ópticas, la relación entre la potencia óptica a la entrada y la potencia a la salida se expresa en decibelios. Un decibelio, expresado en milivatio (dBm), es la relación entre la potencia de entrada y la potencia de referencia de 1 mW. Las definiciones de niveles de señal se expresan en dB y dBm: 
+donde: 
+P 1 - potencia de entrada 	donde: 
+P 2 - potencia de salida 
+Presupuesto óptico 
+P 1 - potencia de entrada 
+El presupuesto de potencia óptica es la cantidad de luz necesaria para transmitir señales de forma exitosa a lo largo de una distancia a través de una conexión de fibra óptica. La cantidad de energía lumínica disponible en la instalación determinará qué tan lejos puede extenderse un enlace de cable de fibra óptica entre los conversores de medios dentro de la red. Los presupuestos de potencia óptica son esenciales para comprender hasta qué punto se pueden extender las redes ópticas sin experimentar distorsiones en la señal debido a la falta de energía luminosa suficiente.
+El término “power budget” hace referencia a la diferencia entre la potencia óptica mínima que el transmisor puede lanzar al enlace (“Tx mínimo”) y la potencia óptica mínima que el receptor necesita para operar con fiabilidad (“Rx sensibilidad”) 
+Al calcular un presupuesto óptico, se depende de dos especificaciones del fabricante: la potencia mínima de transmisión (Tx) y la sensibilidad mínima de recepción (Rx). Para calcular el presupuesto óptico, simplemente se resta la sensibilidad mínima de recepción de la potencia 
+mínima de transmisión. La sensibilidad mínima de recepción suele expresarse como un número negativo, por lo que el cálculo equivale a sumar el valor absoluto de esa sensibilidad a la potencia mínima de transmisión. 
+Lo que esto nos dice es cuánta “margen” tenemos para pérdidas en el medio (fibra, conectores, empalmes, etc.) antes de que la señal ya no pueda ser recibida correctamente. 
+Sin embargo, existen algunos matices en esta ecuación aparentemente sencilla. Uno de ellos es que muchos fabricantes proporcionan valores promedio de sensibilidad mínima de recepción o potencia mínima de transmisión. En consecuencia, el cálculo podría no reflejar la cantidad mínima real de potencia óptica necesaria, ya que el valor real puede estar por debajo del promedio. Es fundamental utilizar el valor mínimo real, no el promedio, para obtener un cálculo preciso. 
+También pueden surgir complicaciones derivadas de la configuración real de la red. Cuando se utilizan equipos de distintos fabricantes, o diferentes modelos de un mismo fabricante, la potencia requerida para transportar la luz entre conversores de medios puede variar según la dirección del tráfico. Por lo tanto, deben calcularse la potencia mínima de transmisión y la sensibilidad de recepción considerando ambas direcciones del flujo luminoso, ya que los valores pueden diferir. El resultado menor entre ambos se tomará como el presupuesto óptico mínimo. 
+Este presupuesto inicial es solo el primer paso. La atenuación del cable, las empalmes (splices) y los conectores también generan pérdidas de potencia a medida que la luz viaja a través de la fibra óptica. Para obtener el presupuesto óptico real, las organizaciones deben evaluar cuánta energía lumínica puede perderse debido a estos factores. 
+La atenuación del cable suele ser el mayor contribuyente a la pérdida de potencia, generando entre 0,22 dB y 0,5 dB por kilómetro. Este valor se puede determinar directamente a partir de la especificación del cable instalado. Si el cable aún no se ha adquirido, el fabricante puede proporcionar un valor de pérdida en el peor caso para el tipo de fibra elegido. Este factor se multiplica por la cantidad de kilómetros del tendido. Por ejemplo, una fibra con una pérdida de 0,3 dB/km perderá 6 dB a lo largo de una distancia de 20 km. 
+Dado que las fibras no se fabrican en tramos continuos de 20 km, la instalación incluirá varios empalmes, que típicamente generan 0,1 dB de pérdida cada uno (aunque el instalador puede especificar el valor real). Si la distancia promedio entre empalmes es de 6 km, entonces una instalación de 20 km tendría 4 empalmes, sumando 0,4 dB de pérdida (0,1 × 4). 
+Las pérdidas por conectores también afectan el rendimiento. Estas cifras suelen estar disponibles a través de los fabricantes o instaladores. Se multiplica el número total de conectores por la pérdida estimada de cada uno. Según el estándar TIA, la pérdida típica por conector es de 0,75 dB. En una instalación típica con 6 conectores, se esperaría una pérdida total de 4,5 dB. 
+A continuación, se restan todas estas pérdidas de la potencia disponible. Si el resultado es negativo, no hay suficiente potencia para que la red funcione correctamente. Si es positivo, aún quedan dos factores más a considerar antes de confirmar que la red es apta. 
+Una fuente final de pérdida de potencia proviene de las condiciones ambientales extremas, como temperaturas elevadas o muy bajas, y otros factores imprevistos. El calor o el frío pueden generar variaciones en la potencia óptica disponible. Por ello, las organizaciones suelen trabajar con los fabricantes e instaladores para determinar cuánta pérdida adicional puede esperarse en 
+Para garantizar un funcionamiento libre de errores, se recomienda incluir un margen de seguridad entre 1,7 dB y 3 dB. 
+Una vez que tenemos el power budget, para que el enlace funcione hay que asegurar que las pérdidas del enlace (fibra + conectores + empalmes + margen de seguridad) sean menores o iguales a ese presupuesto. Si las pérdidas exceden el budget, el receptor no recibirá suficiente potencia y puede fallar 
+Pasos para calcular un power budget 
+1.Obtén del módulo óptico: 
+	o 	Potencia de emisión mínima (“Tx mínimo”) en dBm. 
+o 	Sensibilidad del receptor (“Rx mínimo”) en dBm. 
+2.Calcula el Power Budget: diferencia entre esos dos valores. 
+3.Estima las pérdidas del enlace, considerando: 
+		Atenuación de la fibra (dB/km × km). o 
+	o 	Pérdidas de conectores. 
+o 	Pérdidas de empalmes. 
+o 	Pérdidas de otros elementos pasivos (patch panels, splitters, multiplexores). 
+Margen de seguridad (por envejecimiento, suciedad, variabilidad de o 
+componentes). 
+4.Verifica que: 
+Si esto se cumple, el diseño es viable desde el punto de vista de potencia óptica. Si no, se deben tomar medidas: usar un módulo con mayor potencia de salida, sensibilidad mejor, menos pérdidas, o agregar amplificación. 
+5.Calcula también el Power Margin: 
+Un margen positivo y holgado es señal de buena calidad de enlace. 
+determinadas 
+condiciones 
+y 
+definir 
+así 
+un 
+“factor 
+de 
+seguridad”. 

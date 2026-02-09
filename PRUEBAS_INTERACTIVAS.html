@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pruebas Técnicas - Llamados Técnicos 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .timer {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            margin-top: 15px;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        
+        .tabs {
+            display: flex;
+            background: #f5f5f5;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            border: none;
+            background: #f5f5f5;
+            font-size: 1.1em;
+        }
+        
+        .tab:hover {
+            background: #e0e0e0;
+        }
+        
+        .tab.active {
+            background: white;
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 30px;
+            animation: fadeIn 0.5s;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .question {
+            background: #f9f9f9;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s;
+        }
+        
+        .question:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .question-number {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .option {
+            padding: 15px 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+            transform: translateX(5px);
+        }
+        
+        .option.correct {
+            background: #4caf50 !important;
+            color: white !important;
+            border-color: #4caf50 !important;
+            font-weight: bold;
+        }
+        
+        .option.incorrect {
+            background: #f44336 !important;
+            color: white !important;
+            border-color: #f44336 !important;
+        }
+        
+        .option.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        .explanation {
+            background: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 15px 20px;
+            margin-top: 15px;
+            border-radius: 5px;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+        
+        .explanation.show {
+            display: block;
+        }
+        
+        .explanation-title {
+            font-weight: bold;
+            color: #1976d2;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .explanation-text {
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        
+        .submit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .results {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .results h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        
+        .score {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        
+        .score-details {
+            font-size: 1.2em;
+            margin-top: 15px;
+        }
+        
+        .reset-btn {
+            background: white;
+            color: #667eea;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 20px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .reset-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .progress-bar {
+            background: #e0e0e0;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #4caf50, #8bc34a);
+            height: 100%;
+            transition: width 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .section-title {
+            background: #667eea;
+            color: white;
+            padding: 15px 25px;
+            margin: 30px -30px 25px -30px;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 5px;
+        }
+        
+        .info-box h3 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+        
+        .info-box ul {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 Pruebas Técnicas Especialista</h1>
+            <p>Llamados Técnicos 2025 - Antel</p>
+            <div class="timer" id="timer">⏱️ Tiempo: 00:00:00</div>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="openTab(event, 'radio')">📡 Prueba Radio</button>
+            <button class="tab" onclick="openTab(event, 'ip')">🌐 Prueba IP</button>
+            <button class="tab" onclick="openTab(event, 'integral')">🎯 Prueba Integral (2h)</button>
+        </div>
+        
+        <!-- TAB RADIO -->
+        <div id="radio" class="tab-content active">
+            <div class="info-box">
+                <h3>📡 Prueba de Radio - Material Ericsson Minilink</h3>
+                <ul>
+                    <li><strong>Preguntas:</strong> 80 preguntas</li>
+                    <li><strong>Temas:</strong> Propagación, Equipos Minilink, Redes TCP/IP</li>
+                    <li><strong>Nivel:</strong> Especialista</li>
+                    <li><strong>Tiempo estimado:</strong> 60-90 minutos</li>
+                </ul>
+            </div>
+            <div id="radio-questions"></div>
+            <button class="submit-btn" onclick="submitTest('radio')">Calificar Prueba Radio</button>
+            <div id="radio-results"></div>
+        </div>
+        
+        <!-- TAB IP -->
+        <div id="ip" class="tab-content">
+            <div class="info-box">
+                <h3>🌐 Prueba de IP - Fibra Óptica y Pruebas</h3>
+                <ul>
+                    <li><strong>Preguntas:</strong> 80 preguntas</li>
+                    <li><strong>Temas:</strong> BERT, RFC 2544, Fibras Ópticas, Transceptores</li>
+                    <li><strong>Nivel:</strong> Especialista</li>
+                    <li><strong>Tiempo estimado:</strong> 60-90 minutos</li>
+                </ul>
+            </div>
+            <div id="ip-questions"></div>
+            <button class="submit-btn" onclick="submitTest('ip')">Calificar Prueba IP</button>
+            <div id="ip-results"></div>
+        </div>
+        
+        <!-- TAB INTEGRAL -->
+        <div id="integral" class="tab-content">
+            <div class="info-box">
+                <h3>🎯 Prueba Integral - Cargo de Especialista</h3>
+                <ul>
+                    <li><strong>Preguntas:</strong> 120 preguntas</li>
+                    <li><strong>Temas:</strong> Todo el material (Radio + IP mezclado)</li>
+                    <li><strong>Nivel:</strong> Especialista - Evaluación completa</li>
+                    <li><strong>Duración:</strong> 2 horas (120 minutos)</li>
+                    <li><strong>Aprobación:</strong> ≥ 70% (84 preguntas correctas)</li>
+                </ul>
+            </div>
+            <div id="integral-questions"></div>
+            <button class="submit-btn" onclick="submitTest('integral')">Calificar Prueba Integral</button>
+            <div id="integral-results"></div>
+        </div>
+    </div>
+
+    <script>
+        // Timer
+        let startTime = Date.now();
+        setInterval(() => {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const hours = Math.floor(elapsed / 3600);
+            const minutes = Math.floor((elapsed % 3600) / 60);
+            const seconds = elapsed % 60;
+            document.getElementById('timer').textContent = `⏱️ Tiempo: ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }, 1000);
+
+        // Funciones de pestañas
+        function openTab(evt, tabName) {
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let content of tabContents) {
+                content.classList.remove('active');
+            }
+            
+            const tabs = document.getElementsByClassName('tab');
+            for (let tab of tabs) {
+                tab.classList.remove('active');
+            }
+            
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        // Base de datos de preguntas RADIO (las 80 del resumen anterior)
+        const radioQuestions = [
+            {q: "¿Cuál es la relación correcta entre frecuencia y longitud de onda para microondas?", options: ["λ (cm) = 3/f (GHz)", "λ (cm) = 30/f (GHz)", "λ (cm) = 300/f (GHz)", "λ (cm) = 3000/f (GHz)"], answer: 1, explanation: "La velocidad de la luz (c = 3×10⁸ m/s = 3×10¹⁰ cm/s) dividida por la frecuencia en Hz nos da λ. Si f está en GHz (10⁹ Hz), la fórmula se convierte en λ(cm) = 30/f(GHz). Ejemplo: 10 GHz → λ = 3 cm."},
+            {q: "El factor k (Earth radius factor) en condiciones de atmósfera estándar es aproximadamente:", options: ["1", "4/3", "2", "3/4"], answer: 1, explanation: "El factor k=4/3 modifica el radio terrestre para tener en cuenta la refracción atmosférica. Esto permite trabajar con trayectorias 'rectas' en vez de curvas. Así, el radio efectivo de la Tierra es Re = k×R = 4/3 × 6370 = 8500 km."},
+            {q: "¿A partir de qué frecuencia los efectos de precipitación (lluvia) comienzan a ser dominantes?", options: ["1 GHz", "6 GHz", "10 GHz", "20 GHz"], answer: 2, explanation: "Por debajo de 10 GHz predomina el multipath fading. A partir de 10 GHz la atenuación por lluvia se vuelve dominante porque la longitud de onda se aproxima al tamaño de las gotas de agua, incrementando la absorción y dispersión."},
+            {q: "El pico de absorción del vapor de agua ocurre aproximadamente a:", options: ["10 GHz", "23 GHz", "60 GHz", "80 GHz"], answer: 1, explanation: "El vapor de agua (H₂O) tiene resonancia molecular cerca de 23 GHz, causando atenuación significativa. Esta banda debe evitarse para enlaces de larga distancia. La absorción es de aproximadamente 0.2 dB/km en condiciones húmedas."},
+            {q: "El pico de absorción del oxígeno ocurre aproximadamente entre:", options: ["10-20 GHz", "20-30 GHz", "50-70 GHz", "80-100 GHz"], answer: 2, explanation: "El oxígeno (O₂) tiene fuerte absorción entre 50-70 GHz con pico en 60 GHz. Esto limita los radioenlaces en estas bandas a distancias cortas. Es útil para sistemas de alta seguridad ya que las señales se atenúan rápidamente."},
+            {q: "¿Qué significa EIRP?", options: ["Effective Indoor Radiated Power", "Effective Isotropic Radiated Power", "Enhanced Isotropic Radio Protocol", "Effective Interference Reduction Power"], answer: 1, explanation: "EIRP = Potencia del transmisor (dBm) + Ganancia de antena (dBi) - Pérdidas del cable (dB). Es la potencia equivalente que radiaría una antena isotrópica ideal para producir la misma densidad de potencia en la dirección de máxima radiación."},
+            {q: "La primera zona de Fresnel debe estar despejada al menos en:", options: ["30%", "40%", "60%", "100%"], answer: 2, explanation: "Se recomienda despejar al menos el 60% de la primera zona de Fresnel para evitar pérdidas significativas por difracción. Obstrucciones mayores al 40% del radio causan pérdidas no despreciables en el presupuesto del enlace."},
+            {q: "¿Cuál es la fórmula del radio de la zona de Fresnel (rF) en km?", options: ["rF = 17.3√(d₁×d₂)/(f×d)", "rF = 8.5√(d₁×d₂)/(f×d)", "rF = 34.6√(d₁×d₂)/(f×d)", "rF = 25√(d₁×d₂)/(f×d)"], answer: 0, explanation: "Donde d₁ y d₂ son las distancias desde el punto de observación a cada extremo (km), f es la frecuencia (GHz) y d = d₁ + d₂. El punto de máximo radio está en el centro del enlace (d₁ = d₂ = d/2)."},
+            {q: "El radio efectivo de la Tierra con k=4/3 es aproximadamente:", options: ["6,400 km", "8,500 km", "10,000 km", "12,000 km"], answer: 1, explanation: "Re = k × R = 4/3 × 6370 km ≈ 8500 km. Este valor se utiliza en cálculos de radioenlaces para modelar la curvatura terrestre considerando la refracción atmosférica estándar."},
+            {q: "CSMA/CD significa:", options: ["Collision Sense Multiple Access with Collision Detection", "Carrier Sense Multiple Access with Collision Detection", "Channel Sense Multiple Access with Collision Detection", "Carrier Signal Multiple Access with Collision Detection"], answer: 1, explanation: "Protocolo usado en Ethernet. Los dispositivos escuchan la portadora (Carrier Sense) antes de transmitir, y detectan colisiones durante la transmisión. Al detectar colisión, esperan un tiempo aleatorio antes de reintentar (backoff exponencial)."},
+            {q: "¿Qué tipo de fading es predominante en frecuencias menores a 10 GHz?", options: ["Rain fading", "Multipath fading", "Absorption fading", "Diffraction fading"], answer: 1, explanation: "El multipath fading (desvanecimiento por trayectorias múltiples) es causado por reflexiones en terreno, edificios y capas atmosféricas que crean interferencia constructiva/destructiva. Es el efecto dominante bajo 10 GHz y puede causar pérdidas de hasta 40 dB."},
+            {q: "El margen de desvanecimiento (fading margin) típico en radioenlaces puede ser de hasta:", options: ["10 dB", "20 dB", "40 dB", "60 dB"], answer: 2, explanation: "El fading margin compensa variaciones en la señal recibida debidas a multipath, lluvia y otros fenómenos atmosféricos. Valores típicos son 30-40 dB. Un margen mayor aumenta la disponibilidad del enlace pero requiere más potencia o antenas de mayor ganancia."},
+            {q: "¿Qué componente NO forma parte del Link Budget?", options: ["Pérdida en espacio libre (ABF)", "Ganancia de antenas (ΣG)", "Frecuencia de modulación", "Pérdida por obstáculos (Ao)"], answer: 2, explanation: "El Link Budget incluye: EIRP, pérdida en espacio libre (ABF), ganancia de antena receptora, pérdidas por alimentadores, atmósfera, obstáculos y lluvia. La frecuencia de modulación afecta el ancho de banda requerido pero no aparece directamente en el balance de potencia."},
+            {q: "El criterio de Rayleigh se utiliza para determinar:", options: ["La potencia de transmisión necesaria", "Si una superficie es lisa o rugosa", "El ancho de banda del canal", "La ganancia de la antena"], answer: 1, explanation: "Criterio: h < λ/(8×senθ). Si la altura promedio de irregularidades es menor a este valor, la superficie se comporta como lisa (reflexión especular). Si es mayor, la superficie es rugosa y la reflexión es difusa, reduciendo el efecto multipath."},
+            {q: "Cuando el coeficiente de reflexión (ρ) es igual a 1, significa:", options: ["No hay reflexión", "Reflexión especular perfecta", "Reflexión difusa", "Absorción total"], answer: 1, explanation: "ρ=1 indica reflexión total sin pérdidas (100% de energía reflejada con fase invertida). Superficie perfectamente lisa y conductora. ρ=0 significa no hay reflexión. 0<ρ<1 indica reflexión parcial. En la práctica, ρ≈0.3-0.8 para terreno."},
+            {q: "Las cuatro etapas del diseño de red en orden son:", options: ["Test, Survey, Planning, Engineering", "Planning, Survey, Engineering, Test", "Survey, Planning, Test, Engineering", "Engineering, Planning, Survey, Test"], answer: 1, explanation: "1) Planning: Requisitos, topología, frecuencias. 2) Survey: Inspección de sitios, perfiles de terreno, verificación de línea de vista. 3) Engineering: Cálculo de enlace, selección de equipos. 4) Test: Mediciones de BER, disponibilidad, ajustes finales."},
+            {q: "¿Qué mecanismo de propagación NO es mencionado en el documento?", options: ["Refracción", "Difracción", "Reflexión", "Ionización"], answer: 3, explanation: "Los tres mecanismos principales en radioenlaces terrestres son: Refracción (curvatura por capas atmosféricas), Difracción (rodeo de obstáculos por zonas de Fresnel) y Reflexión (rebote en superficies). La ionización afecta HF pero no enlaces de microondas."},
+            {q: "La aproximación \"knife-edge\" se utiliza para calcular:", options: ["Pérdidas por lluvia", "Pérdidas por difracción en obstáculos", "Ganancia de antenas", "Absorción atmosférica"], answer: 1, explanation: "Modelo de difracción que trata el obstáculo como un 'filo de cuchillo' vertical. Usa el parámetro de difracción (v) basado en zona de Fresnel. Si v>0 (obstáculo penetra 1ª zona), hay pérdida adicional calculable con gráficos o fórmulas de Fresnel-Kirchhoff."},
+            {q: "¿Qué parámetro atmosférico NO afecta la refracción?", options: ["Presión", "Temperatura", "Humedad", "Dirección del viento"], answer: 3, explanation: "El índice de refracción depende de N = 77.6(P/T) + 373000(e/T²), donde P es presión, T temperatura y e presión de vapor (humedad). La dirección del viento no afecta N directamente, aunque viento puede modificar estratificación térmica a largo plazo."},
+            {q: "El gradiente de refractividad típico en regiones templadas es aproximadamente:", options: ["-20 N units/km", "-40 N units/km", "-60 N units/km", "-80 N units/km"], answer: 1, explanation: "dN/dh ≈ -40 N/km es el valor estándar que produce k=4/3. Valores más negativos (ej. -100) causan super-refracción o ducting. Valores menos negativos o positivos causan sub-refracción, reduciendo el horizonte radio."},
+            {q: "¿Qué significa TN en los equipos Ericsson Minilink?", options: ["Transmission Node", "Traffic Node", "Transport Network", "Telecom Node"], answer: 1, explanation: "TN = Traffic Node. Familia de equipos split (separados) donde la RAU va en exterior (cerca de la antena) y la AMM/MMU en interior. Esto minimiza pérdidas del cable coaxial entre TX/RX y antena."},
+            {q: "En la configuración TN split, ¿cómo se llaman las unidades exterior e interior?", options: ["RAU y MMU", "RAU y AMM", "RRU y BBU", "ODU y IDU"], answer: 1, explanation: "RAU (Radio Access Unit) es la unidad exterior con TX/RX. AMM (Adaptive Modulation Manager) es la unidad interior con módem. Se conectan con cable IF (frecuencia intermedia), típicamente 140 MHz. Las MMU son versiones mejoradas de AMM."},
+            {q: "¿Qué familia de equipos reemplaza a las unidades RAU de los equipos TN?", options: ["Familia 6600", "Familia 6500", "Familia 6300", "Familia LH"], answer: 2, explanation: "La familia 6300 son las nuevas RAUs que reemplazan las antiguas de los TN. Ofrecen mayor potencia, mejor sensibilidad y soportan modulaciones más altas. Modelos incluyen 6352, 6363, 6365."},
+            {q: "¿Qué familia de equipos reemplaza a las unidades AMM de los equipos TN?", options: ["Familia 6300", "Familia 6600", "Familia 6500", "Familia LH"], answer: 1, explanation: "La familia 6600 son las nuevas unidades indoor (MMU mejoradas). Soportan modulación hasta 4096 QAM, carrier aggregation, Multi-band booster y Radio Link Bonding. Modelos incluyen MMU3A, MMU4A, MMU 1001, MMU 1002."},
+            {q: "La banda 6L tiene canales de ancho de banda de:", options: ["28 MHz", "29.65 MHz (se usan 28 MHz)", "40 MHz", "56 MHz"], answer: 1, explanation: "ITU-R F.383 define canales de 29.65 MHz nominales en banda 6L (5925-6425 MHz), pero se usan efectivamente 28 MHz para transmisión digital. El espaciado entre canales es 29.65 MHz."},
+            {q: "La banda 6U tiene canales de ancho de banda de:", options: ["28 MHz", "29.65 MHz", "40 MHz", "56 MHz"], answer: 2, explanation: "ITU-R F.384 define canales de 40 MHz en la banda 6U (6425-7125 MHz). Permite mayor capacidad que 6L. Se usa modulación adaptativa para maximizar throughput según condiciones del enlace."},
+            {q: "¿Cuántos canales de 28 MHz tiene la banda de 7 GHz?", options: ["2", "5", "8", "10"], answer: 1, explanation: "La banda de 7 GHz en Uruguay tiene 5 canales de 28 MHz. Esta banda está compartida con satélites, lo que limita su uso en algunas zonas geográficas para evitar interferencias con estaciones terrenas."},
+            {q: "¿Qué significa ACCP?", options: ["Adjacent Channel Co-Polarization", "Advanced Channel Control Protocol", "Alternate Channel Co-Polarization", "Adjacent Channel Cross-Polarization"], answer: 0, explanation: "ACCP = Canales adyacentes con la misma polarización. Usa 2 canales contiguos con la misma polarización (ej. ambos verticales). Requiere buena selectividad del filtro para evitar interferencia entre canales. Usa 2 RAUs y 1 antena por extremo."},
+            {q: "¿Qué configuración requiere obligatoriamente el uso de XPIC?", options: ["ACCP", "ACAP", "CCDP", "Todas las anteriores"], answer: 2, explanation: "CCDP (Co-Channel Dual Polarization) usa el mismo canal de frecuencia con ambas polarizaciones simultáneamente. XPIC (Cross-Polar Interference Canceller) es obligatorio para cancelar la interferencia entre polarizaciones y duplicar la capacidad en el mismo canal."},
+            {q: "¿Qué significa XPIC?", options: ["Cross-Polar Interference Controller", "Cross-Polar Interference Canceller", "Cross-Polarization Interface Controller", "Cross-Platform Interference Canceller"], answer: 1, explanation: "XPIC cancela la interferencia entre señales de polarizaciones ortogonales que usan el mismo canal. Procesa digitalmente las señales recibidas para eliminar el acoplamiento cruzado. Mejora el XPD (Cross-Polar Discrimination) típicamente en 20-30 dB."},
+            {q: "En la configuración 1+1 Hot Standby sin diversidad, ¿cuántas RAUs se necesitan por extremo?", options: ["1", "2", "3", "4"], answer: 1, explanation: "1+1 sin diversidad usa 2 RAUs conectadas a 1 antena por extremo (con splitter/combiner). Una RAU es principal y otra de respaldo. Si falla la principal, conmuta automáticamente a la de respaldo. Brinda protección de hardware pero no de propagación."},
+            {q: "En la configuración 1+1 Hot Standby con diversidad de espacio, ¿cuántas antenas se necesitan por extremo?", options: ["1", "2", "3", "4"], answer: 1, explanation: "1+1 con diversidad usa 2 RAUs y 2 antenas separadas verticalmente (típicamente 10-20 metros). Protege contra fallas de equipo Y contra fading selectivo. El receptor elige la mejor señal. Mejora disponibilidad significativamente."},
+            {q: "¿Qué configuración proporciona protección de hardware pero NO diversidad de espacio?", options: ["1+1 Hot Standby sin diversidad", "2×(1+0)", "MIMO 2×2", "Ninguna de las anteriores"], answer: 0, explanation: "1+1 sin diversidad solo protege contra falla de equipo (redundancia de hardware) pero usa 1 antena, por lo que no mitiga multipath fading. Es más económica que 1+1 con diversidad pero con menor disponibilidad."},
+            {q: "La configuración MIMO 2×2 se utiliza principalmente para:", options: ["Aumentar la confiabilidad", "Duplicar la capacidad", "Reducir el tamaño de antenas", "Disminuir la potencia de transmisión"], answer: 1, explanation: "MIMO 2×2 transmite 2 flujos de datos independientes simultáneamente en el mismo canal, duplicando la capacidad (ej. 2×500 Mbps = 1 Gbps). Requiere 2 RAUs y 2 antenas por extremo, procesamiento avanzado y buena relación señal/ruido."},
+            {q: "¿Qué placa MMU soporta modulación hasta 512 QAM?", options: ["MMU2B", "MMU2C", "MMU2H", "MMU2D"], answer: 2, explanation: "MMU2H es la versión mejorada que soporta hasta 512 QAM. Permite mayor capacidad que 256 QAM pero requiere excelente C/I (>38 dB típicamente) y enlaces estables. Se usa en enlaces cortos de alta capacidad."},
+            {q: "¿Qué placa MMU soporta modulación hasta 1024 QAM?", options: ["MMU2H", "MMU3A", "MMU4A", "MMU 1001"], answer: 1, explanation: "MMU3A de la familia 66 00 soporta hasta 1024 QAM. Requiere C/I>40 dB y excelentes condiciones. Permite throughput cercano a 1 Gbps en canal de 56 MHz. Se usa en backhaul de alta capacidad en áreas urbanas."},
+            {q: "¿Cuál es la modulación máxima soportada por MMU4A y MMU 1002?", options: ["1024 QAM", "2048 QAM", "4096 QAM", "8192 QAM"], answer: 2, explanation: "MMU4A y MMU 1002 son las más avanzadas, soportando hasta 4096 QAM. Esto permite throughput de varios Gbps. Requieren C/I>45 dB, enlaces muy estables y condiciones atmosféricas favorables. Usado en enlaces críticos de alta capacidad."},
+            {q: "¿Qué nuevo ancho de banda NO estaba disponible en equipos anteriores y ahora sí en la familia 6600?", options: ["56 MHz", "80 MHz y 112 MHz", "40 MHz", "28 MHz"], answer: 1, explanation: "La familia 6600 introduce anchos de banda de 80 MHz y 112 MHz que no existían antes. Esto, combinado con 4096 QAM, permite capacidades superiores a 10 Gbps por enlace. Los 112 MHz se forman agregando canales adyacentes."},
+            {q: "La potencia de transmisión típica en RAUs de alta potencia es:", options: ["≤ 20 dBm", "≤ 26 dBm", "≤ 30 dBm", "≤ 36 dBm"], answer: 2, explanation: "RAUs de alta potencia (HP) transmiten hasta 30 dBm (1 Watt). Se usan en enlaces largos (>30 km) o con obstáculos. RAUs normales transmiten hasta 26 dBm. La potencia es ajustable por software (ATPC - Automatic Transmit Power Control)."},
+            {q: "La potencia de transmisión típica en RAUs de potencia media es:", options: ["≤ 20 dBm", "≤ 26 dBm", "≤ 30 dBm", "≤ 36 dBm"], answer: 1, explanation: "RAUs estándar transmiten hasta 26 dBm (400 mW). Suficiente para enlaces de distancia media (10-30 km) en buenas condiciones. El ATPC reduce automáticamente la potencia cuando las condiciones mejoran para minimizar interferencias."},
+            {q: "¿Qué significa \"modulación adaptativa\"?", options: ["El equipo siempre usa la modulación máxima", "El equipo varía la modulación según condiciones del enlace", "El operador cambia manualmente la modulación", "La modulación se adapta al tipo de tráfico solamente"], answer: 1, explanation: "El sistema monitorea continuamente la C/I (Carrier to Interference ratio) y ajusta automáticamente la modulación. Con buena C/I usa 1024/4096 QAM (alta capacidad). Si empeora, baja a 256/128 QAM (más robustas). Prioriza disponibilidad sobre capacidad."},
+            {q: "En modulación adaptativa, cuando las condiciones del enlace empeoran:", options: ["Se aumenta la modulación", "Se disminuye la modulación", "Se mantiene constante", "Se desconecta el enlace"], answer: 1, explanation: "Al empeorar (lluvia, multipath), el SNR baja. El sistema reduce la modulación automáticamente: 1024→512→256→128→64 QAM. Modulaciones bajas son más robustas (menor BER) pero tienen menor capacidad. Evita desconexiones completas."},
+            {q: "¿Qué banda radioeléctrica define la recomendación ITU-R F.383?", options: ["6L", "6U", "7 GHz", "8 GHz"], answer: 0, explanation: "ITU-R F.383 especifica la banda 6L (Lower 6 GHz: 5925-6425 MHz). Define plan de frecuencias, separación de canales (29.65 MHz), arreglos de polarización y esquemas de reutilización de frecuencias para radioenlaces digitales."},
+            {q: "¿Qué banda radioeléctrica define la recomendación ITU-R F.636?", options: ["6 GHz", "8 GHz", "15 GHz", "23 GHz"], answer: 2, explanation: "ITU-R F.636 define la banda de 15 GHz (14.5-15.35 GHz). Canales más estrechos que 6 GHz, mayor susceptibilidad a lluvia pero  menor congestión espectral. Útil para enlaces de media distancia con alta capacidad."},
+            {q: "Los equipos 6365 ya están siendo instalados en la banda de:", options: ["6 GHz", "7 GHz", "8 GHz", "15 GHz"], answer: 3, explanation: "El RAU 6365 es una unidad multi-banda que opera en 6, 7, 8 Y 15 GHz. La flexibilidad permite aprovechar espectro disponible en diferentes bandas según requena. Los equipos 6365 están desplegándose activamente en 15 GHz."},
+            {q: "¿Qué tecnología permite combinar el ancho de banda de distintos carriers en un mismo radioenlace?", options: ["Multi-band booster", "Carrier aggregation", "Radio link bonding", "MIMO"], answer: 1, explanation: "Carrier Aggregation combina múltiples portadoras (carriers) en la misma banda o adyacentes para aumentar el ancho de banda total. Ej: 2×56 MHz = 112 MHz. Requiere MMU avanzadas (familia 6600) y aumenta significativamente el throughput."},
+            {q: "¿Qué tecnología combina dos radioenlaces en diferentes bandas para optimizar capacidad y confiabilidad?", options: ["Carrier aggregation", "Multi-band booster", "Radio link bonding", "XPIC"], answer: 1, explanation: "Multi-band Booster usa simultáneamente dos frecuencias diferentes (ej. 6 GHz + 15 GHz). La banda baja ofrece confiabilidad (menos afectada por lluvia) y la alta ofrece capacidad. Optimiza ambos criterios balanceando tráfico dinámicamente."},
+            {q: "Radio Link Bonding permite el transporte de tramas Ethernet sobre:", options: ["Un solo link", "Dos links paralelos", "Varios links paralelos", "Links en serie"], answer: 2, explanation: "RLB (Radio Link Bonding) distribuye tráfico Ethernet sobre múltiples enlaces independientes (diferentes frecuencias, rutas o tecnologías). Aumenta capacidad agregada y provee redundancia. Los enlaces no necesitan ser homogéneos (pueden ser microondas + fibra)."},
+            {q: "¿Qué configuración NO usa antenas de doble polarización?", options: ["ACCP", "ACAP", "CCDP", "Todas usan doble polarización"], answer: 0, explanation: "ACCP (Adjacent Channel Co-Polarization) usa la MISMA polarización en canales adyacentes, por lo que usa antenas de polarización simple. ACAP y CCDP sí usan antenas de doble polarización (vertical + horizontal simultáneamente)."},
+            {q: "El equipo Minilink 6651 es:", options: ["Una RAU de alta potencia", "Un equipo compacto con módem integrado", "Una placa MMU", "Un transceptor LH"], answer: 1, explanation: "El 6651 es un equipo todo-en-uno (All-Indoor) que integra módem, radio y fuente de alimentación en una sola unidad indoor. Se conecta a la antena con cable coaxial. Más económico y simple que configuración split, pero con mayores pérdidas de cable."},
+            {q: "¿Cuántas capas tiene el modelo híbrido TCP/IP?", options: ["4", "5", "7", "3"], answer: 1, explanation: "El modelo híbrido tiene 5 capas: Aplicación, Transporte, Red, Enlace, Física. Combina aspectos de OSI (7 capas) y TCP/IP tradicional (4 capas). Es la versión actualizada que separa claramente Enlace de Física para mayor claridad conceptual."},
+            {q: "¿Cuántas capas tiene el modelo OSI?", options: ["4", "5", "7", "9"], answer: 2, explanation: "Modelo OSI tiene 7 capas: Física, Enlace, Red, Transporte, Sesión, Presentación, Aplicación. Desarrollado por ISO como estándar teórico. Las capas 5-6-7 (Sesión/Presentación/Aplicación) normalmente se implementan juntas en la práctica."},
+            {q: "En el modelo híbrido, ¿qué capa se encuentra entre Transporte y Enlace?", options: ["Física", "Red", "Sesión", "Aplicación"], answer: 1, explanation: "La capa de Red (Capa 3) se encarga del enrutamiento y direccionamiento lógico (IP). Está entre Transporte (TCP/UDP, puertos) y Enlace (MAC, tramas). Protocolo principal: IP (IPv4/IPv6). Dispositivos: Routers."},
+            {q: "Una dirección MAC tiene una longitud de:", options: ["32 bits", "48 bits", "64 bits", "128 bits"], answer: 1, explanation: "48 bits (6 bytes). Notación hexadecimal separada por : o -. Ejemplo: 00:1A:2B:3C:4D:5E. Única por NIC a nivel mundial. Los primeros 24 bits (3 bytes) identifican al fabricante (OUI)."},
+            {q: "¿Cuántos bytes tiene una dirección MAC?", options: ["4", "6", "8", "12"], answer: 1, explanation: "6 bytes = 48 bits. Estructura: OUI (3 bytes) + Identificador único del dispositivo (3 bytes). Ejemplo: A4:5E:60:E1:23:45 donde A4:5E:60 es el OUI (fabricante) y E1:23:45 es el ID único."},
+            {q: "Los primeros 3 bytes de una dirección MAC identifican:", options: ["El número de serie", "El fabricante (OUI)", "El tipo de red", "La dirección IP"], answer: 1, explanation: "OUI (Organizationally Unique Identifier) identifica al fabricante. IEEE asigna bloques OUI a cada vendor. Ejemplos: 00:50:56 = VMware, 08:00:27 = Oracle VirtualBox, D4:6E:0E = TP-Link. Permite identificar hardware por MAC."},
+            {q: "La dirección MAC de broadcast es:", options: ["00:00:00:00:00:00", "FF:FF:FF:FF:FF:FF", "01:00:5E:00:00:00", "255.255.255.255"], answer: 1, explanation: "FF:FF:FF:FF:FF:FF envía una trama a TODOS los dispositivos en el mismo dominio de broadcast (LAN). Usado en ARP requests, DHCP discover, etc. Los switches flooding tramas broadcast por todos sus puertos (excepto el origen)."},
+            {q: "¿Qué dispositivo opera en capa 2 y segmenta dominios de colisión?", options: ["Hub", "Repetidor", "Switch", "Router"], answer: 2, explanation: "El Switch opera en capa 2 (Enlace). Cada puerto es un dominio de colisión separado (full-duplex). Aprende MACs dinámicamente creando tabla MAC-Port. NO segmenta broadcast domains. Un hub NO segmenta colisiones (todos los puertos = 1 dominio)."},
+            {q: "¿Qué dispositivo opera en capa 3 y detiene broadcasts?", options: ["Hub", "Switch", "Bridge", "Router"], answer: 3, explanation: "El Router opera en capa 3 (Red). Separa redes IP (subnets) y NO envía broadcasts entre ellas. Mantiene tabla de ruteo. Conecta diferentes redes. Los broadcasts L2 (MAC FF:FF:FF:FF:FF:FF) no cruzan routers."},
+            {q: "El tamaño mínimo de una trama Ethernet es:", options: ["46 bytes", "64 bytes", "128 bytes", "1500 bytes"], answer: 1, explanation: "64 bytes totales mínimos (todo la trama): 14 bytes header + 46 bytes datos mínimos + 4 bytes FCS. Si los datos son <46 bytes se agrega padding. Esto garantiza detección de colisiones en CSMA/CD (tiempo de propagación vs longitud de trama)."},
+            {q: "El tamaño máximo de una trama Ethernet es:", options: ["1024 bytes", "1500 bytes", "1518 bytes", "2048 bytes"], answer: 2, explanation: "1518 bytes para Ethernet estándar: 14 bytes header (6 MAC dest + 6 MAC src + 2 EtherType) + 1500 bytes datos (MTU) + 4 bytes FCS (checksum). Jumbo frames pueden ser hasta 9000 bytes."},
+            {q: "El campo de datos en Ethernet puede tener hasta:", options: ["1024 bytes", "1500 bytes", "1518 bytes", "2000 bytes"], answer: 1, explanation: "MTU (Maximum Transmission Unit) de Ethernet es 1500 bytes de datos (payload). Este valor excluye el header Ethernet (14 bytes) y el FCS (4 bytes). Jumbo frames permiten hasta ~9000 bytes para mejorar eficiencia en redes de alta velocidad."},
+            {q: "¿Qué protocolo usa Ethernet para detección de colisiones?", options: ["CSMA/CA", "CSMA/CD", "CDMA", "TDMA"], answer: 1, explanation: "CSMA/CD (Carrier Sense Multiple Access with Collision Detection). Escucha antes de transmitir. Si detecta colisión durante TX, envía jamming signal y aplica backoff exponencial aleatorio. Obsoleto en switches full-duplex modernos (no hay colisiones)."},
+            {q: "Una dirección IPv4 tiene una longitud de:", options: ["16 bits", "32 bits", "64 bits", "128 bits"], answer: 1, explanation: "32 bits (4 bytes) en notación decimal punteada (ej: 192.168.1.100). Cada octeto es 0-255. Total de ~4.3 mil millones de direcciones. Agotamiento de IPv4 llevó al desarrollo de IPv6 (128 bits)."},
+            {q: "La notación CIDR /24 equivale a la máscara:", options: ["255.0.0.0", "255.255.0.0", "255.255.255.0", "255.255.255.255"], answer: 2, explanation: "/24 significa 24 bits en 1 = 11111111.11111111.11111111.00000000 = 255.255.255.0. Permite 2⁸=256 IPs (254 usables). CIDR permite subnetting flexible vs clases fijas (A/B/C). /16=255.255.0.0, /8=255.0.0.0."},
+            {q: "En una red 192.168.10.0/24, ¿cuál es la dirección de broadcast?", options: ["192.168.10.0", "192.168.10.1", "192.168.10.254", "192.168.10.255"], answer: 3, explanation: "192.168.10.255 (todos los bits del host en 1). Envía paquetes a todos los dispositivos de la subred. 192.168.10.0 es la dirección de red (ID de subred). 192.168.10.1-254 son IPs usables (254 hosts)."},
+            {q: "En una red 192.168.10.0/24, ¿cuántas direcciones IP utilizables hay?", options: ["254", "255", "256", "252"], answer: 0, explanation: "2⁸ - 2 = 254. Total 256 IPs: .0 (red) y .255 (broadcast) no son asignables. Usables: .1 a .254. En /30 (enlaces punto a punto): 4 IPs totales, 2 usables (.1 y .2). En /32: 1 IP (host único)."},
+            {q: "¿Qué protocolo resuelve direcciones IP a direcciones MAC?", options: ["DNS", "ARP", "ICMP", "RARP"], answer: 1, explanation: "ARP (Address Resolution Protocol) traduce de IP→MAC en la LAN local. Proceso: 1) Envía ARP request broadcast (¿quién tiene 192.168.1.5?). 2) El host 192.168.1.5 responde con su MAC. 3) Se cachea en tabla ARP. RARP hace lo inverso (MAC→IP, obsoleto)."},
+            {q: "¿Qué protocolo se utiliza para mensajes de control y error en IP?", options: ["TCP", "UDP", "ICMP", "ARP"], answer: 2, explanation: "ICMP (Internet Control Message Protocol) es parte de la capa de red. Reporta errores: Destination Unreachable, Time Exceeded, Redirect. También mensajes informativos: Echo Request/Reply (ping), Timestamp. No transporta datos de usuario."},
+            {q: "El comando \"ping\" utiliza el protocolo:", options: ["TCP", "UDP", "ICMP", "ARP"], answer: 2, explanation: "Ping usa ICMP Echo Request (tipo 8) y espera Echo Reply (tipo 0). Verifica conectividad y mide RTT (Round Trip Time). No usa TCP/UDP. Algunas firewalls bloquean ICMP por seguridad. TTL en respuesta indica saltos de red."},
+            {q: "TCP opera en la capa de:", options: ["Aplicación", "Transporte", "Red", "Enlace"], answer: 1, explanation: "TCP (Transmission Control Protocol) es capa 4 (Transporte). Provee servicio confiable orientado a conexión: establecimiento (3-way handshake), control de flujo (ventanas), control de errores (retransmisiones), secuenciamiento. Usado por HTTP, FTP, SSH, SMTP."},
+            {q: "¿Cuál es la diferencia principal entre TCP y UDP?", options: ["TCP es más rápido", "TCP es orientado a conexión, UDP no", "UDP es más confiable", "TCP no usa puertos"], answer: 1, explanation: "TCP: Orientado a conexión, confiable, ordenado, control de flujo, overhead alto. Ideal para: HTTP, FTP, email. UDP: Sin conexión, no confiable, sin orden, overhead mínimo. Ideal para: streaming, VoIP, DNS, gaming (toleran pérdida pero no latencia)."},
+            {q: "El rango de puertos TCP/UDP es:", options: ["0-1023", "0-65535", "1-1024", "1024-65535"], answer: 1, explanation: "16 bits = 0-65535. Well-known ports: 0-1023 (HTTP=80, HTTPS=443). Registered ports: 1024-49151 (aplicaciones específicas). Dynamic/Private ports: 49152-65535 (asignados temporalmente por el OS para conexiones salientes)."},
+            {q: "¿Qué protocolo de capa de aplicación usa el puerto 80?", options: ["FTP", "HTTP", "TELNET", "DNS"], answer: 1, explanation: "HTTP (HyperText Transfer Protocol) usa puerto 80/TCP para web sin encriptar. HTTPS usa 443/TCP. FTP usa 20+21. TELNET usa 23. DNS usa 53/UDP. SSH usa 22. Los puertos <1024 requieren privilegios de administrador para escuchar."},
+            {q: "El protocolo DNS usa el puerto:", options: ["21", "23", "53", "80"], answer: 2, explanation: "DNS (Domain Name System) usa puerto 53. Normalmente UDP/53 para consultas rápidas (<512 bytes). TCP/53 para transferencias de zona (AXFR) o respuestas grandes (DNSSEC). Traduce nombres (www.google.com) a IPs (142.250.185.78)."},
+            {q: "¿Qué categoría de cable UTP es la más utilizada actualmente en redes LAN?", options: ["Categoría 3", "Categoría 5", "Categoría 5e o superior", "Categoría 7"], answer: 2, explanation: "Cat 5e (enhanced): 1 Gbps hasta 100m. Cat 6: 10 Gbps hasta 55m. Cat 6a: 10 Gbps hasta 100m. Cat 3 (obsoleto, solo telefonia). Cat 7/8 (data centers, 40 Gbps). UTP = UnshieldedTwisted Pair. El trenzado reduce EMI/crosstalk."},
+            {q: "¿Qué tipo de cable tiene apantallamiento individual por par y malla global?", options: ["UTP", "FTP", "STP", "Coaxial"], answer: 2, explanation: "STP (Shielded Twisted Pair) tiene blindaje por par Y malla global. Máxima protección EMI/RFI. FTP (Foiled TP) solo malla global. UTP sin blindaje. SFTP combina foil individual + malla. STP necesita tierra correcta para funcionar."},
+            {q: "La fibra óptica monomodo puede transmitir hasta:", options: ["1 Gbps a 10 km", "10 Gbps a 50 km", "Más de 50 Gbps a 100 km", "100 Mbps a 2 km"], answer: 2, explanation: "Monomodo (SMF): Core 9 μm, laser, 10-100+ Gbps, distancias de 10-100+ km, bajo atenuación (0.25 dB/km en 1550 nm). Multimodo (MMF): Core 50/62.5 μm, LED, hasta 10 Gbps, distancias <2 km, para LANs. SMF para WAN/backbone."},
+            {q: "¿Qué protocolo de ruteo es de tipo \"distance vector\"?", options: ["OSPF", "RIP", "BGP", "IS-IS"], answer: 1, explanation: "RIP (Routing Information Protocol) usa algoritmo Bellman-Ford. Métrica: hop count (máx 15). Comparte tabla completa cada 30s. Convergencia lenta. Simple pero limitado. Usado en redes pequeñas. RIPv2 soporta CIDR y autenticación."},
+            {q: "¿Qué protocolo de ruteo es de tipo \"link state\"?", options: ["RIP", "IGRP", "OSPF", "Ninguno de los anteriores"], answer: 2, explanation: "OSPF (Open Shortest Path First) usa algoritmo Dijkstra (SPF). Cada router tiene mapa completo (LSDB). Métricas: cost basado en ancho de banda. Convergencia rápida. Soporta VLSM, áreas jerárquicas. Escalable a redes grandes. Actualiza solo cambios (no tabla completa)."}
+        ];
+
+        // Base de datos de preguntas IP (las 80 del resumen anterior)
+        const ipQuestions = [
+            {q: "¿Qué significa BER?", options: ["Bit Error Recovery", "Bit Error Rate", "Binary Error Reduction", "Byte Error Rate"], answer: 1, explanation: "BER (Bit Error Rate) = Bits erróneos / Bits totales transmitidos. Mide la calidad del enlace. Valores típicos: 10⁻⁹ (telecomunicaciones), 10⁻¹² (fibra óptica). BER alto indica problemas de cable, interferencia o SNR bajo."},
+            {q: "¿Qué valor de BER se considera generalmente aceptable en telecomunicaciones?", options: ["10⁻⁶", "10⁻⁹", "10⁻¹²", "10⁻¹⁵"], answer: 1, explanation: "10⁻⁹ (1 error cada 1,000 millones de bits) es el estándar para voz y datos. Equivale a ~1 error cada 8.3 minutos en un enlace de 2 Mbps. 10⁻¹² es para aplicaciones más exigentes (fibra óptica, transmisión SDH/SONET)."},
+            {q: "¿Qué valor de BER se considera apropiado para transmisión de datos?", options: ["10⁻⁹", "10⁻¹³", "10⁻⁶", "10⁻³"], answer: 1, explanation: "10⁻⁹ es el objetivo para transmisiones de datos sobre radioenlaces. Este valor garantiza integridad adecuada con FEC (Forward Error Correction) activo. BER peor que 10⁻⁶ causa retransmisiones excesivas. BER mejor que 10⁻¹² es ideal pero a veces innecesario."},
+            {q: "¿Qué significan las siglas BERT?", options: ["Bit Error Rate Testing", "Binary Error Rate Transmission", "Bit Error Recovery Test", "Binary Error Reduction Testing"], answer: 0, explanation: "BERT (Bit Error Rate Testing) mide BER enviando secuencias conocidas (PRBS) y comparando en recepción. Detecta problemas de capa física antes de poner en producción. Genera reportes con BER, jitter, latencia. Esencial en certificación de enlaces."},
+            {q: "¿Qué es una secuencia PRBS?", options: ["Primary Rate Bit Sequence", "Pseudo-Random Bit Sequence", "Protocol Rate Bit System", "Primary Random Binary Signal"], answer: 1, explanation: "PRBS (Pseudo-Random Bit Sequence) es una secuencia determinística que parece aleatoria. Patrones: PRBS7 (2⁷-1=127 bits), PRBS15, PRBS23, PRBS31. Simula tráfico real pero es reproducible para detectar errores. Maximiza transiciones 0→1 para estresar el enlace."},
+            {q: "¿Para qué se utiliza una secuencia PRBS en BERT?", options: ["Para reducir el tiempo de transmisión", "Para crear patrones que puedan generar errores y acelerar las pruebas", "Para cifrar los datos", "Para comprimir la información"], answer: 1, explanation: "PRBS estresa la capa física con patrones densos en transiciones que exponen problemas de sincronización, ISI (Inter-Symbol Interference), jitter y crosstalk. Acelera detección de errores vs tráfico real que podría no ejercitar casos extremos."},
+            {q: "La tasa de errores de bits (BER) se calcula como:", options: ["Bits totales / Bits con error", "Bits con error / Bits totales", "Bits correctos / Bits totales", "Tiempo total / Errores detectados"], answer: 1, explanation: "BER = Errores / Totales. Ejemplo: 100 errores en 10¹⁰ bits → BER = 10⁻⁸. Se mide durante tiempo suficiente para ser estadísticamente significativo. Un test de 1 minuto a 1 Gbps transmite 60×10⁹ bits, permitiendo detectar BER ~10⁻¹⁰."},
+            {q: "¿Qué mide la PER (Packet Error Rate)?", options: ["La velocidad de transmisión de paquetes", "La relación de paquetes que no llegan a su destino", "El tamaño de los paquetes", "El tiempo de propagación de paquetes"], answer: 1, explanation: "PER = Paquetes perdidos o con errores / Paquetes totales. Opera en capa 2/3 (vs BER en capa 1). PER alto puede tener BER bajo si errores se concentran en pocos paquetes. FCS (Frame Check Sequence) detecta paquetes corruptos que son descartados."},
+            {q: "¿Cuál es una causa común de pérdida de paquetes?", options: ["Exceso de ancho de banda", "Congestión de red", "Baja latencia", "Alta ganancia de señal"], answer: 1, explanation: "Congestión → buffers llenos → descarte de paquetes (tail drop). Otras causas: errores de capa física (BER alto), fallas de hardware, routing loops, MTU mismatch, firewalls mal configurados. TCP retransmite paquetes perdidos, UDP no."},
+            {q: "La latencia se define como:", options: ["El ancho de banda disponible", "El número de paquetes perdidos", "El tiempo que tardan los datos en transmitirse de una ubicación a otra", "La velocidad de la fibra óptica"], answer: 2, explanation: "Latencia = Tiempo desde que un paquete sale del origen hasta que llega al destino. Componentes: Propagación (distancia/velocidad luz ≈5 µs/km en fibra), procesamiento (switching/routing), serialización (frame size/bandwidth), Cola (buffering). Crítico en VoIP, gaming, trading."},
+            {q: "¿Qué efecto tiene una latencia alta en aplicaciones VoIP?", options: ["Mejora la calidad de voz", "Reduce el consumo de ancho de banda", "Puede provocar cuellos de botella y calidad deficiente", "No tiene efecto"], answer: 2, explanation: "Latencia >150 ms (one-way) causa conversaciones artificiales, overlapping de voces. ITU-T G.114: <150 ms aceptable, 150-400 ms tolerable con degradación, >400 ms inaceptable. Latencia también afecta el eco (requiere cancelación de eco)."},
+            {q: "La fluctuación (jitter) se define como:", options: ["La velocidad promedio de transmisión", "La variación en el retraso de la recepción de paquetes", "El número de errores por segundo", "La potencia de la señal"], answer: 1, explanation: "Jitter = Variación de latencia entre paquetes consecutivos. Causado por congestión variable, rutas múltiples, QoS inconsistente. Ej: Si paquetes llegan cada 20±10 ms, jitter = 10 ms. Mitigación: jitter buffers (trade-off con latencia adicional)."},
+            {q: "¿Qué tipo de transmisiones son más sensibles a la fluctuación excesiva?", options: ["Transferencias de archivos", "Email", "Voz y vídeo", "Texto"], answer: 2, explanation: "VoIP y video en tiempo real requieren arribo constante de paquetes para reproducción suave. Jitter >30 ms causa distorsión de audio/video. Jitter buffers compensan variaciones pero añaden latencia. FTP/email toleran jitter (no son real-time)."},
+            {q: "Las BERT son importantes porque:", options: ["Solo sirven para redes de baja velocidad", "Garantizan el rendimiento de redes de alta velocidad y mejoran la satisfacción del cliente", "Reemplazan a los protocolos de routing", "Solo se usan en laboratorios"], answer: 1, explanation: "BERT valida capa física ANTES de activar servicios. Detecta degradaciones sub-umbral que podrían causar problemas intermitentes en producción. Esencial en SLA verification, troubleshooting y aceptación de circuitos de carriers."},
+            {q: "¿Pueden las rutinas de corrección de errores de Ethernet enmascarar problemas físicos de red?", options: ["No, siempre detectan todos los problemas", "Sí, pueden ocultar problemas inherentes a la red física", "Solo en redes inalámbricas", "Solo en redes de cobre"], answer: 1, explanation: "FEC (Forward Error Correction) y retransmisiones TCP ocultan errores de capa 1. Un enlace con BER 10⁻⁶ (malo) puede funcionar con FEC pero tiene menor throughput efectivo y jitter variable. BERT sin FEC expone problemas reales."},
+            {q: "Los paquetes retransmitidos debido a errores de bits pueden:", options: ["Mejorar el rendimiento de la red", "Aumentar el ancho de banda disponible", "Mermar el rendimiento y contribuir a problemas de congestión", "Reducir la latencia"], answer: 2, explanation: "Retransmisiones TCP consumen ancho de banda sin transportar datos nuevos. Aumentan latencia (espera ACK, timeout). En congestión, más retransmisiones empeoran el problema (congestion collapse). UDP no retransmite, simplemente pierde datos."},
+            {q: "¿Cuáles son posibles causas de errores de bits en redes de fibra óptica?", options: ["Solo la humedad", "Atenuación, dispersión y otras causas", "Solo la temperatura", "Solo interferencia electromagnética"], answer: 1, explanation: "Atenuación (conectores sucios, curvas excesivas, empalmes), dispersión cromática (velocidades diferentes por λ), PMD (Polarization Mode Dispersion), reflexiones (mismatch de índices), daño físico de fibra, laser degradado. Fibra es inmune a EMI."},
+            {q: "Entre los KPI que se pueden medir con BERT están:", options: ["Solo la velocidad de transmisión", "Pérdida de paquetes, latencia y fluctuación", "Solo el voltaje", "Solo la temperatura"], answer: 1, explanation: "BERT mide: BER, latencia (RTT o one-way), jitter, packet loss, throughput, errored seconds (ES), severely errored seconds (SES). Generadores pattern incluyen: PRBS, all-ones, all-zeros, alternating. Reportes incluyen histogramas y gráficos temporales."},
+            {q: "Las BERT en redes internas pueden:", options: ["Reducir la necesidad de mantenimiento", "Garantizar operaciones eficaces especialmente en circuitos de gran tamaño", "Eliminar la necesidad de switches", "Aumentar automáticamente el ancho de banda"], answer: 1, explanation: "BERT valida enlaces internos de datacenter, campus, backbone. Detecta degradaciones antes de que afecten usuarios. En redes 100G/400G, certificar capa física es crítico debido al costo y complejidad. BERT automatizado permite testing continuo."},
+            {q: "¿Qué puede indicar una pérdida significativa de paquetes?", options: ["Red óptima", "Servicio lento o interrupciones en la red, posibles ataques DOS", "Exceso de ancho de banda", "Configuración perfecta"], answer: 1, explanation: "Packet loss >1% indica problemas serios. Causas: Congestión crónica, fallas intermitentes, ataques DoS/DDoS (saturan enlaces/buffers), errores de configuración (routing loops, MTU mismatch), hardware defectuoso. Requiere análisis con traceroute, ping, SNMP monitoring."},
+            {q: "¿En qué año se desarrolló el estándar RFC 2544?", options: ["1995", "1999", "2004", "2010"], answer: 1, explanation: "Publicado en marzo de 1999 por IETF. Estándar para benchmarking de dispositivos de red (routers, switches, firewalls). Define metodología reproducible para medir throughput, latency, frame loss, back-to-back. Base para certificación de equipos."},
+            {q: "¿Qué organización desarrolló RFC 2544?", options: ["IEEE", "ISO", "IETF (Internet Engineering Task Force)", "ITU-T"], answer: 2, explanation: "IETF (Internet Engineering Task Force) desarrolla estándares de Internet (RFCs). IEEE hace estándares 802.x (Ethernet, WiFi). ITU-T hace recomendaciones de telecomunicaciones. ISO hace estándares generales (modelo OSI). RFC = Request for Comments."},
+            {q: "RFC 2544 fue diseñado originalmente para:", options: ["Pruebas de campo en producción", "Evaluación comparativa de equipos de red en laboratorio", "Configuración de routers", "Certificación de cables"], answer: 1, explanation: "RFC 2544 es para laboratorio/pre-deployment. NO para producción (tráfico sintético a 100% satura link). Compara rendimiento entre vendors, valida especificaciones. Para pruebas en producción se usa ITU-T Y.1564 (multiservice, no disruptivo)."},
+            {q: "¿A qué capas del modelo OSI se enfoca RFC 2544?", options: ["Capa 1 únicamente", "Capa 2/3", "Capa 7", "Todas las capas"], answer: 1, explanation: "RFC 2544 evalúa forwarding de capa 2 (Ethernet frames) y capa 3 (IP packets). No prueba aplicaciones (capa 7). Mide capacidad del dispositivo para procesar/forwardear tramas a diferentes rates, tamaños y cargas."},
+            {q: "¿Qué mide el \"Throughput\" en RFC 2544?", options: ["La latencia mínima", "La tasa máxima de transferencia sin pérdida de tramas", "El número de dispositivos conectados", "La temperatura del equipo"], answer: 1, explanation: "Throughput = Máxima tasa (fps o Mbps) a la cual NO se pierden tramas. Método: Enviar a 100% line rate, si hay pérdida reducir al 50%, continuar búsqueda binaria hasta encontrar tasa con 0% loss. Varía por tamaño de frame."},
+            {q: "Los tamaños de trama estandarizados en RFC 2544 incluyen (en bytes):", options: ["32, 64, 128, 256", "64, 128, 256, 512, 1024, 1280, 1518", "100, 200, 300, 400", "512, 1024, 2048"], answer: 1, explanation: "Tamaños: 64 (mínimo, peor caso para pps), 128, 256, 512, 1024, 1280, 1518 (máximo MTU estándar). Tramas pequeñas estresan el forwarding engine (más pps). Tramas grandes estresan bandwidth. Se prueba todo el rango."},
+            {q: "¿Qué significa \"Back-to-Back\" en RFC 2544?", options: ["Conexión de dos switches", "Capacidad para procesar ráfagas sucesivas sin pérdida", "Configuración redundante", "Backup de configuración"], answer: 1, explanation: "Back-to-Back Frames = Máximo número de tramas a mínimo inter-frame gap (IFG) que el dispositivo puede recibir sin pérdida. Mide tamaño de buffer. Ráfaga típica: enviar a line rate durante N segundos, contar tramas recibidas sin pérdida."},
+            {q: "La latencia en RFC 2544 se puede medir como:", options: ["Solo one-way", "Solo RTT (Round Trip Time)", "RTT si no hay sincronización, o one-way con sincronización GPS/PTP", "No se mide latencia en RFC 2544"], answer: 2, explanation: "Latencia RTT no requiere sincronización de relojes (timestamp ida + vuelta con mismo clock). One-way latency require clocks sincronizados (GPS, PTP IEEE-1588). One-way es más preciso pero complejo. Include store-and-forward delay del dispositivo."},
+            {q: "¿Qué prueba de RFC 2544 evalúa la capacidad de manejar ráfagas de tramas?", options: ["Throughput", "Latency", "Back-to-Back", "System Reset"], answer: 2, explanation: "Back-to-Back test envía ráfaga a line rate máximo y mide cuántas tramas se reciben sin pérdida. Valida buffers del dispositivo. Útil para tráfico bursty (no constante). Ráfaga > buffer → pérdida de frames."},
+            {q: "¿Qué mide la prueba de \"System Reset\"?", options: ["La velocidad de transmisión", "El tiempo de recuperación del equipo tras un reinicio", "El número de puertos disponibles", "La temperatura de operación"], answer: 1, explanation: "System Reset mide tiempo desde reset (reboot) hasta que el dispositivo puede forwardear tramas sin pérdida. Incluye boot, carga de configuración, inicialización de protocolos (spanning-tree, routing). Crítico para calcular downtime en mantenimientos."},
+            {q: "Una limitación de RFC 2544 es que:", options: ["Es muy lento", "No modela múltiples servicios simultáneos", "Solo funciona en redes inalámbricas", "Requiere equipos muy costosos"], answer: 1, explanation: "RFC 2544 envía UN tipo de tráfico a la vez (unicast, broadcast o multicast). Redes modernas transportan múltiples servicios simultáneos (voz+video+datos) con diferentes QoS. ITU-T Y.1564 soluciona esto con perfiles multiservicio."},
+            {q: "¿Qué estándar es más adecuado para escenarios multiservicio que RFC 2544?", options: ["RFC 1918", "ITU-T Y.1564", "IEEE 802.3", "RFC 791"], answer: 1, explanation: "ITU-T Y.1564 prueba múltiples servicios concurrentes con diferentes CIR (Committed Information Rate), prioridades QoS, y SLAs. Mide performance por servicio. Permite testing en producción (configurable, no destructivo). Complementa RFC 2544, no lo reemplaza."},
+            {q: "Un criterio de aceptación típico para Throughput es:", options: ["≥ 50% de line rate", "≥ 99% de line rate a MTU estándar sin pérdida", "≥ 25% de line rate", "≥ 75% de line rate con 10% de pérdida"], answer: 1, explanation: "Equipos de calidad logran ≥99% de line rate con frames de 1518 bytes (MTU) sin pérdida. Con frames de 64 bytes (peor caso) se acepta ≥95% debido a overhead de IFG y preámbulo. 0% frame loss es mandatorio."},
+            {q: "Para pruebas de latencia RTT a 10G, un valor típico aceptable es:", options: ["≤ 10 ms", "≤ 1 ms", "≤ 300 µs", "≤ 100 µs"], answer: 2, explanation: "Latencia RTT en switches L2/L3 @ 10G: <300 µs (microsegundos) es típico. Store-and-forward: ~60-200 µs. Cut-through: ~10-50 µs. Latencia aumenta con features activas (ACLs, QoS, DPI). Routers tienen mayor latencia que switches (~500 µs - 2 ms)."},
+            {q: "¿Qué debe hacerse antes de cada corrida de prueba RFC 2544?", options: ["Apagar todos los equipos", "Resetear contadores y verificar estado inicial", "Cambiar todos los cables", "Actualizar el firmware"], answer: 1, explanation: "Reset contadores (clear counters), verificar estado de enlaces (up/up), confirmar configuración, eliminar tráfico de fondo. Estado inicial consistente garantiza resultados reproducibles. Esperar estabilización de protocolos (STP convergence, routing tables)."},
+            {q: "Las fibras ópticas se clasifican en dos grandes tipos:", options: ["Cortas y largas", "Monomodo y Multimodo", "Rápidas y lentas", "Internas y externas"], answer: 1},
+            {q: "¿Qué significa SM en fibras ópticas?", options: ["Small Mode", "Single Mode (Monomodo)", "Super Mode", "Standard Mode"], answer: 1},
+            {q: "¿Qué significa MM en fibras ópticas?", options: ["Maximum Mode", "Mini Mode", "Multi Mode (Multimodo)", "Medium Mode"], answer: 2},
+            {q: "¿De qué color suele ser la cubierta de fibras monomodo?", options: ["Verde o rojo", "Amarillo o azul", "Negro o blanco", "Violeta o rosa"], answer: 1},
+            {q: "¿De qué color suele ser la cubierta de fibras multimodo?", options: ["Amarillo", "Azul", "Naranja", "Verde"], answer: 2, explanation: "MMF = cubierta Naranja (OM1/OM2). Monomodo SMF = Amarillo (OS1/OS2). Códigos de color facilitan identificación visual. También se usan: Aqua (OM3/OM4 laser-optimized MMF), Violeta (OM5 wideband MMF). Cable exterior puede ser negro."},
+            {q: "El núcleo (core) de una fibra monomodo típica tiene un diámetro de:", options: ["50-62.5 μm", "125 μm", "8-10 μm", "250 μm"], answer: 2, explanation: "Monomodo (SMF): Core de 9 μm (8-10 μm), permite UN solo modo de propagación, largas distancias (>10 km), usa laser. Multimodo (MMF): Core de 50 o 62.5 μm, múltiples modos, distancias cortas (<2 km), usa LED. Cladding ambos: 125 μm."},
+            {q: "¿Qué es el \"cladding\" en una fibra óptica?", options: ["La cubierta externa de plástico", "El revestimiento de vidrio alrededor del núcleo", "El gel protector", "El cable de kevlar"], answer: 1, explanation: "Cladding es capa de vidrio (125 μm diámetro) con índice de refracción MENOR que el core. Esta diferencia de índices causa reflexión total interna, confinando la luz en el core. Material: SiO₂ (sílice) dopado. NO es la cubierta plástica exterior."},
+            {q: "¿Qué es el \"buffer\" o recubrimiento primario?", options: ["El núcleo de la fibra", "La protección primaria alrededor del cladding", "El gel anticongelante", "El elemento de tracción"], answer: 1, explanation: "Buffer (250 μm) es la primera capa protectora de polímero (acrilato) sobre el cladding de vidrio (125 μm). Protege contra humedad, abrasión mecánica y microcurvaturas. En fibras tight-buffered se aumenta a 900 μm para mayor robustez."},
+            {q: "Las protecciones secundarias en fibras ópticas pueden ser:", options: ["Solo rígidas", "Ajustadas u holgadas", "Solo flexibles", "Solo metálicas"], answer: 1, explanation: "Tight (ajustada): Buffer de 900 μm directo sobre fibra. Uso: indoor, patch cords. Loose (holgada): Fibras sueltas en tubos con gel. Uso: outdoor, enterrado. Tight más resistente a manipulación, loose mejor para temperatura y tracción."},
+            {q: "¿Qué contienen los tubos en la estructura holgada?", options: ["Aire comprimido", "Un gel anticongelante que protege las fibras", "Agua destilada", "Aceite mineral"], answer: 1, explanation: "Gel tixotrópico (compound) en tubos loose-tube protege fibras de: humedad, expansión/contracción térmica, estrés mecánico. Es anticongelante (no se solidifica en frío). Dificulta limpieza pero es esencial en exteriores. Algunos cables usan diseño dry (sin gel) con superabsorbent powder."},
+            {q: "¿Cuál es el diámetro del recubrimiento primario estándar de una fibra?", options: ["125 μm", "250 μm", "500 μm", "900 μm"], answer: 1, explanation: "250 μm es el diámetro estándar del buffer primario sobre el cladding de 125 μm. Estructura completa: Core 9 μm → Cladding 125 μm → Buffer primario 250 μm. En tight-buffered se añade buffer secundario hasta 900 μm."},
+            {q: "En un cable de fibra óptica, ¿qué material se usa comúnmente como elemento de tracción?", options: ["Cobre", "Aluminio", "Kevlar", "Titanio"], answer: 2, explanation: "Kevlar (aramid yarn) es el elemento de tensión (strength member) estándar. Alta resistencia a tracción, bajo peso, no conductor. Ubicado entre tubos de fibra y chaqueta exterior. Absorbe fuerzas de instalación sin transmitirlas a las frágiles fibras. Otros: fibra de vidrio, acero."},
+            {q: "Los cables de fibra óptica ajustados típicamente se usan:", options: ["Solo en interiores", "En exterior, se recomienda en ducto", "Sumergidos en agua", "Solo para conexiones temporales"], answer: 1, explanation: "Tight se usa en indoor (buildings) y outdoor EN DUCTO. Menos tolerante a temperaturas extremas que loose. Ventajas: más compacto, fácil terminación, menor radio de curvatura. Desventajas: menor protección térmica, no ideal para enterrado directo."},
+            {q: "¿Cuántas fibras puede contener típicamente un cable ajustado de exterior?", options: ["1-4 fibras", "8-36 fibras", "100-200 fibras", "500+ fibras"], answer: 1, explanation: "Cables tight-buffered outdoor típicamente 8-36 fibras. Interior (indoor): 6-144 fibras. Loose-tube permite MÁS fibras (hasta 288 o más) por cable. El límite en tight se debe al espacio ocupado por tubos de 900 μm vs loose con múltiples fibras de 250 μm por tubo."},
+            {q: "La diferencia fundamental entre fibras monomodo y multimodo es:", options: ["El color de la cubierta", "Su estructura y diseño, tienen distintos usos", "El fabricante", "El precio"], answer: 1, explanation: "SMF vs MMF: Diámetro de core (9 vs 50/62.5 μm), fuente de luz (láser vs LED), dispersión modal (no vs sí), distancia (>10 km vs <2 km), costo (mayor vs menor), aplicaciones (WAN/MAN vs LAN/datacenter)."},
+            {q: "¿Qué permite la reflexión total en el núcleo de la fibra?", options: ["El gel anticongelante", "Dos capas de vidrio con distintos índices de refracción", "El kevlar", "La cubierta de plástico"], answer: 1, explanation: "Reflexión Total Interna: Core tiene índice de refracción n₁ mayor que cladding n₂. Cuando luz incide en ángulo mayor al crítico (θc = arcsin(n₂/n₁)), se refleja 100% sin pérdida. Esto confina la luz dentro del core. Principio fundamental de transmisión en fibra."},
+            {q: "En una estructura holgada, las fibras están:", options: ["Pegadas al tubo", "Sueltas dentro del tubo con gel", "Comprimidas", "Soldadas al cable central"], answer: 1, explanation: "Loose-tube: 6-12 fibras de 250 μm flotan libremente en tubo de 2-3 mm lleno de gel. Las fibras tienen longitud ligeramente mayor (excess fiber length) que el tubo, permitiendo expansión/contracción sin estrés. Cable puede tener 6-12 tubos alrededor de elemento central de tensión."},
+            {q: "¿Por qué se debe ser cauteloso al retirar el gel de los tubos?", options: ["Es tóxico", "Es explosivo", "Es anticongelante y no se escurre fácilmente", "Es muy caliente"], answer: 2, explanation: "El gel es viscoso, pegajoso y difícil de limpiar. Se adhiere a ropa, herramientas y superficies. Requiere limpiadores especiales o alcohol isopropílico. NO es tóxico ni peligroso, solo difícil de manejar. Usar guantes. Algunos geles modernos son 'limpios' (easy-remove)."},
+            {q: "El diámetro del tubo en protección ajustada es típicamente:", options: ["0.5-1 mm", "2-3 mm", "5-10 mm", "15-20 mm"], answer: 1, explanation: "Tubes en loose-tube: 2-3 mm de diámetro externo, contienen múltiples fibras de 250 μm. Tight-buffer individual: 900 μm (0.9 mm). Los tubos proveen espacio para movimiento de fibras sin que experimenten tensión durante expansión térmica o manipulación del cable."},
+            {q: "¿Para qué distancias son más adecuadas las fibras multimodo?", options: ["Más de 100 km", "Distancias cortas (hasta unos pocos km)", "Solo para enlaces intercontinentales", "No hay diferencia de distancia"], answer: 1, explanation: "MMF: <2 km debido a dispersión modal (modos diferentes viajan a velocidades diferentes, expandiendo pulsos). OM3/0M4 (laser-optimized): hasta 550m @ 10G. OM5: hasta 150m @ 100G. Ideal para LANs, datacenters. SMF para distancias largas (>10 km)."},
+            {q: "¿Qué es un transceptor óptico?", options: ["Un cable especial", "Un dispositivo que convierte señales eléctricas en ópticas y viceversa", "Un tipo de fibra", "Un router óptico"], answer: 1, explanation: "Transceptor (Transmitter + Receiver) es un módulo hot-pluggable que convierte: Eléctrico→Óptico (TX con láser/LED) y Óptico→Eléctrico (RX con fotodiodo). Formatos: SFP, SFP+, QSFP+, CFP. Permite flexibilidad: cambiar alcance/velocidad sin cambiar switch/router."},
+            {q: "¿En qué capa del modelo OSI trabaja un transceptor óptico?", options: ["Capa 7 (Aplicación)", "Capa 4 (Transporte)", "Capa 3 (Red)", "Capa 1 (Física)"], answer: 3, explanation: "Capa 1 (Física): Maneja señales ópticas/eléctricas, no entiende tramas ni paquetes. Realiza conversión opto-eléctrica, codificación (8B/10B, 64B/66B), clock recovery. No procesa MACs ni IPs. Es transparente a capas superiores."},
+            {q: "Las funciones principales del transceptor son:", options: ["Solo transmitir", "Solo recibir", "Transmitir (Tx) y Recibir (Rx)", "Enrutar paquetes"], answer: 2, explanation: "Tx (Transmit): Recibe señal eléctrica, convierte a óptica (láser), modula, transmite por fibra. Rx (Receive): Recibe señal óptica, fotodiodo convierte a eléctrica, amplifica, recupera clock, envía a switch. Bidireccional simultáneo en fibras separadas (BiDi usa una fibra con λ diferentes)."},
+            {q: "¿Qué componente genera la señal óptica en el transmisor?", options: ["Fotodiodo", "Láser o LED", "Amplificador", "Condensador"], answer: 1, explanation: "Láser (SMF, larga distancia, coherente, monocromático, 1310/1550 nm) o LED (MMF, corta distancia, multimodo, 850/1300 nm). VCSELs (Vertical Cavity Surface Emitting Lasers) comunes en 10G MMF. DFB/FP lasers en SMF. Corriente modula la salida óptica."},
+            {q: "¿Qué componente detecta la señal óptica en el receptor?", options: ["Láser", "LED", "Fotodiodo", "Transistor"], answer: 2, explanation: "Fotodiodo (PIN o APD) convierte luz en corriente eléctrica. PIN (Positive-Intrinsic-Negative): común, económico. APD (Avalanche PhotoDiode): mayor sensibilidad (amplificación interna), usado en enlaces largos. La corriente es amplificada (TIA - Trans-Impedance Amplifier) y recuperado el clock (CDR)."},
+            {q: "SMF en transceptores significa:", options: ["Small Mode Fiber", "Single Mode Fiber (fibra monomodo)", "Super Mode Fiber", "Standard Mode Fiber"], answer: 1, explanation: "SMF (Single Mode Fiber): Core 9 μm, un solo modo de propagación, largas distancias (10-100+ km), usa laser (1310/1550 nm), baja atenuación (<0.5 dB/km), sin dispersión modal. Para WAN, MAN, backbones. Transceptores SMF: -LR, -ER, -ZR."},
+            {q: "MMF en transceptores significa:", options: ["Maximum Mode Fiber", "Multi Mode Fiber (fibra multimodo)", "Medium Mode Fiber", "Mini Mode Fiber"], answer: 1, explanation: "MMF (Multi Mode Fiber): Core 50/62.5 μm, múltiples modos, distancias cortas (<2 km), LED o VCSEL (850 nm), mayor atenuación, dispersión modal limita distancia/velocidad. OM3/OM4/OM5 laser-optimized. Para LANs, datacenters. Transceptores: -SR, -SX."},
+            {q: "¿Qué significa SFP?", options: ["Super Fast Protocol", "Small Form-Factor Pluggable", "Single Fiber Protocol", "Standard Fiber Port"], answer: 1, explanation: "SFP (Small Form-Factor Pluggable): Transceptor compacto hot-swappable para 1 GbE. Dimensiones ~56×14×9 mm. 20-pin electrical interface. SFP+ (enhanced): 10 GbE. SFP28: 25 GbE. Ventaja: flexibilidad (cambiar tipo sin cambiar switch). Reemplazó GBICs más grandes."},
+            {q: "¿Qué significa QSFP?", options: ["Quick Small Form Protocol", "Quad Small Form-Factor Pluggable", "Quality Standard Fiber Port", "Quantum Single Fiber Protocol"], answer: 1, explanation: "QSFP (Quad SFP): 4 canales (lanes) de 10G = 40G total. QSFP28: 4×25G = 100G. QSFP-DD (Double Density): 8×25G = 200G o 8×50G = 400G. Tamaño similar a SFP+ pero 4x/8x la capacidad. Usado en datacenters de alta densidad y core networks."},
+            {q: "SR en transceptores significa:", options: ["Super Reach", "Short Reach (corto alcance)", "Standard Reach", "Slow Rate"], answer: 1, explanation: "SR (Short Reach): MMF, distancias cortas (hasta 300m). Ejemplo: 10GBASE-SR usa OM3 hasta 300m, OM4 hasta 400m. Usa VCSEL 850 nm. Bajo costo, ideal para conexiones dentro de rack o entre racks adyacentes en datacenter."},
+            {q: "LR en transceptores significa:", options: ["Low Reach", "Long Reach (alcance largo, hasta 10 km)", "Light Reach", "Limited Rate"], answer: 1, explanation: "LR (Long Reach): SMF, hasta 10 km. Ejemplo: 10GBASE-LR usa 1310 nm. Aplicaciones: interconexión de buildings en campus, MAN. Requiere SMF OS1/OS2. Costo medio. Potencia típica: -8 a -1 dBm TX, sensibilidad -14.4 dBm RX."},
+            {q: "ER en transceptores significa:", options: ["Extra Rate", "Extended Reach (alcance extendido, hasta 40 km)", "Extreme Reach", "Efficient Rate"], answer: 1, explanation: "ER (Extended Reach): SMF, hasta 40 km. Ejemplo: 10GBASE-ER usa 1550 nm (menor atenuación). Aplicaciones: MAN, anillos metropolitanos. Requiere mejor power budget. Puede necesitar equipos de dispersión cromática compensation (DCM) en distancias largas."},
+            {q: "ZR en transceptores significa:", options: ["Zero Reach", "ZR reach (alcance extendido, 80 km o más)", "Zone Reach", "Zenith Rate"], answer: 1, explanation: "ZR (Z Reach): SMF, 80+ km. Ejemplo: 10GBASE-ZR hasta 80 km, 100GBASE-ZR hasta 80-120 km. Usa1550 nm, requiere excelente dispersión management. Aplicaciones: WAN, enlaces inter-city. Alto costo. Puede requerir amplificadores EDFA en enlaces muy largos."},
+            {q: "¿Qué almacena la EEPROM en un transceptor?", options: ["Los datos de usuario", "Información de fabricante, modelo y configuración", "El sistema operativo", "Las claves de encriptación"], answer: 1, explanation: "EEPROM contiene: Vendor name/OUI, part number, serial number, fecha fabricación, wavelength, potencia TX/RX, temperatura de operación, DDM (Digital Diagnostic Monitoring) thresholds. Accessible vía I2C. Show interfaces transceiver details lee esta info. Estándar: SFF-8472 (SFP MSA)."},
+            {q: "Los conectores ópticos comunes en transceptores incluyen:", options: ["RJ45, USB", "LC, SC, MPO", "HDMI, DVI", "BNC, F-Type"], answer: 1, explanation: "LC (Lucent Connector): Duplex, pequeño, 1.25mm ferrule, común en SFP/SFP+. SC (Subscriber Connector): Más grande, 2.5mm ferrule, push-pull. MPO/MTP: Multi-fiber (12/24 fibras), usado en 40G/100G QSFP breakouts. ST (obsoleto), MU (miniatura). LC es estándar moderno."},
+            {q: "¿Qué es el \"power budget\" o presupuesto óptico?", options: ["El costo del transceptor", "La cantidad de luz necesaria para transmitir señales exitosamente", "El consumo eléctrico del módulo", "El precio de la instalación"], answer: 1, explanation: "Power Budget = Potencia disponible para pérdidas del enlace. Se mide en dB. Determina máxima distancia o pérdida tolerable. Si pérdidas del enlace > power budget → link no funciona. Es la diferencia entre potencia TX y sensibilidad RX (mínima señal detectable)."},
+            {q: "El presupuesto óptico se calcula como:", options: ["Tx máximo - Rx máximo", "Tx mínimo - Rx sensibilidad mínima", "Solo la potencia del transmisor", "La distancia del cable"], answer: 1, explanation: "Power Budget (dB) = PTX_min - Sensitivity_RX. Ejemplo: TX = -3 dBm, RX sensibilidad = -18 dBm → Budget = 15 dB. Este es el máximo de pérdidas permitidas (fibra + conectores + empalmes + margen). Valores conservadores (worst case) garantizan funcionamiento."},
+            {q: "Para que un enlace funcione correctamente, las pérdidas del enlace deben ser:", options: ["Mayores que el power budget", "Menores o iguales al power budget", "Exactamente iguales al power budget", "No importa la relación"], answer: 1, explanation: "Pérdidas totales ≤ Power Budget - Margen de seguridad. Ejemplo: Budget 15 dB, margen 3 dB → pérdidas máximas permitidas 12 dB. Si pérdidas = 13 dB → link puede fallar o ser inestable. Siempre dejar margen para degradación futura (conectores dirty, aging)."},
+            {q: "¿Qué factores contribuyen a las pérdidas en un enlace óptico?", options: ["Solo la fibra", "Fibra, conectores, empalmes y factores ambientales", "Solo los conectores", "Solo la temperatura"], answer: 1, explanation: "Pérdidas: Fibra (0.3-0.5 dB/km @ 1310nm, 0.2-0.25 dB/km @ 1550nm), Conectores (0.3-0.75 dB c/u), Empalmes fusion (0.05-0.1 dB), mecánicos (0.1-0.5 dB), Macro/microbends, Dispersión (en enlaces largos), Temperatura extrema. Sumar todas las fuentes."},
+            {q: "La atenuación típica de un cable de fibra está entre:", options: ["0.01 - 0.1 dB/km", "0.22 - 0.5 dB/km", "1 - 2 dB/km", "5 - 10 dB/km"], answer: 1, explanation: "SMF @ 1310 nm: ~0.35-0.5 dB/km. SMF @ 1550 nm: ~0.22-0.25 dB/km (window de menor atenuación). MMF @850 nm: ~2.5-3.5 dB/km. MMF @ 1300 nm: ~0.7-1 dB/km. Fibras modernas de ultra-low loss: <0.16 dB/km @ 1550 nm."},
+            {q: "Una pérdida típica por empalme es aproximadamente:", options: ["0.01 dB", "0.1 dB", "1 dB", "10 dB"], answer: 1, explanation: "Empalme por fusión (fusion splice): 0.01-0.1 dB (excelente), típico 0.05 dB. Empalme mecánico: 0.1-0.5 dB. La fusión es permanente y de menor pérdida. Reflectancia fusion splice: < -60 dB (muy baja). Requiere equipos splice machine (~$5k-$50k). Empalmes mecánicos son reparables pero mayor pérdida."},
+            {q: "Según el estándar TIA, la pérdida típica por conector es:", options: ["0.1 dB", "0.75 dB", "1.5 dB", "3 dB"], answer: 1, explanation: "TIA-568: Máximo 0.75 dB por par de conectores mating (insertion loss). Buena práctica: <0.5 dB. Conectores de alta calidad: <0.3 dB. Return Loss (RL): >20 dB (PC), >40 dB (UPC), >60 dB (APC). Conectores sucios pueden añadir 1-5 dB. Limpieza es crítica."},
+            {q: "El margen de seguridad recomendado en un enlace óptico es:", options: ["0.1 - 0.5 dB", "1.7 - 3 dB", "5 - 10 dB", "15 - 20 dB"], answer: 1, explanation: "Margen (safety margin): Mínimo 3 dB recomendado. Compensa: Aging de laser/fotodiodo, acumulación de suciedad en conectores, temperatura extrema, reparaciones futuras (añaden conectores/empalmes). Margen alto (5-10 dB) permite expansiones. Margen bajo (<1 dB) es arriesgado."},
+            {q: "Si el Power Margin (margen de potencia) es negativo, significa que:", options: ["El enlace funcionará perfectamente", "No hay suficiente potencia para que la red funcione correctamente", "Hay exceso de potencia", "Es el valor ideal"], answer: 1, explanation: "Power Margin = Power Budget - Total Link Loss. Negativo → pérdidas exceden budget → BER alto o link down. Positivo → funcionamiento OK. Ideal: 3-10 dB positivo. Margin = 0 dB → funcionamiento marginal (cualquier degradación causa falla). Ejemplo: Budget 15 dB, pérdidas 17 dB → Margin = -2 dB (FALLA)."},
+            {q: "¿Qué medida se puede tomar si el presupuesto óptico es insuficiente?", options: ["Ignorar el problema", "Usar un módulo con mayor potencia, mejor sensibilidad, o agregar amplificación", "Reducir la velocidad de la red", "Cambiar el color de los cables"], answer: 1, explanation: "Soluciones: 1) Transceptor de mayor potencia TX o mejor RX (ej: LR→ER). 2) Reducir pérdidas: limpiar conectores, re-fusionar empalmes malos, acortar ruta. 3) EDFA (Erbium-Doped Fiber Amplifier) @ 1550 nm. 4) Cambiar a λ de menor atenuación (1310→1550 nm). 5) Usar fibra de mejor calidad (G.652→G.657)."}
+        ];
+
+        // Base de datos de preguntas INTEGRALES (120 preguntas mezclando todo)
+        const integralQuestions = [
+            // Propagación Radio (15 preguntas)
+            {q: "La fórmula λ (cm) = 30/f (GHz) permite calcular:", options: ["La potencia de transmisión", "La longitud de onda a partir de la frecuencia", "El ancho de banda del canal", "La ganancia de la antena"], answer: 1},
+            {q: "El factor k=4/3 en condiciones de atmósfera estándar se refiere a:", options: ["La ganancia de antena", "El Earth radius factor para refracción", "La modulación máxima", "El ancho de banda"], answer: 1},
+            {q: "A partir de 10 GHz, ¿qué efecto se vuelve dominante en la propagación?", options: ["Interferencia electromagnética", "Efectos de precipitación (lluvia)", "Reflexión ionosférica", "Difracción urbana"], answer: 1},
+            {q: "El pico de absorción del vapor de agua a 23 GHz afecta principalmente:", options: ["La modulación digital", "La atenuación de la señal en enlaces de microondas", "La ganancia de antena", "El consumo energético"], answer: 1},
+            {q: "La zona de Fresnel en un radioenlace debe mantenerse despejada en al menos:", options: ["20%", "40%", "60%", "80%"], answer: 2},
+            {q: "En el Link Budget, ABF representa:", options: ["Amplification Bandwidth Factor", "Pérdida en espacio libre (Basic Free Space Loss)", "Ancho de Banda Funcional", "Absorción de frecuencia básica"], answer: 1},
+            {q: "El coeficiente de reflexión ρ=1 indica:", options: ["Absorción total", "Reflexión especular perfecta", "Dispersión completa", "Transmisión sin pérdidas"], answer: 1},
+            {q: "El criterio de Rayleigh determina:", options: ["Si una superficie es lisa o rugosa para reflexión", "La modulación óptima", "El ancho de banda necesario", "La potencia de transmisión"], answer: 0},
+            {q: "El gradiente de refractividad típico de -40 N units/km indica:", options: ["Condiciones de ducting severo", "Atmósfera estándar en regiones templadas", "Inversión térmica", "Propagación troposférica anómala"], answer: 1},
+            {q: "La aproximación knife-edge es útil para calcular:", options: ["Ganancia de antenas parabólicas", "Pérdidas por difracción en obstáculos puntiagudos", "Modulación adaptativa", "Power budget óptico"], answer: 1},
+            {q: "EIRP (Effective Isotropic Radiated Power) es:", options: ["La potencia consumida por el transmisor", "La potencia radiada equivalente desde una antena isotrópica", "La eficiencia de radiación", "La relación señal/ruido"], answer: 1},
+            {q: "Un margen de desvanecimiento de 40 dB en un enlace de radio indica:", options: ["Enlace de muy corta distancia", "Capacidad para soportar condiciones adversas severas", "Bajo consumo energético", "Modulación baja"], answer: 1},
+            {q: "La refracción en la atmósfera causa:", options: ["Pérdida de señal únicamente", "Curvatura del haz de radio", "Incremento de potencia", "Cambio de frecuencia"], answer: 1},
+            {q: "En frecuencias superiores a 22 GHz, la absorción gaseosa se debe principalmente a:", options: ["Nitrógeno", "Oxígeno y vapor de agua", "Argón", "CO2"], answer: 1},
+            {q: "Multipath fading es más relevante en:", options: ["Frecuencias bajo 10 GHz", "Frecuencias sobre 60 GHz", "Enlaces de fibra óptica", "Transmisión satelital"], answer: 0},
+
+            // Equipos Minilink (20 preguntas)
+            {q: "La arquitectura split de equipos TN consiste en:", options: ["Dos unidades indoor", "Una RAU outdoor y una AMM indoor", "Solo equipos outdoor", "Múltiples antenas en array"], answer: 1},
+            {q: "La familia 6300 de Ericsson Minilink reemplaza a:", options: ["Las placas MMU", "Las unidades RAU de equipos TN", "Los switches de red", "Las antenas parabólicas"], answer: 1},
+            {q: "La familia 6600 de Ericsson Minilink reemplaza a:", options: ["Las RAU outdoor", "Las unidades AMM indoor", "Los cables coaxiales", "Las fuentes de poder"], answer: 1},
+            {q: "La banda 6L según ITU-R F.383 tiene canales de:", options: ["20 MHz", "28 MHz (de 29.65 MHz utilizables)", "40 MHz", "56 MHz"], answer: 1},
+            {q: "La banda 6U según ITU-R F.384 tiene canales de:", options: ["28 MHz", "40 MHz", "56 MHz", "80 MHz"], answer: 1},
+            {q: "ACCP (Adjacent Channel Co-Polarization) permite:", options: ["Usar antenas de doble polarización obligatoriamente", "Usar canales adyacentes con la misma polarización en antena simple", "Duplicar la capacidad sin XPIC", "Transmitir en bandas diferentes"], answer: 1},
+            {q: "XPIC es necesario en configuración:", options: ["ACCP", "ACAP", "CCDP (Co-Channel Dual Polarized)", "Ninguna configuración"], answer: 2},
+            {q: "La placa MMU2H soporta modulación máxima de:", options: ["256 QAM", "512 QAM", "1024 QAM", "2048 QAM"], answer: 1},
+            {q: "La placa MMU4A y MMU 1002 soportan modulación hasta:", options: ["1024 QAM", "2048 QAM", "4096 QAM", "8192 QAM"], answer: 2},
+            {q: "Los nuevos anchos de banda 80 MHz y 112 MHz están disponibles en:", options: ["Equipos TN antiguos", "Familia 6600", "Solo equipos LH", "Equipos 5G"], answer: 1},
+            {q: "PTx ≤ 30 dBm corresponde a RAUs de:", options: ["Baja potencia", "Potencia media", "Alta potencia", "Potencia ultra"], answer: 2},
+            {q: "La modulación adaptativa permite:", options: ["Mantener siempre la modulación máxima", "Variar la modulación según condiciones del enlace para optimizar capacidad y confiabilidad", "Cambiar la frecuencia automáticamente", "Aumentar la potencia de transmisión"], answer: 1},
+            {q: "ITU-R F.636 define la canalización de:", options: ["Banda 6 GHz", "Banda 8 GHz", "Banda 15 GHz", "Banda 23 GHz"], answer: 2},
+            {q: "Carrier aggregation permite:", options: ["Sumar el ancho de banda de distintos carriers en el mismo enlace", "Dividir el tráfico en dos enlaces", "Cambiar la polarización", "Reducir el consumo energético"], answer: 0},
+            {q: "Multi-band booster combina:", options: ["Dos antenas en la misma banda", "Dos radioenlaces en bandas diferentes para optimizar capacidad y confiabilidad", "Dos modulaciones simultáneas", "Dos proveedores de servicio"], answer: 1},
+            {q: "MIMO 2×2 se usa principalmente para:", options: ["Reducir el tamaño de antenas", "Duplicar la capacidad mediante multiplexación espacial", "Disminuir la latencia", "Aumentar el alcance"], answer: 1},
+            {q: "El equipo Minilink 6651 se caracteriza por:", options: ["Ser una RAU de ultra alta potencia", "Ser un equipo compacto con módem integrado", "Requerir múltiples fuentes de alimentación", "Solo funcionar en banda de 60 GHz"], answer: 1},
+            {q: "La configuración 1+1 Hot Standby sin diversidad proporciona:", options: ["Solo diversidad de espacio", "Protección de hardware sin diversidad espacial", "Duplicación de capacidad", "Reducción de latencia"], answer: 1},
+            {q: "Radio Link Bonding (hRLB) permite:", options: ["Combinar varios links paralelos para aumentar capacidad", "Dividir un link en subbandas", "Cambiar dinámicamente la frecuencia", "Reducir interferencias"], answer: 0},
+            {q: "Los equipos 6365 están siendo instalados principalmente en banda de:", options: ["6 GHz", "7 GHz", "11 GHz", "15 GHz"], answer: 3},
+
+            // Redes TCP/IP (15 preguntas)
+            {q: "El modelo híbrido TCP/IP consta de:", options: ["3 capas", "5 capas", "7 capas", "9 capas"], answer: 1, explanation: "5 capas: Aplicación, Transporte, Red, Enlace, Física. Simplifica OSI (7 capas) manteniendo separación clara entre enlace y física. Más didáctico que TCP/IP tradicional de 4 capas."},
+            {q: "Una dirección MAC tiene:", options: ["32 bits (4 bytes)", "48 bits (6 bytes)", "64 bits (8 bytes)", "128 bits (16 bytes)"], answer: 1, explanation: "48 bits = 6 bytes. Formato hexadecimal: XX:XX:XX:XX:XX:XX. Primeros 3 bytes = OUI (fabricante). Últimos 3 bytes = ID único. Permite ~281 trillones de direcciones únicas."},
+            {q: "El OUI en una dirección MAC identifica:", options: ["El modelo del dispositivo", "El fabricante", "La velocidad del puerto", "La versión del firmware"], answer: 1, explanation: "OUI (Organizationally Unique Identifier) = primeros 24 bits. Asignado por IEEE a fabricantes. Ej: 00:50:56 = VMware, D4:6E:0E = TP-Link. Herramientas online buscan fabricante por OUI."},
+            {q: "FF:FF:FF:FF:FF:FF es la dirección MAC de:", options: ["Loopback", "Broadcast", "Multicast base", "Reservada"], answer: 1, explanation: "Broadcast L2: todos los bits en 1. Envía trama a TODOS los dispositivos en VLAN/segmento. Switches flooding por todos los puertos. No cruza routers. ARP/DHCP usan broadcast."},
+            {q: "Un switch opera en capa:", options: ["Capa 1", "Capa 2", "Capa 3", "Capa 7"], answer: 1, explanation: "Capa 2 (Enlace). Aprende MACs (tabla CAM), forward basado en MAC destino. Cada puerto = dominio de colisión separado. NO detiene broadcasts. Switches L3 pueden rutear IPs.  "},
+            {q: "Un router opera en capa:", options: ["Capa 1", "Capa 2", "Capa 3", "Capa 4"], answer: 2, explanation: "Capa 3 (Red). Rutea paquetes entre redes IP diferentes. Mantiene tabla de ruteo (estática/dinámica). Detiene broadcasts L2. Separa dominios de broadcast. Realiza NAT, ACLs, QoS."},
+            {q: "El tamaño de trama Ethernet mínimo es:", options: ["46 bytes", "64 bytes", "128 bytes", "1500 bytes"], answer: 1, explanation: "64 bytes totales (14 header + 46 datos mín + 4 FCS). Garantiza detección de colisiones CSMA/CD. Si payload <46 bytes se añade padding. Tramas <64 bytes = runts (error)."},
+            {q: "El campo de datos en Ethernet puede tener máximo:", options: ["1024 bytes", "1500 bytes", "1518 bytes", "9000 bytes"], answer: 1, explanation: "MTU = 1500 bytes de payload. Total trama = 1518 bytes (14 header + 1500 datos + 4 FCS). Jumbo frames pueden ser 9000 bytes  para mejorar eficiencia en 10GE+."},
+            {q: "CSMA/CD es el protocolo de:", options: ["Enrutamiento", "Detección de colisiones en Ethernet", "Asignación de IPs", "Encriptación"], answer: 1, explanation: "Carrier Sense Multiple Access with Collision Detection. Escucha antes de TX. Si colisión: jam signal + backoff exponencial. Obsoleto en full-duplex (no hay colisiones). WiFi usa CSMA/CA."},
+            {q: "/24 en CIDR equivale a máscara:", options: ["255.0.0.0", "255.255.0.0", "255.255.255.0", "255.255.255.128"], answer: 2, explanation: "24 bits de red = 11111111.11111111.11111111.00000000 = 255.255.255.0. Permite 256 IPs (254 usables). CIDR reemplazó clases rígidas A/B/C. /16=65536 IPs, /32=1 IP (host-route)."},
+            {q: "ARP resuelve:", options: ["Nombres a IPs", "IPs a MACs", "MACs a IPs", "Puertos a servicios"], answer: 1, explanation: "ARP (Address Resolution Protocol): IP→MAC en misma LAN. Broadcast ARP request (¿quién tiene 192.168.1.5?), unicast reply (yo soy, mi MAC es...). Cache ARP (~2 min TTL). Gratuitous ARP detecta duplicados."},
+            {q: "ICMP se usa para:", options: ["Transferencia de archivos", "Mensajes de control y error", "Asignación de IPs", "Enrutamiento dinámico"], answer: 1, explanation: "Internet Control Message Protocol. Reporta errores: Destination Unreachable (tipo 3), Time Exceeded (tipo 11). Diagnóstico: Echo Request/Reply (ping, tipos 8/0). Parte de IP, no capa de transporte."},
+            {q: "TCP se diferencia de UDP en que:", options: ["TCP es más rápido", "TCP es orientado a conexión y confiable", "UDP usa más ancho de banda", "TCP no usa puertos"], answer: 1, explanation: "TCP: conexión (3-way handshake), confiable (ACKs, retransmisiones), ordenado (sequence numbers), control de flujo. UDP: sin conexión, no confiable, sin orden, overhead mínimo. TCP para HTTP/FTP, UDP para VoIP/streaming."},
+            {q: "HTTP usa el puerto:", options: ["21", "23", "80", "443"], answer: 2, explanation: "HTTP = puerto 80/TCP. HTTPS = 443/TCP (cifrado TLS/SSL). FTP = 20+21. TELNET = 23. SSH = 22. DNS = 53 UDP/TCP. SMTP = 25. Puertos <1024 = well-known (requieren privilegios)."},
+            {q: "DNS usa el puerto:", options: ["21", "53", "80", "443"], answer: 1, explanation: "DNS = puerto 53. UDP/53 para queries rápidas (<512 bytes). TCP/53 para zone transfers (AXFR) o respuestas >512 bytes (DNSSEC). Traduce nombres FQDN a IPs. Jerárquico: root→TLD→authoritative."},
+
+            // BERT (12 preguntas)
+            {q: "BER se calcula como:", options: ["Bits totales / Bits erróneos", "Bits erróneos / Bits totales", "Tiempo / Errores", "Errores × Tiempo"], answer: 1, explanation: "BER = Errores/Total. Métrica de calidad de enlace. 10⁻⁹ = 1 error cada mil millones de bits. Testing duration debe ser suficiente para significancia estadística."},
+            {q: "Un BER de 10⁻⁹ es considerado:", options: ["Inaceptable", "Aceptable en telecomunicaciones", "Solo para laboratorio", "Óptimo para transmisión de datos"], answer: 1, explanation: "Estándar para telecomunicaciones. Balanza entre calidad y costo. Peor que 10⁻⁶ causa retransmisiones  excesivas. Mejor que 10⁻¹² es óptimo pero costoso."},
+            {q: "10⁻¹³ es un BER apropiado para:", options: ["Voz", "Transmisión de datos", "Video analógico", "Radio AM"], answer: 1, explanation: "Especialmente para datos críticos en fibra óptica o sistemas SDH/SONET. Calidad superior a 10⁻⁹. Requiere excelente SNR y FEC."},
+            {q: "PRBS (Pseudo-Random Bit Sequence) se usa para:", options: ["Encriptar datos", "Crear patrones variados que generen errores y aceleren pruebas", "Comprimir información", "Sincronizar relojes"], answer: 1, explanation: "Secuencia determinística pseudo-aleatoria que estresa capa física. PRBS7/15/23/31 según longitud. Detecta problemas de sincronización, ISI, jitter."},
+            {q: "PER (Packet Error Rate) mide:", options: ["Velocidad de paquetes", "Relación de paquetes que no llegan al destino", "Tamaño de paquetes", "Latencia de paquetes"], answer: 1, explanation: "PER = Paquetes perdidos o corruptos / Total paquetes. Opera en capa 2/3. Complementa BER (capa 1). FCS detecta corrupción."},
+            {q: "Jitter se define como:", options: ["Ancho de banda promedio", "Variación en el retraso de recepción de paquetes", "Potencia de señal", "Número de errores"], answer: 1, explanation: "Variación de latencia entre paquetes consecutivos. Causado por congestión variable, QoS. Jitter buffers mitigan pero añaden latencia. Crítico en VoIP/video."},
+            {q: "La latencia alta afecta principalmente a:", options: ["Transferencia de archivos grandes", "Aplicaciones VoIP y videoconferencia", "Email", "Bases de datos"], answer: 1, explanation: "Apps real-time son sensibles. >150 ms one-way causa degradación VoIP. FTP/email toleran latencia. Gaming requiere <50 ms."},
+            {q: "Las rutinas de corrección de errores de Ethernet pueden:", options: ["Eliminar todos los problemas físicos", "Enmascarar problemas físicos de la red", "Aumentar el ancho de banda", "Reducir la latencia"], answer: 1, explanation: "FEC y retransmisiones TCP ocultan BER. Link con BER 10⁻⁶ puede funcionar pero con throughput/jitter degradados. BERT sin FEC expone la realidad."},
+            {q: "Causas de errores de bits en fibra óptica incluyen:", options: ["Solo temperatura", "Atenuación, dispersión y otras causas", "Solo humedad", "Solo presión atmosférica"], answer: 1, explanation: "Atenuación (conectores sucios, curvas), dispersión cromática/PMD, reflexiones, daño físico, láser degradado. Fibra inmune a EMI."},
+            {q: "KPIs medibles con BERT incluyen:", options: ["Solo velocidad", "Pérdida de paquetes, latencia, jitter", "Solo voltaje", "Solo frecuencia"], answer: 1, explanation: "BERT mide: BER, packet loss, latencia (RTT/one-way), jitter, throughput, ES/SES (errored/severely errored seconds). Reportes incluyen histogramas temporales."},
+            {q: "Pérdida significativa de paquetes puede indicar:", options: ["Red óptima", "Congestión, problemas de red, posibles ataques DOS", "Exceso de capacidad", "Bajo uso de red"], answer: 1, explanation: ">1% packet loss es serio. Causas: congestión, fallas HW, DoS/DDoS, routing loops, MTU mismatch. Requiere análisis de traceroute/SNMP."},
+            {q: "BERT es importante para:", options: ["Solo redes antiguas", "Garantizar rendimiento de redes de alta velocidad y satisfacción del cliente", "Reemplazar protocolos", "Solo en laboratorios"], answer: 1, explanation: "Valida capa física pre-deployment. Detecta degradaciones sub-umbral. Esencial en SLA verification, troubleshooting, aceptación de circuitos. Crítico en 100G/400G."},
+
+            // RFC 2544 (12 preguntas)
+            {q: "RFC 2544 fue desarrollado en:", options: ["1995", "1999", "2004", "2010"], answer: 1},
+            {q: "RFC 2544 fue creado por:", options: ["IEEE", "ISO", "IETF", "ITU-T"], answer: 2},
+            {q: "RFC 2544 se enfoca en capas:", options: ["Solo capa 1", "Capa 2/3", "Capa 7", "Todas"], answer: 1},
+            {q: "Throughput según RFC 2544 es:", options: ["Latencia mínima", "Tasa máxima sin pérdida de tramas", "Número de puertos", "Temperatura del equipo"], answer: 1},
+            {q: "Tamaños de trama en RFC 2544:", options: ["Solo 64 y 1518", "64, 128, 256, 512, 1024, 1280, 1518", "Solo 1500", "100, 200, 500"], answer: 1},
+            {q: "Back-to-Back evalúa:", options: ["Conexión física", "Capacidad de procesar ráfagas sin pérdida", "Redundancia", "Backup"], answer: 1},
+            {q: "Latencia en RFC 2544 puede medirse como:", options: ["Solo RTT", "RTT o one-way con sincronización GPS/PTP", "Solo one-way", "No se mide"], answer: 1},
+            {q: "System Reset mide:", options: ["Velocidad de transmisión", "Tiempo de recuperación tras reinicio", "Número de puertos", "Consumo energético"], answer: 1},
+            {q: "Limitación de RFC 2544:", options: ["Muy lento", "No modela múltiples servicios simultáneos", "Solo wireless", "Muy costoso"], answer: 1},
+            {q: "Para multiservicio es mejor:", options: ["RFC 2544", "ITU-T Y.1564", "IEEE 802.3", "RFC 791"], answer: 1},
+            {q: "Criterio típico de Throughput:", options: ["≥ 50%", "≥ 99% de line rate sin pérdida", "≥ 25%", "≥ 75% con pérdida"], answer: 1},
+            {q: "Antes de cada prueba RFC 2544 se debe:", options: ["Apagar todo", "Resetear contadores y verificar estado", "Cambiar cables", "Actualizar firmware"], answer: 1},
+
+            // Fibras Ópticas (15 preguntas)
+            {q: "Fibras ópticas se clasifican en:", options: ["Largas y cortas", "Monomodo y Multimodo", "Rápidas y lentas", "Internas y externas"], answer: 1},
+            {q: "SM (Single Mode) significa:", options: ["Modo pequeño", "Monomodo", "Super Mode", "Standard Mode"], answer: 1},
+            {q: "Fibras monomodo tienen cubierta de color:", options: ["Verde", "Amarillo o azul", "Rojo", "Violeta"], answer: 1},
+            {q: "Fibras multimodo tienen cubierta de color:", options: ["Amarillo", "Naranja", "Azul", "Verde"], answer: 1},
+            {q: "Núcleo de fibra monomodo mide:", options: ["50 μm", "8-10 μm", "125 μm", "250 μm"], answer: 1},
+            {q: "Cladding es:", options: ["Cubierta plástica externa", "Revestimiento de vidrio alrededor del núcleo", "Gel protector", "Kevlar"], answer: 1},
+            {q: "Buffer es:", options: ["Núcleo", "Protección primaria alrededor del cladding", "Gel", "Elemento de tracción"], answer: 1},
+            {q: "Protecciones secundarias son:", options: ["Solo rígidas", "Ajustadas u holgadas", "Solo flexibles", "Solo metálicas"], answer: 1},
+            {q: "Tubos de estructura holgada contienen:", options: ["Aire", "Gel anticongelante", "Agua", "Aceite"], answer: 1},
+            {q: "Recubrimiento primario estándar mide:", options: ["125 μm", "250 μm", "500 μm", "900 μm"], answer: 1},
+            {q: "Elemento de tracción común:", options: ["Cobre", "Kevlar", "Aluminio", "Titanio"], answer: 1},
+            {q: "Cables ajustados se usan:", options: ["Solo indoor", "En exterior, recomendado en ducto", "Sumergidos", "Solo temporal"], answer: 1},
+            {q: "Cable ajustado exterior contiene:", options: ["1-4 fibras", "8-36 fibras", "100-200 fibras", "500+ fibras"], answer: 1},
+            {q: "Reflexión total en fibra se logra con:", options: ["Gel", "Dos capas de vidrio con índices de refracción distintos", "Kevlar", "Cubierta plástica"], answer: 1},
+            {q: "Fibras multimodo son para:", options: ["Más de 100 km", "Distancias cortas (pocos km)", "Enlaces intercontinentales", "Sin límite de distancia"], answer: 1},
+
+            // Transceptores Ópticos (16 preguntas)
+            {q: "Un transceptor óptico:", options: ["Es un cable", "Convierte señales eléctricas a ópticas y viceversa", "Es un tipo de fibra", "Es un router"], answer: 1},
+            {q: "Transceptor opera en capa:", options: ["7", "4", "3", "1"], answer: 3},
+            {q: "Funciones del transceptor:", options: ["Solo Tx", "Solo Rx", "Tx y Rx", "Routing"], answer: 2},
+            {q: "Genera señal óptica en Tx:", options: ["Fotodiodo", "Láser o LED", "Amplificador", "Condensador"], answer: 1},
+            {q: "Detecta señal óptica en Rx:", options: ["Láser", "LED", "Fotodiodo", "Transistor"], answer: 2},
+            {q: "SMF significa:", options: ["Small Mode", "Single Mode Fiber", "Super Mode", "Standard Mode"], answer: 1},
+            {q: "SFP significa:", options: ["Super Fast Protocol", "Small Form-Factor Pluggable", "Single Fiber Protocol", "Standard Fiber Port"], answer: 1},
+            {q: "QSFP significa:", options: ["Quick Protocol", "Quad Small Form-Factor Pluggable", "Quality Port", "Quantum Protocol"], answer: 1},
+            {q: "SR significa:", options: ["Super Reach", "Short Reach", "Standard Reach", "Slow Rate"], answer: 1},
+            {q: "LR significa:", options: ["Low Reach", "Long Reach (hasta 10 km)", "Light Reach", "Limited Rate"], answer: 1},
+            {q: "ER significa:", options: ["Extra Rate", "Extended Reach (hasta 40 km)", "Extreme Reach", "Efficient Rate"], answer: 1},
+            {q: "ZR significa:", options: ["Zero Reach", "ZR reach (80 km o más)", "Zone Reach", "Zenith Rate"], answer: 1},
+            {q: "EEPROM almacena:", options: ["Datos de usuario", "Información de fabricante, modelo y configuración", "Sistema operativo", "Claves de encriptación"], answer: 1},
+            {q: "Conectores ópticos comunes:", options: ["RJ45, USB", "LC, SC, MPO", "HDMI, DVI", "BNC"], answer: 1},
+            {q: "Power budget es:", options: ["Costo del transceptor", "Cantidad de luz necesaria para transmisión exitosa", "Consumo eléctrico", "Precio de instalación"], answer: 1},
+            {q: "Power budget se calcula:", options: ["Tx máx - Rx máx", "Tx mín - Rx sensibilidad mín", "Solo Tx", "Solo distancia"], answer: 1},
+
+            // Preguntas avanzadas de integración (15 preguntas)
+            {q: "En un enlace de 30 km a 7 GHz con k=4/3, ¿qué factor es más crítico?", options: ["Absorción gaseosa", "Zona de Fresnel y difracción", "Efecto Doppler", "Dispersión cromática"], answer: 1},
+            {q: "Para un enlace en 15 GHz con lluvia de 30 mm/h, el factor dominante de atenuación es:", options: ["Absorción de O2", "Rain fading", "Reflexión ionosférica", "Multipath"], answer: 1},
+            {q: "Un enlace con MIMO 2×2 y modulación 4096 QAM requiere:", options: ["Antenas pequeñas y baja potencia", "Separación óptima de antenas y excelente SNR", "Solo una antena", "Baja frecuencia"], answer: 1},
+            {q: "Al combinar Multi-band booster (7 GHz + 15 GHz) se logra:", options: ["Reducir costos", "Optimizar confiabilidad en banda baja y capacidad en banda alta", "Eliminar interferencias", "Duplicar el alcance"], answer: 1},
+            {q: "En un cable de fibra con 4 empalmes a 0.1 dB/empalme y 6 conectores a 0.75 dB/conector, la pérdida total de conexiones es:", options: ["1.5 dB", "4.9 dB", "6 dB", "10 dB"], answer: 1},
+            {q: "Si un transceptor tiene Tx mín=-5 dBm y Rx sens=-28 dBm, el power budget es:", options: ["23 dB", "33 dB", "5 dB", "28 dB"], answer: 0},
+            {q: "Para un enlace de 20 km con fibra de 0.3 dB/km, la atenuación de fibra es:", options: ["3 dB", "6 dB", "9 dB", "12 dB"], answer: 1},
+            {q: "En RFC 2544, si a 1518 bytes se alcanza 9.8 Gbps en un enlace 10GbE, el throughput es:", options: ["100%", "98%", "90%", "80%"], answer: 1},
+            {q: "Un BER de 10⁻⁶ en un enlace de datos indica:", options: ["Excelente calidad", "Calidad inaceptable, necesita mejora", "Calidad óptima", "Normal para voz"], answer: 1},
+            {q: "Modulación adaptativa entre 128 QAM y 2048 QAM permite:", options: ["Capacidad fija", "Ajustar capacidad según calidad del enlace", "Reducir latencia siempre", "Eliminar fading"], answer: 1},
+            {q: "XPIC reduce:", options: ["Potencia de transmisión", "Interferencia de polarización cruzada en CCDP", "Latencia", "Costo de antenas"], answer: 1},
+            {q: "En Ethernet, una trama de 64 bytes con 46 bytes de datos tiene:", options: ["18 bytes de overhead", "Solo datos", "64 bytes de overhead", "No es válida"], answer: 0},
+            {q: "Un switch que aprende MACs opera por:", options: ["Inundación permanente", "Construcción de tabla MAC y forwarding selectivo", "Enrutamiento IP", "Broadcast continuo"], answer: 1},
+            {q: "La máscara /28 permite:", options: ["254 hosts", "14 hosts utilizables", "30 hosts utilizables", "62 hosts utilizables"], answer: 2},
+            {q: "Un enlace óptico de 50 km con atenuación 0.25 dB/km, 8 empalmes a 0.1 dB, 8 conectores a 0.75 dB, requiere power budget mínimo de:", options: ["12.5 dB", "18.3 dB", "25 dB", "30 dB"], answer: 1}
+        ];
+
+        // Renderizar preguntas
+        function renderQuestions(questions, containerId) {
+            const container = document.getElementById(containerId);
+            let html = '';
+            
+            questions.forEach((q, index) => {
+                html += `
+                    <div class="question" data-answer="${q.answer}" data-explanation="${q.explanation || ''}">
+                        <span class="question-number">Pregunta ${index + 1}</span>
+                        <div class="question-text">${q.q}</div>
+                        <div class="options">
+                            ${q.options.map((opt, i) => `
+                                <div class="option" onclick="selectOption(this, ${i})">${String.fromCharCode(97 + i)}) ${opt}</div>
+                            `).join('')}
+                        </div>
+                        ${q.explanation ? `
+                            <div class="explanation">
+                                <div class="explanation-title">💡 Explicación:</div>
+                                <div class="explanation-text">${q.explanation}</div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // Seleccionar opción
+        function selectOption(element, optionIndex) {
+            const question = element.closest('.question');
+            const options = question.querySelectorAll('.option');
+            const correctAnswer = parseInt(question.dataset.answer);
+            const explanation = question.querySelector('.explanation');
+            
+            // Si ya está calificada, no hacer nada
+            if (element.classList.contains('correct') || element.classList.contains('incorrect')) {
+                return;
+            }
+            
+            // Marcar todas como deshabilitadas
+            options.forEach(opt => opt.classList.add('disabled'));
+            
+            // Marcar correcta o incorrecta
+            if (optionIndex === correctAnswer) {
+                element.classList.add('correct');
+            } else {
+                element.classList.add('incorrect');
+                options[correctAnswer].classList.add('correct');
+            }
+            
+            // Mostrar explicación si existe
+            if (explanation) {
+                explanation.classList.add('show');
+            }
+        }
+
+        // Calificar prueba
+        function submitTest(testType) {
+            const container = document.getElementById(`${testType}-questions`);
+            const questions = container.querySelectorAll('.question');
+            let correct = 0;
+            let total = questions.length;
+            let answered = 0;
+            
+            questions.forEach(question => {
+                const selectedCorrect = question.querySelector('.option.correct:not(.disabled)');
+                if (question.querySelector('.option.disabled')) {
+                    answered++;
+                    if (selectedCorrect) {
+                        correct++;
+                    }
+                }
+            });
+            
+            const percentage = ((correct / total) * 100).toFixed(1);
+            let grade = '';
+            
+            if (percentage >= 90) grade = 'Excelente';
+            else if (percentage >= 80) grade = 'Muy Bien';
+            else if (percentage >= 70) grade = 'Bien';
+            else if (percentage >= 60) grade = 'Aprobado';
+            else grade = 'Necesita Repasar';
+            
+            const resultsHtml = `
+                <div class="results">
+                    <h2>📊 Resultados de la Prueba</h2>
+                    <div class="score">${percentage}%</div>
+                    <div class="score-details">
+                        <strong>${correct}</strong> correctas de <strong>${total}</strong> preguntas
+                        <br>
+                        Calificación: <strong>${grade}</strong>
+                        <br>
+                        Respondidas: ${answered} / ${total}
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${percentage}%">${percentage}%</div>
+                    </div>
+                    <button class="reset-btn" onclick="location.reload()">🔄 Reiniciar Pruebas</button>
+                </div>
+            `;
+            
+            document.getElementById(`${testType}-results`).innerHTML = resultsHtml;
+            
+            // Scroll a resultados
+            document.getElementById(`${testType}-results`).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Inicializar pruebas
+        renderQuestions(radioQuestions, 'radio-questions');
+        renderQuestions(ipQuestions, 'ip-questions');
+        renderQuestions(integralQuestions, 'integral-questions');
+    </script>
+</body>
+</html>

@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadoras Técnicas - Llamados Técnicos 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            opacity: 0.8;
+            font-size: 1.1em;
+        }
+        
+        .nav-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            transition: all 0.3s;
+            z-index: 100;
+        }
+        
+        .nav-link:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .calculator-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            padding: 15px 25px;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: transparent;
+            color: white;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+        }
+        
+        .tab-btn:hover, .tab-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-color: transparent;
+        }
+        
+        .calculator-container {
+            display: none;
+        }
+        
+        .calculator-container.active {
+            display: block;
+        }
+        
+        .calculator {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .calculator h2 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 1.8em;
+        }
+        
+        .calculator-desc {
+            text-align: center;
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+        
+        .formula-display {
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.3em;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 1.1em;
+            transition: all 0.3s;
+        }
+        
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(255,255,255,0.15);
+        }
+        
+        .input-group input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+        
+        .input-group select option {
+            background: #1a1a2e;
+            color: white;
+        }
+        
+        .input-hint {
+            font-size: 0.9em;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+        
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .calculate-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+        
+        .calculate-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .result-box {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+            text-align: center;
+            display: none;
+        }
+        
+        .result-box.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        .result-box.error {
+            background: linear-gradient(135deg, #f44336 0%, #e91e63 100%);
+        }
+        
+        .result-value {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .result-label {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .result-details {
+            margin-top: 20px;
+            text-align: left;
+            background: rgba(0,0,0,0.2);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .result-details p {
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .result-details span {
+            font-weight: bold;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .info-section {
+            background: rgba(255,255,255,0.05);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+        
+        .info-section h3 {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .info-section li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .info-section li:last-child {
+            border-bottom: none;
+        }
+        
+        @media (max-width: 768px) {
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .calculator {
+                padding: 25px;
+            }
+            
+            .result-value {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="INDEX.html" class="nav-link">← Menú Principal</a>
+    
+    <div class="container">
+        <div class="header">
+            <h1>🧮 Calculadoras Técnicas</h1>
+            <p>Herramientas para cálculos de radioenlaces, fibra óptica y redes IP</p>
+        </div>
+        
+        <div class="calculator-tabs">
+            <button class="tab-btn active" onclick="showCalculator('fresnel')">📡 Zona Fresnel</button>
+            <button class="tab-btn" onclick="showCalculator('power-budget')">💡 Power Budget</button>
+            <button class="tab-btn" onclick="showCalculator('subnetting')">🌐 Subnetting</button>
+            <button class="tab-btn" onclick="showCalculator('link-budget')">📶 Link Budget</button>
+            <button class="tab-btn" onclick="showCalculator('wavelength')">🌊 Longitud de Onda</button>
+            <button class="tab-btn" onclick="showCalculator('ber')">📊 BER</button>
+        </div>
+        
+        <!-- Calculadora Zona de Fresnel -->
+        <div class="calculator-container active" id="calc-fresnel">
+            <div class="calculator">
+                <h2>📡 Zona de Fresnel</h2>
+                <p class="calculator-desc">Calcula el radio de la primera zona de Fresnel para radioenlaces</p>
+                
+                <div class="formula-display">
+                    rF = 17.3 × √(d₁ × d₂ / (f × d))
+                </div>
+                
+                <div class="input-group">
+                    <label>Distancia total del enlace (km)</label>
+                    <input type="number" id="fresnel-distance" placeholder="Ej: 10" step="0.1">
+                </div>
+                
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Distancia al obstáculo d₁ (km)</label>
+                        <input type="number" id="fresnel-d1" placeholder="Ej: 5" step="0.1">
+                        <div class="input-hint">Desde el transmisor al punto de cálculo</div>
+                    </div>
+                    <div class="input-group">
+                        <label>Frecuencia (GHz)</label>
+                        <input type="number" id="fresnel-freq" placeholder="Ej: 7" step="0.1">
+                    </div>
+                </div>
+                
+                <button class="calculate-btn" onclick="calcFresnel()">Calcular Radio de Fresnel</button>
+                
+                <div class="result-box" id="fresnel-result">
+                    <div class="result-value" id="fresnel-value">0 m</div>
+                    <div class="result-label">Radio de la 1ª Zona de Fresnel</div>
+                    <div class="result-details" id="fresnel-details"></div>
+                </div>
+                
+                <div class="info-section">
+                    <h3>💡 Información</h3>
+                    <ul>
+                        <li>📏 Se requiere despejar al menos el <strong>60%</strong> de la primera zona de Fresnel</li>
+                        <li>📐 El radio máximo se encuentra en el punto medio del enlace (d₁ = d₂)</li>
+                        <li>📡 A mayor frecuencia, menor radio de Fresnel</li>
+                        <li>🌍 Considerar también la curvatura terrestre (factor k)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Calculadora Power Budget Óptico -->
+        <div class="calculator-container" id="calc-power-budget">
+            <div class="calculator">
+                <h2>💡 Power Budget Óptico</h2>
+                <p class="calculator-desc">Verifica si un enlace de fibra óptica tiene suficiente margen de potencia</p>
+                
+                <div class="formula-display">
+                    Power Budget = Tx min - Rx sensibilidad<br>
+                    Pérdida Total = (L × α) + Empalmes + Conectores + Margen
+                </div>
+                
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Potencia Tx mínima (dBm)</label>
+                        <input type="number" id="pb-tx" placeholder="Ej: -5" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label>Sensibilidad Rx (dBm)</label>
+                        <input type="number" id="pb-rx" placeholder="Ej: -28" step="0.1">
+                    </div>
+                </div>
+                
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Distancia (km)</label>
+                        <input type="number" id="pb-distance" placeholder="Ej: 20" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label>Atenuación fibra (dB/km)</label>
+                        <input type="number" id="pb-attenuation" placeholder="Ej: 0.35" step="0.01" value="0.35">
+                    </div>
+                </div>
+                
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Número de empalmes</label>
+                        <input type="number" id="pb-splices" placeholder="Ej: 4" value="0">
+                        <div class="input-hint">Típico: 0.1 dB/empalme</div>
+                    </div>
+                    <div class="input-group">
+                        <label>Número de conectores</label>
+                        <input type="number" id="pb-connectors" placeholder="Ej: 4" value="4">
+                        <div class="input-hint">Típico: 0.75 dB/conector</div>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label>Margen de seguridad (dB)</label>
+                    <input type="number" id="pb-margin" placeholder="Ej: 3" step="0.1" value="3">
+                </div>
+                
+                <button class="calculate-btn" onclick="calcPowerBudget()">Calcular Power Budget</button>
+                
+                <div class="result-box" id="pb-result">
+                    <div class="result-value" id="pb-value">0 dB</div>
+                    <div class="result-label" id="pb-status">Estado del enlace</div>
+                    <div class="result-details" id="pb-details"></div>
+                </div>
+                
+                <div class="info-section">
+                    <h3>📋 Valores típicos</h3>
+                    <ul>
+                        <li>Fibra SM 1310nm: <strong>0.35 dB/km</strong></li>
+                        <li>Fibra SM 1550nm: <strong>0.22 dB/km</strong></li>
+                        <li>Empalme de fusión: <strong>0.1 dB</strong></li>
+                        <li>Conector: <strong>0.5 - 0.75 dB</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Calculadora Subnetting -->
+        <div class="calculator-container" id="calc-subnetting">
+            <div class="calculator">
+                <h2>🌐 Calculadora de Subredes</h2>
+                <p class="calculator-desc">Calcula información de subredes IPv4</p>
+                
+                <div class="formula-display">
+                    Hosts = 2^(32 - prefijo) - 2
+                </div>
+                
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Dirección IP</label>
+                        <input type="text" id="subnet-ip" placeholder="Ej: 192.168.10.0">
+                    </div>
+                    <div class="input-group">
+                        <label>Prefijo CIDR</label>
+                        <select id="subnet-cidr">
+                            <option value="8">/8 (255.0.0.0)</option>
+                            <option value="16">/16 (255.255.0.0)</option>
+                            <option value="20">/20 (255.255.240.0)</option>
+                            <option value="22">/22 (255.255.252.0)</option>
+                            <option value="24" selected>/24 (255.255.255.0)</option>
+                            <option value="25">/25 (255.255.255.128)</option>
+                            <option value="26">/26 (255.255.255.192)</option>
+                            <option value="27">/27 (255.255.255.224)</option>
+                            <option value="28">/28 (255.255.255.240)</option>
+                            <option value="29">/29 (255.255.255.248)</option>
+                            <option value="30">/30 (255.255.255.252)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button class="calculate-btn" onclick="calcSubnet()">Calcular Subred</button>
+                
+                <div class="result-box" id="subnet-result">
+                    <div class="result-value" id="subnet-value">0</div>
+                    <div class="result-label">Hosts utilizables</div>
+                    <div class="result-details" id="subnet-details"></div>
+                </div>
+                
+                <div class="info-section">
+                    <h3>📋 Máscaras comunes</h3>
+                    <ul>
+                        <li>/24 = 254 hosts (255.255.255.0)</li>
+                        <li>/25 = 126 hosts (255.255.255.128)</li>
+                        <li>/26 = 62 hosts (255.255.255.192)</li>
+                        <li>/27 = 30 hosts (255.255.255.224)</li>
+                        <li>/28 = 14 hosts (255.255.255.240)</li>
+                        <li>/30 = 2 hosts (255.255.255.252) - Para enlaces punto a punto</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Calculadora Link Budget Radio -->
+        <div class="calculator-container" id="calc-link-budget">
+            <div class="calculator">
+                <h2>📶 Link Budget de Radioenlace</h2>
+                <p class="calculator-desc">Calcula el balance de potencia de un radioenlace</p>
+                
+                <div class="formula-display">
+                    Prx = Ptx + Gtx + Grx - ABF - Pérdidas<br>
+                    ABF (dB) = 92.4 + 20×log(f) + 20×log(d)
+                </div>
+                
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Potencia Tx (dBm)</label>
+                        <input type="number" id="lb-ptx" placeholder="Ej: 20" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label>Frecuencia (GHz)</label>
+                        <input type="number" id="lb-freq" placeholder="Ej: 7" step="0.1">
+                    </div>
+                </div>
+                
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Distancia (km)</label>
+                        <input type="number" id="lb-distance" placeholder="Ej: 10" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label>Sensibilidad Rx (dBm)</label>
+                        <input type="number" id="lb-sensitivity" placeholder="Ej: -80" step="0.1">
+                    </div>
+                </div>
+                
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Ganancia antena Tx (dBi)</label>
+                        <input type="number" id="lb-gtx" placeholder="Ej: 35" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label>Ganancia antena Rx (dBi)</label>
+                        <input type="number" id="lb-grx" placeholder="Ej: 35" step="0.1">
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label>Pérdidas adicionales (dB)</label>
+                    <input type="number" id="lb-losses" placeholder="Ej: 2" step="0.1" value="2">
+                    <div class="input-hint">Cables, conectores, filtros, etc.</div>
+                </div>
+                
+                <button class="calculate-btn" onclick="calcLinkBudget()">Calcular Link Budget</button>
+                
+                <div class="result-box" id="lb-result">
+                    <div class="result-value" id="lb-value">0 dB</div>
+                    <div class="result-label" id="lb-status">Margen de desvanecimiento</div>
+                    <div class="result-details" id="lb-details"></div>
+                </div>
+                
+                <div class="info-section">
+                    <h3>💡 Información</h3>
+                    <ul>
+                        <li>Margen mínimo recomendado: <strong>20-40 dB</strong></li>
+                        <li>Rain fading afecta más a frecuencias > 10 GHz</li>
+                        <li>Considerar margen para 99.99% de disponibilidad</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Calculadora Longitud de Onda -->
+        <div class="calculator-container" id="calc-wavelength">
+            <div class="calculator">
+                <h2>🌊 Longitud de Onda</h2>
+                <p class="calculator-desc">Convierte entre frecuencia y longitud de onda</p>
+                
+                <div class="formula-display">
+                    λ (cm) = 30 / f (GHz)<br>
+                    λ (m) = c / f
+                </div>
+                
+                <div class="input-group">
+                    <label>Frecuencia (GHz)</label>
+                    <input type="number" id="wl-freq" placeholder="Ej: 7" step="0.01">
+                </div>
+                
+                <button class="calculate-btn" onclick="calcWavelength()">Calcular Longitud de Onda</button>
+                
+                <div class="result-box" id="wl-result">
+                    <div class="result-value" id="wl-value">0 cm</div>
+                    <div class="result-label">Longitud de onda (λ)</div>
+                    <div class="result-details" id="wl-details"></div>
+                </div>
+                
+                <div class="info-section">
+                    <h3>📋 Frecuencias comunes</h3>
+                    <ul>
+                        <li>6 GHz → λ = 5.0 cm</li>
+                        <li>7 GHz → λ = 4.3 cm</li>
+                        <li>15 GHz → λ = 2.0 cm</li>
+                        <li>23 GHz → λ = 1.3 cm (absorción H₂O)</li>
+                        <li>60 GHz → λ = 0.5 cm (absorción O₂)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Calculadora BER -->
+        <div class="calculator-container" id="calc-ber">
+            <div class="calculator">
+                <h2>📊 Calculadora BER</h2>
+                <p class="calculator-desc">Calcula la tasa de errores de bits</p>
+                
+                <div class="formula-display">
+                    BER = Bits con error / Bits totales
+                </div>
+                
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Bits con error</label>
+                        <input type="number" id="ber-errors" placeholder="Ej: 1">
+                    </div>
+                    <div class="input-group">
+                        <label>Bits totales transmitidos</label>
+                        <input type="text" id="ber-total" placeholder="Ej: 1000000000">
+                    </div>
+                </div>
+                
+                <button class="calculate-btn" onclick="calcBER()">Calcular BER</button>
+                
+                <div class="result-box" id="ber-result">
+                    <div class="result-value" id="ber-value">0</div>
+                    <div class="result-label" id="ber-status">Tasa de Error de Bits</div>
+                    <div class="result-details" id="ber-details"></div>
+                </div>
+                
+                <div class="info-section">
+                    <h3>📋 Valores de referencia</h3>
+                    <ul>
+                        <li>10⁻³: Muy pobre, inaceptable</li>
+                        <li>10⁻⁶: Aceptable para voz</li>
+                        <li><strong>10⁻⁹: Estándar para telecomunicaciones</strong></li>
+                        <li>10⁻¹²: Excelente calidad</li>
+                        <li><strong>10⁻¹³: Transmisión de datos críticos</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mostrar calculadora
+        function showCalculator(id) {
+            document.querySelectorAll('.calculator-container').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById('calc-' + id).classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        // Calcular Zona de Fresnel
+        function calcFresnel() {
+            const d = parseFloat(document.getElementById('fresnel-distance').value);
+            const d1 = parseFloat(document.getElementById('fresnel-d1').value);
+            const f = parseFloat(document.getElementById('fresnel-freq').value);
+            
+            if (isNaN(d) || isNaN(d1) || isNaN(f) || d <= 0 || f <= 0) {
+                showError('fresnel-result', 'Por favor ingresa valores válidos');
+                return;
+            }
+            
+            const d2 = d - d1;
+            if (d2 <= 0 || d1 <= 0) {
+                showError('fresnel-result', 'd₁ debe ser menor que la distancia total');
+                return;
+            }
+            
+            // Radio de Fresnel en metros
+            const rF = 17.3 * Math.sqrt((d1 * d2) / (f * d));
+            const rF60 = rF * 0.6; // 60% despejamiento mínimo
+            
+            const result = document.getElementById('fresnel-result');
+            result.classList.remove('error');
+            result.classList.add('show');
+            
+            document.getElementById('fresnel-value').textContent = rF.toFixed(2) + ' m';
+            document.getElementById('fresnel-details').innerHTML = `
+                <p>Distancia total <span>${d} km</span></p>
+                <p>d₁ (Tx al punto) <span>${d1} km</span></p>
+                <p>d₂ (punto al Rx) <span>${d2.toFixed(2)} km</span></p>
+                <p>Frecuencia <span>${f} GHz</span></p>
+                <p style="color: #ffc107;">60% de despejamiento <span>${rF60.toFixed(2)} m</span></p>
+            `;
+        }
+        
+        // Calcular Power Budget
+        function calcPowerBudget() {
+            const tx = parseFloat(document.getElementById('pb-tx').value);
+            const rx = parseFloat(document.getElementById('pb-rx').value);
+            const distance = parseFloat(document.getElementById('pb-distance').value);
+            const attenuation = parseFloat(document.getElementById('pb-attenuation').value);
+            const splices = parseInt(document.getElementById('pb-splices').value) || 0;
+            const connectors = parseInt(document.getElementById('pb-connectors').value) || 0;
+            const margin = parseFloat(document.getElementById('pb-margin').value) || 0;
+            
+            if (isNaN(tx) || isNaN(rx) || isNaN(distance) || isNaN(attenuation)) {
+                showError('pb-result', 'Por favor ingresa valores válidos');
+                return;
+            }
+            
+            const powerBudget = tx - rx;
+            const fiberLoss = distance * attenuation;
+            const spliceLoss = splices * 0.1;
+            const connectorLoss = connectors * 0.75;
+            const totalLoss = fiberLoss + spliceLoss + connectorLoss + margin;
+            const remaining = powerBudget - totalLoss;
+            
+            const result = document.getElementById('pb-result');
+            result.classList.remove('error');
+            result.classList.add('show');
+            
+            if (remaining >= 0) {
+                document.getElementById('pb-value').textContent = remaining.toFixed(2) + ' dB';
+                document.getElementById('pb-status').textContent = '✅ Enlace viable - Margen disponible';
+            } else {
+                result.classList.add('error');
+                document.getElementById('pb-value').textContent = remaining.toFixed(2) + ' dB';
+                document.getElementById('pb-status').textContent = '❌ Enlace NO viable - Potencia insuficiente';
+            }
+            
+            document.getElementById('pb-details').innerHTML = `
+                <p>Power Budget disponible <span>${powerBudget.toFixed(2)} dB</span></p>
+                <p>Pérdida en fibra (${distance} km × ${attenuation} dB/km) <span>${fiberLoss.toFixed(2)} dB</span></p>
+                <p>Pérdida en empalmes (${splices} × 0.1 dB) <span>${spliceLoss.toFixed(2)} dB</span></p>
+                <p>Pérdida en conectores (${connectors} × 0.75 dB) <span>${connectorLoss.toFixed(2)} dB</span></p>
+                <p>Margen de seguridad <span>${margin.toFixed(2)} dB</span></p>
+                <p style="border-top: 1px solid rgba(255,255,255,0.3); padding-top: 10px;">
+                    <strong>Pérdida total</strong> <span><strong>${totalLoss.toFixed(2)} dB</strong></span>
+                </p>
+            `;
+        }
+        
+        // Calcular Subred
+        function calcSubnet() {
+            const ip = document.getElementById('subnet-ip').value;
+            const cidr = parseInt(document.getElementById('subnet-cidr').value);
+            
+            if (!ip || !validateIP(ip)) {
+                showError('subnet-result', 'Por favor ingresa una IP válida');
+                return;
+            }
+            
+            const hostBits = 32 - cidr;
+            const totalHosts = Math.pow(2, hostBits);
+            const usableHosts = totalHosts - 2;
+            
+            // Calcular máscara
+            const mask = cidrToMask(cidr);
+            
+            // Calcular dirección de red
+            const ipParts = ip.split('.').map(Number);
+            const maskParts = mask.split('.').map(Number);
+            const networkParts = ipParts.map((p, i) => p & maskParts[i]);
+            const network = networkParts.join('.');
+            
+            // Calcular broadcast
+            const wildcardParts = maskParts.map(p => 255 - p);
+            const broadcastParts = networkParts.map((p, i) => p | wildcardParts[i]);
+            const broadcast = broadcastParts.join('.');
+            
+            // Rango utilizable
+            const firstHost = [...networkParts];
+            firstHost[3] += 1;
+            const lastHost = [...broadcastParts];
+            lastHost[3] -= 1;
+            
+            const result = document.getElementById('subnet-result');
+            result.classList.remove('error');
+            result.classList.add('show');
+            
+            document.getElementById('subnet-value').textContent = usableHosts.toLocaleString();
+            document.getElementById('subnet-details').innerHTML = `
+                <p>Dirección de red <span>${network}/${cidr}</span></p>
+                <p>Máscara de subred <span>${mask}</span></p>
+                <p>Broadcast <span>${broadcast}</span></p>
+                <p>Primer host <span>${firstHost.join('.')}</span></p>
+                <p>Último host <span>${lastHost.join('.')}</span></p>
+                <p>Total direcciones <span>${totalHosts.toLocaleString()}</span></p>
+                <p style="color: #4caf50;">Hosts utilizables <span>${usableHosts.toLocaleString()}</span></p>
+            `;
+        }
+        
+        function validateIP(ip) {
+            const parts = ip.split('.');
+            if (parts.length !== 4) return false;
+            return parts.every(p => {
+                const num = parseInt(p);
+                return !isNaN(num) && num >= 0 && num <= 255;
+            });
+        }
+        
+        function cidrToMask(cidr) {
+            const mask = [];
+            for (let i = 0; i < 4; i++) {
+                const bits = Math.min(8, Math.max(0, cidr - i * 8));
+                mask.push(256 - Math.pow(2, 8 - bits));
+            }
+            return mask.join('.');
+        }
+        
+        // Calcular Link Budget
+        function calcLinkBudget() {
+            const ptx = parseFloat(document.getElementById('lb-ptx').value);
+            const freq = parseFloat(document.getElementById('lb-freq').value);
+            const distance = parseFloat(document.getElementById('lb-distance').value);
+            const sensitivity = parseFloat(document.getElementById('lb-sensitivity').value);
+            const gtx = parseFloat(document.getElementById('lb-gtx').value);
+            const grx = parseFloat(document.getElementById('lb-grx').value);
+            const losses = parseFloat(document.getElementById('lb-losses').value) || 0;
+            
+            if (isNaN(ptx) || isNaN(freq) || isNaN(distance) || isNaN(sensitivity) || isNaN(gtx) || isNaN(grx)) {
+                showError('lb-result', 'Por favor ingresa valores válidos');
+                return;
+            }
+            
+            // Pérdida en espacio libre (ABF)
+            const abf = 92.4 + 20 * Math.log10(freq) + 20 * Math.log10(distance);
+            
+            // EIRP
+            const eirp = ptx + gtx - losses;
+            
+            // Potencia recibida
+            const prx = eirp + grx - abf;
+            
+            // Margen de desvanecimiento
+            const fadeMargin = prx - sensitivity;
+            
+            const result = document.getElementById('lb-result');
+            result.classList.remove('error');
+            result.classList.add('show');
+            
+            if (fadeMargin >= 20) {
+                document.getElementById('lb-value').textContent = fadeMargin.toFixed(2) + ' dB';
+                document.getElementById('lb-status').textContent = '✅ Enlace con buen margen';
+            } else if (fadeMargin >= 0) {
+                document.getElementById('lb-value').textContent = fadeMargin.toFixed(2) + ' dB';
+                document.getElementById('lb-status').textContent = '⚠️ Margen bajo - considerar mejoras';
+            } else {
+                result.classList.add('error');
+                document.getElementById('lb-value').textContent = fadeMargin.toFixed(2) + ' dB';
+                document.getElementById('lb-status').textContent = '❌ Enlace NO viable';
+            }
+            
+            document.getElementById('lb-details').innerHTML = `
+                <p>EIRP (Ptx + Gtx - pérdidas) <span>${eirp.toFixed(2)} dBm</span></p>
+                <p>Pérdida espacio libre (ABF) <span>${abf.toFixed(2)} dB</span></p>
+                <p>Ganancia Rx (Grx) <span>${grx.toFixed(2)} dBi</span></p>
+                <p>Potencia recibida (Prx) <span>${prx.toFixed(2)} dBm</span></p>
+                <p>Sensibilidad receptor <span>${sensitivity} dBm</span></p>
+                <p style="border-top: 1px solid rgba(255,255,255,0.3); padding-top: 10px; color: #4caf50;">
+                    <strong>Margen de fading</strong> <span><strong>${fadeMargin.toFixed(2)} dB</strong></span>
+                </p>
+            `;
+        }
+        
+        // Calcular Longitud de Onda
+        function calcWavelength() {
+            const freq = parseFloat(document.getElementById('wl-freq').value);
+            
+            if (isNaN(freq) || freq <= 0) {
+                showError('wl-result', 'Por favor ingresa una frecuencia válida');
+                return;
+            }
+            
+            const wavelengthCm = 30 / freq;
+            const wavelengthM = wavelengthCm / 100;
+            const wavelengthMm = wavelengthCm * 10;
+            
+            const result = document.getElementById('wl-result');
+            result.classList.remove('error');
+            result.classList.add('show');
+            
+            document.getElementById('wl-value').textContent = wavelengthCm.toFixed(3) + ' cm';
+            document.getElementById('wl-details').innerHTML = `
+                <p>Frecuencia <span>${freq} GHz</span></p>
+                <p>Longitud de onda (m) <span>${wavelengthM.toFixed(4)} m</span></p>
+                <p>Longitud de onda (cm) <span>${wavelengthCm.toFixed(3)} cm</span></p>
+                <p>Longitud de onda (mm) <span>${wavelengthMm.toFixed(2)} mm</span></p>
+            `;
+        }
+        
+        // Calcular BER
+        function calcBER() {
+            const errors = parseFloat(document.getElementById('ber-errors').value);
+            const totalStr = document.getElementById('ber-total').value.replace(/[^0-9]/g, '');
+            const total = parseFloat(totalStr);
+            
+            if (isNaN(errors) || isNaN(total) || total <= 0) {
+                showError('ber-result', 'Por favor ingresa valores válidos');
+                return;
+            }
+            
+            const ber = errors / total;
+            const berExp = Math.log10(ber);
+            
+            const result = document.getElementById('ber-result');
+            result.classList.remove('error');
+            result.classList.add('show');
+            
+            let status = '';
+            if (ber <= 1e-13) {
+                status = '🏆 Excelente - Calidad de datos críticos';
+            } else if (ber <= 1e-9) {
+                status = '✅ Bueno - Estándar de telecomunicaciones';
+            } else if (ber <= 1e-6) {
+                status = '⚠️ Aceptable - Adecuado para voz';
+            } else {
+                result.classList.add('error');
+                status = '❌ Pobre - Calidad inaceptable';
+            }
+            
+            document.getElementById('ber-value').textContent = ber.toExponential(2);
+            document.getElementById('ber-status').textContent = status;
+            document.getElementById('ber-details').innerHTML = `
+                <p>Bits con error <span>${errors.toLocaleString()}</span></p>
+                <p>Bits totales <span>${total.toLocaleString()}</span></p>
+                <p>BER decimal <span>${ber.toExponential(6)}</span></p>
+                <p>Exponente aproximado <span>10^${berExp.toFixed(1)}</span></p>
+            `;
+        }
+        
+        // Mostrar error
+        function showError(resultId, message) {
+            const result = document.getElementById(resultId);
+            result.classList.add('show', 'error');
+            result.innerHTML = `<div class="result-value">⚠️</div><div class="result-label">${message}</div>`;
+        }
+    </script>
+</body>
+</html>

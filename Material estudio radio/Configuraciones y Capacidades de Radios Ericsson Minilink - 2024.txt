@@ -1,0 +1,689 @@
+División Técnica de Desarrollo 
+Área Ingeniería de Transporte y Núcleo 
+Sector Desarrollo de Transporte 
+Unidad Desarrollo de Redes de Radio 
+Distintas configuraciones y capacidades de tráfico de los equipos de radio  Ericsson Minilink 
+(2024) 
+Ing. Juan Carlos Sturzenegger 
+Marzo de 2024 
+1. Introducción 
+El objetivo del presente documento es resumir algunas de las configuraciones principales de los equipos de radio Ericsson Minilink, y sus correspondientes capacidades de tráfico. 
+Antel, a través de la División Técnica de Desarrollo, ha adquirido equipos de este tipo y los ha instalado en los últimos años. Está previsto seguir trabajando con los mismos en el corto y mediano plazo. 
+Ericsson trabaja permanentemente en el desarrollo de las tecnologías involucradas, por lo que los equipos incorporan mejoras en sus prestaciones cada año. Esto se puede ver en los diferentes modelos que se describen en este documento. 
+En nuestro trabajo habitual dentro de la Unidad Desarrollo de Redes de Radio manejamos algunos elementos de estos equipos relacionados con configuraciones físicas, 	bandas 	radioeléctricas, 	propagación, modulaciones, 	etc., 	y sus correspondientes capacidades de tráfico. Esto puede ser de interés para otros integrantes de la gerencia, de hecho a veces se nos hacen consultas al respecto. Por ello consideramos que era útil hacer un resumen de los elementos más importantes. 
+Este documento es una cuarta edición ampliada de otro sobre el mismo tema que escribí en 2017, y sobre el que hice ediciones ampliadas en 2020 y 2022. En la presente revisión agregué información reciente sobre los nuevos modelos de radios Ericsson Minilink, algunos de los cuales ya se han empezado a instalar. 
+Este documento está pensado para el uso interno dentro de nuestra gerencia de Antel. 
+Página 2 de 48 
+2. Equipos TN, LH, 6300, 6600 
+En los últimos años hemos trabajado en nuestra gerencia con equipos Ericsson Minilink del tipo TN (Traffic Node), los cuales tienen una configuración llamada split: constan de una unidad exterior denominada RAU y una unidad interior llamada AMM, comunicadas entre sí por cable. La modulación se realiza en las placas denominadas MMU instaladas en la unidad interior, y toda la parte de RF (radiofrecuencia) en la RAU. Como la RAU se encuentra junto a la antena o muy cerca de ella, las guías de onda son tramos muy cortos. Por tanto, una ventaja de esta configuración es que las pérdidas de RF que ocurren en el equipamiento son bajas. 
+Desde 2016 se han adquirido además equipos Ericsson Minilink del tipo LH (Long Haul), en los cuales en un rack interior se instalan los equipos, que se comunican directamente con la o las antenas por medio de guías de onda. Las pérdidas de RF son menores en los equipos TN que en los LH, pero la ventaja de éstos es que es más sencillo implementar más radiocanales (lo que significa mayor ancho de banda), o dicho de otra manera, se necesitan menos antenas por radiocanal. Hemos tenido instalados desde hace años equipos de radio similares a estos LH, pero de otros fabricantes. 
+Desde 2019 hemos empezado a instalar equipos Ericsson Minilink del tipo 6363 (se trata de RAUs pertenecientes a la familia 6300), que forman parte de una nueva generación con tecnología renovada. Los mencionados 6363 pueden tomar el lugar de las RAUs 2X de la familia TN y funcionar en conjunto con unidades AMM previamente instaladas. Los equipos TN (RAUs y AMMs) ya no se instalan más, sólo quedan los previamante instalados. 
+Desde 2021 hemos comenzado a instalar equipos Ericsson Minilink de la familia 6600, los cuales sustituyen a las unidades interiores AMM de la familia TN. Son compatibles con las unidades RAU tanto de la familia TN como las nuevas 6363. 
+Desde 2024 hemos empezado a instalar equipos Ericsson Minilink del tipo 6365 (nuevas RAUs dentro de la familia 6300) en la banda de 15 GHz. 
+Página 3 de 48 
+3.  Bandas radioeléctricas 
+Nuestra gerencia trabaja con las bandas radioeléctricas de 6 GHz denominadas 6L y 6U (con los equipos LH) y con la banda alta de 7 GHz (con TN y 6363). Las siguientes son las canalizaciones utilizadas. Cada banda tiene una subbanda inferior y una superior, cuyas frecuencias funcionan como Tx y Rx respectivamente. 
+• Banda 6L (definida por la rec. ITU-R F.383), con canales de ancho de banda de 29,65 MHz (de los que se utilizan 28 MHz). En la siguiente figura se muestran los 8 canales con sus frecuencias centrales, en la subbanda inferior se denominan 1, 2, ... 8, y en la subbanda superior 1’, 2’, ... 8’. 
+• Banda 6U (definida por la rec. ITU-R F.384), con canales de ancho de banda de 40 MHz. En la siguiente figura se muestran los 8 canales con sus frecuencias centrales, en la subbanda inferior se denominan 1, 2, ... 8, y en la subbanda superior 1’, 2’, ... 8’.
+Página 4 de 48 
+• Banda de 7 GHz (definida por la rec. ITU-R F.385), con canales de ancho de banda de 28 MHz. En la siguiente figura se muestran los 5 canales con sus frecuencias centrales, en la subbanda inferior se denominan 1, 2, ... 5, y en la subbanda superior 1’, 2’, ... 5’. 
+• Banda de 7 GHz (definida por la rec. ITU-R F.385), con canales de ancho de banda de 56 MHz. En la siguiente figura se muestran los canales con sus frecuencias centrales. En la siguiente figura se muestran los 2 canales con sus frecuencias centrales, en la subbanda inferior se denominan 1 y 2 (o B y D) y en la subbanda superior 1’ y 2’ (o B’ y D’). 
+Página 5 de 48 
+Además de continuar trabajando con las bandas radioeléctricas de 6 GHz denominadas 6L y 6U y con la banda alta de 7 GHz, desde 2021 se utiliza también la banda de 8 GHz, y desde 2024 la banda de 15 GHz, las cuales ya habían sido usadas por equipos de nuestra gerencia en el pasado. Las siguientes son las canalizaciones utilizadas. 
+• Banda de 8 GHz (definida por la rec. ITU-R F.386), con canales de ancho de banda de 29,65 MHz (de los que se utilizan 28 MHz). En la siguiente figura se muestran los 8 canales con sus frecuencias centrales, en la subbanda inferior se denominan 1, 2, ... 8, y en la subbanda superior 1’, 2’, ... 8’. 
+También se pueden formar canales de ancho de banda 56 MHz o de 112 MHz (ver más adelante sección sobre la canalización de las distintas bandas). 
+• Banda de 15 GHz (definida por la rec. ITU-R F.636), con canales de ancho de banda de 28 MHz. También se pueden formar canales de ancho de banda 56 MHz o de 112 MHz (ver más adelante sección sobre la canalización de las distintas bandas). 
+Página 6 de 48 
+4. Rangos de frecuencias de las RAUs 
+Cada RAU 2X de los equipos TN no funciona en toda la banda de 7 GHz mencionada, sino en determinado rango de la misma. Hay distintos tipos de RAUs que se identifican por índices denominados CD. Habitualmente trabajamos con los radiocanales 2, 3, 4 y 5 de 28 MHz, y los tipos de RAU correspondientes se denominan CD12, CD16, CD14 y CD18, y sus rangos de frecuencias se ilustran en la siguiente tabla: 
+Se trata de la canalización que tiene diferencia entre subbandas inferior y superior de 154 MHz. 
+• Con fondo amarillo están indicados los CD12 y CD16, que abarcan la 	subbanda baja y alta de los radiocanales 2 y 3 de 28 MHz. 
+• Con fondo celeste están indicados los CD14 y CD18, que abarcan la 	subbanda baja y alta de los radiocanales 4 y 5 de 28 MHz. 
+Para radiocanales de 56 MHz también se utilizan los tipos de RAU CD12, CD16, CD14 y CD18, y sus rangos de frecuencias se ilustran en la siguiente tabla: 
+Página 7 de 48 
+• Con fondo amarillo están indicados los CD12 y CD16, que abarcan la 	subbanda baja y alta del radiocanal B (o 1) de 56 MHz. 
+• Con fondo celeste están indicados los CD14 y CD18, que abarcan la 	subbanda baja y alta del radiocanal D (o 2) de 56 MHz. 
+Los nuevos equipos exteriores (RAUs) 6363 ya están siendo instalados en nuestra red utilizando la banda de 7 GHz (como los equipos TN) y en la de 8 GHz, pero además se podrán usar en el futuro las bandas de 6 GHz. Los rangos de frecuencias de dichos equipos son los siguientes. 
+Banda 6L: 
+a. Índices 11L / 11H: canales 1, 2 y 3 de 28 MHz, permite también dos canales 	de 56 MHz (1-2 y 2-3). 
+b. Índices 12L / 12H: canales 4, 5 y 6 de 28 MHz, permite también dos canales 	de 56 MHz (4-5 y 5-6). 
+c. Índices 13L / 13H: canales 6, 7 y 8 de 28 MHz, permite también dos canales 	de 56 MHz (6-7 y 7-8). 
+d. Índices 14L / 14H: canales 3 y 4 de 28 MHz, permite también un canal de 56 	MHz (3-4). 
+Banda 6U: 
+a. Índices 21L / 21H: canales 2 y 3 de 40 MHz, permite también un canal de 80 	MHz. 
+b. Índices 22L / 22H: canales 5 y 6 de 40 MHz, permite también un canal de 80 	MHz. 
+c. Índices 23L / 23H: canales 7 y 8 de 40 MHz, permite también un canal de 80 	MHz. 
+d. Índices 24L / 24H: canal 4 de 40 MHz. 
+Página 8 de 48 
+Banda de 7 GHz: 
+	a. Índices 11L / 11H: canales 1 y 2 de 28 MHz, permite también un canal de 56 		MHz. 
+b. Índices 12L / 12H: canales 2 y 3 de 28 MHz, permite también un canal de 56 	MHz. 
+c. Índices 13L / 13H: canales 3 y 4 de 28 MHz, permite también un canal de 56 	MHz. 
+d. Índices 14L / 14H: canales 4 y 5 de 28 MHz, permite también un canal de 56 	MHz. 
+Banda de 8 GHz: 
+	a. Índices 11L / 11H: canales 1, 2 y 3 de 28 MHz, permite también dos canales 		de 56 MHz (1-2 y 2-3). 
+b. Ínidces 12L / 12H: canales 3, 4, 5 y 6 de 28 MHz, permite también tres 	canales de 56 MHz (3-4, 4-5, 5-6) y un canal de 112 MHz (3-4-5-6). 
+Página 9 de 48 
+c. Índices 14L / 14H: canales 5, 6, 7 y 8 de 28 MHz, permite también tres 	canales de 56 MHz (5-6, 6-7, 7-8) y un canal de 112 MHz (5-6-7-8). 
+Página 10 de 48 
+Los nuevos equipos exteriores (RAUs) 6364 ya están disponibles para la venta, aunque por ahora no se prevé instalados en nuestra red. Funcionan en las bandas de 13 GHz, 15 GHz y 18 GHz. Tienen la gran ventaja de que cubren todo el rango de frecuencias de cada una de esas tres bandas, o sea, se necesita sólo un modelo de RAU para la subbada baja y otro para la subbanda alta. 
+Página 11 de 48 
+Los nuevos equipos exteriores (RAUs) 6365 ya están disponibles en todas las bandas de 6 GHz a 42 GHz, y ya los estamos instalando en la banda de 15 GHz. 
+Bandas de 7 GHz y 8 GHz: 
+Página 12 de 48 
+Banda de 15 GHz: 
+Página 13 de 48 
+5. Configuraciones de radiocanales 
+Cuando se utiliza más de un radiocanal adyacente en un radioenlace, las configuraciones posibles son las siguientes: 
+• ACCP (Adjacent Channel Co-Polarization) Canales adyacentes con la misma polarización, por ejemplo: 1V, 2V, etc. Esos canales pueden pasar por una antena de simple polarización. En la figura se representan los canales con polarización V sobre la línea horizontal: 
+• ACAP (Adjacent Channel Alternate Polarized) Canales adyacentes con polarizaciones alternadas, por ejemplo: 1V, 2H, etc. Si se quiere que esos canales pasen por la misma antena, la misma debe ser de doble polarización. En la figura se representan los canales con polarización V sobre la línea horizontal, y los canales con polarización H bajo dicha línea: 
+• CCDP (Co-Channel Dual Polarized) Configuración co-canal con polarización dual, por ejemplo: 1V, 1H, etc. Es necesario el uso de XPIC. Si se quiere que esos canales pasen por la misma antena, la misma debe ser de doble polarización. En la figura se representan los canales con polarización V sobre la línea horizontal, y los canales con polarización H bajo dicha línea: 
+XPIC significa Cross-Polar Interference Canceller (Cancelador de interferencia de polarización cruzada), es una prestación de los equipos que sirve para minimizar la interferencia que ocasiona un canal con determinada polarización (por ejemplo, H) sobre el canal (tipo cocanal) con la polarización opuesta (por ejemplo, V). 
+Página 14 de 48 
+6. Configuraciones de equipos TN y antenas 
+Los equipos Ericsson Minilink del tipo TN (Traffic Node) constan de una unidad exterior denominada RAU y una unidad interior llamada AMM, comunicadas entre sí por cable. La modulación se realiza en placas denominadas MMU instaladas en la unidad interior, y toda la parte de RF (radiofrecuencia) en la RAU. 
+En la nueva generación tecnológica, el lugar de las unidades RAU lo toman los equipos de la familia 6300, y el lugar de las unidades AMM lo toman los equipos de la familia 6600. 
+Las configuraciones que hemos utilizado en los equipos TN instalados hasta ahora son las siguientes: 
+• Configuración 1+1 Hot Standby, sin diversidad de espacio. Se tiene una sola antena en cada extremo del radioenlace. A cada antena se conectan dos RAUs, una en estado working y la otra en estado standby, con lo que se tiene protección de hardware solamente. El radioenlace maneja un solo radiocanal: la frecuencia inferior (por ejemplo, 2) será la de Tx en un extremo y la superior (por ejemplo, 2’) será la de Tx en el otro. Las antenas pueden ser de simple polarización. Ver la figura siguiente. 
+Página 15 de 48 
+• Configuración 1+1 Hot Standby, con diversidad de espacio. Se tienen dos antenas en cada extremo del radioenlace, y a cada antena se conecta una RAU. Las dos RAUs en recepción reciben señal permanentemente, la que es monitoreada por las placas MMU de la unidad interior. En general se toma como válida la señal recibida por la antena superior (antena principal), pero en caso de que dicha señal tenga una tasa de error por encima de determinado valor crítico, se conmuta a la señal recibida por la antena inferior. El radioenlace maneja un solo radiocanal: la frecuencia inferior (por ejemplo, 2) será la de Tx en un extremo y la superior (por ejemplo, 2’) será la de Tx en el otro. Las antenas pueden ser de simple polarización. Ver la figura siguiente. 
+• Configuración 2 x (1+0), sin diversidad de espacio. Se tiene una sola antena en cada extremo del radioenlace. A cada antena se conectan dos RAUs, cada una corresponde a un radiocanal. No se tiene protección de hardware ni de diversidad. El radioenlace maneja dos radiocanales: las frecuencias inferiores (por ejemplo, 2 y 3) serán las de Tx en un extremo y las superiores (por ejemplo, 2’ y 3’) serán las de Tx en el otro. 
+Página 16 de 48 
+Las antenas pueden ser de simple polarización en el caso de que los canales sean ACCP (por ejemplo, 2H y 3H), pero deberán ser de doble polarización en el caso de que los canales sean ACAP (por ejemplo, 2H y 3V) o CCDP (por ejemplo, 2H y 2V). Para este último caso, se necesita además XPIC. Ver la figura siguiente. 
+Las configuraciones mencionadas tienen en común que requieren cuatro RAUs por radioenlace (dos RAUs en cada extremo). Existen otras posibles configuraciones con mayor número de RAUs. 
+• Configuración MIMO (Multiple-Input Multiple-Output). La misma puede ser 	utilizada de dos formas: 
+1) para aumentar la confiabilidad del radioenlace, a través del aumento de ganancia introducido por el uso de múltiples antenas, lo cual es 
+usualmente denominado diversidad de espacio. 
+2) Para aumentar la eficiencia espectral o capacidad del radioenlace, transmitiendo múltiples flujos de datos por el canal, lo cual es usualmente denominado multiplexación espacial. 
+La primera forma (diversidad de espacio) ha sido utilizada habitualmente en nuestros radioenlaces. 
+La segunda forma (multiplexación espacial) ha sido utilizada por primera vez por nosotros en 2023 para duplicar la capacidad de un radioenlace (MIMO 2x2), por lo que es una alternativa que podrá ser repetida en el futuro. Tiene como particularidad: que la performance del radioenlace es dependiente de 
+Página 17 de 48 
+la separación entre las antenas, existe una separación óptima que puede ser calculada, y que es función de la longitud del radioenlace y de la frecuencia. Puede ocurrir que dicha separación sea demasiado grande, y no pueda implementarse en algunos radioenlaces sin que el mismo quede obstruido. 
+La tecnología MIMO es soportada por las RAUs 6363, 6364 y 6365. 
+A continuación se puede ver un esquema de funcionamiento para MIMO 2x2 (existen otras alternativas, MIMO 4x4, etc.), y un diagrama de las separaciones óptimas de antenas para distintas bandas de frecuencias y longitudes de radioenlaces. 
+Página 18 de 48 
+7. Configuraciones de equipos LH y antenas 
+En los equipos LH los equipos se alojan en un rack interior. Ver figura siguiente. En el rack se encuentra una unidad como la AMM antes mencionada (indicada como TN en la figura) en la que se instalan los modems MMU. Las señales generadas por éstos pasan a los transceptores ubicados en la unidad TRX, que generan las señales de RF. Estas señales pasan luego a la unidad de branching CBN (que contienen los filtros y combinadores). Finalmente todas esas señales (tanto las de Tx como las de Rx) comparten la misma guía de onda hasta la antena, en caso de que ésta sea de simple polarización. 
+La descripta es la configuración básica. Existen otras configuraciones que permiten aumentar la capacidad de tráfico o mejorar el desempeño del radioenlace. Por ejemplo: 
+• Uso de antenas de doble polarización. Éstas se pueden conectar a dos guías de onda, que transportan desde la unidad CBN las señales que serán transmitidas por las polarizaciones H y V. Se soportan así configuraciones de radiocanales ACAP o CCDP. 
+Página 19 de 48 
+• Diversidad de frecuencia N+1. Se usa especialmente con canales SDH. Por ejemplo, se tienen N canales con tráfico SDH y se agrega un canal de reserva. En caso de que la señal de recepción de alguno de los N canales tenga una tasa de error por encima de determinado valor crítico, dicho canal se conmuta al de reserva. Con esta estrategia se bajan las tasas de error y se mejora el desempeño del radioenlace. 
+• Diversidad de espacio. Ya mencionada para los equipos TN, consiste en utilizar dos antenas en cada extremo. Las antenas superior e inferior se denominan respectivamente principal y de diversidad. Cada radiocanal transmitido se recibe en las dos antenas de un extremo, en general se toma como señal válida la recibida en la antena principal, pero en caso de que la misma tenga una tasa de error por encima de determinado valor crítico, se conmuta a la señal de diversidad. Con esta estrategia se bajan las tasas de error y se mejora el desempeño del radioenlace. 
+Existen otras configuraciones, por ejemplo combinaciones de diversidad de espacio y frecuencia. 
+Página 20 de 48 
+8. Nuevas familias Minilink 6300 (outdoor) y 6600 (indoor) 
+En la nueva generación tecnológica de los equipos Ericsson Minilink, el lugar de las unidades exteriores RAU lo toman los equipos de la familia 6300, y el de las unidades interiores AMM lo toman los equipos de la familia 6600. 
+En la figura siguiente se pueden ver algunos equipos de la familia 6300. El 6363 ya lo estamos instalando en sustitución de RAUs 2X de equipos Minilink TN previamente instalados. Otros integrantes de esta familia son el 6351 (para la banda V, de 60 GHz), el 6352 (para la banda E, de 70-80 GHz) y el 6366 (que permite una instalación tanto tipo split como totalmente outdoor, pues la unidad que habitualmente es indoor puede ir adosada a la unidad de radio). 
+En la figura se puede ver también el equipo PT 2020, que no pertenecería a la familia 6300, pero podría ser una opción útil en algunos casos. El mismo es un equipo compacto, que permite una instalación totalmente outdoor. Existen también los modelos PT 3060 para la banda V y PT 6020 para la banda E. 
+Página 21 de 48 
+En la figura siguiente se pueden ver equipos de la familia 6600, con algunas de sus prestaciones. El 6651 es un equipo compacto, que tiene todas sus funciones integradas (incluida la de módem) por lo que no se le agregan placas. Los demás son equipos modulares, permiten en ellos la instalación de distintas placas, entre ellas las de módem (que pueden ser los modelos MMU 1001 o MMU 1002). Desde 2021 ya hemos instalado equipos 6692 y 6694. 
+Como se mencionó anteriormente, los nuevos equipos (outdoor) 6364 ya están disponibles a la venta, aunque por ahora no se prevé instalados en nuestra red. Funcionan en las bandas de 13 GHz, 15 GHz y 18 GHz. Tienen la gran ventaja de que cubren todo el rango de frecuencias de cada una de esas tres bandas, o sea, se necesita sólo un modelo de RAU para la subbada baja y otro para la subbanda alta. 
+Los nuevos equipos (outdoor) 6365 ya están disponibles en todas las bandas de 6 GHz a 42 GHz, y ya los estamos instalando desde 2024 en la banda de 15 GHz. 
+Página 22 de 48 
+9. Multi-band booster 
+Los equipos de las nuevas familias 6300 y 6600 ofrecen una forma de funcionamiento denominada “Multi-band booster”, que consiste en combinar de manera flexible la capacidad de tráfico de dos radioenlaces (funcionando en paralelo en el mismo vano) que utilicen bandas radioeléctricas distintas. Como es sabido, las bandas bajas permiten radioenlaces más largos pero capacidades de tráfico menores, y las bandas altas permiten capacidades de tráfico mayores pero radioenlaces más cortos. Dicho de otra manera, para determinada longitud de un radioenlace, en bandas altas las tasas de error y los tiempos de indisponibilidad son mayores. La estrategia con Multi-band booster consiste en enviar el tráfico de mayor prioridad por el radioenlace en la banda baja, que tiene tiempos de indisponibilidad menores, mientras que el radioenlace en la banda alta cursa la mayor parte del tráfico, aunque éste variará dependiendo de las condiciones de propagación. En la siguiente ilustración se muestran dos ejemplos: un vano de 15 Km, con dos radioenlaces en las bandas de 13 GHz y 32 GHz, y un vano de 5 Km, con dos radioenlaces en las bandas de 23 GHz y 80 GHz. 
+Si bien en lo inmediato no tenemos previsto el uso del Multi-band booster, es posible que lo utilicemos en el mediano o largo plazo. 
+Página 23 de 48 
+10. Carrier aggregation 
+“Carrier aggregation” es una funcionalidad soportada por las RAUs 6364 y 6365 que permite sumar el ancho de banda de distintos carriers (o sea, distintas señales) en un mismo radioenlace, aumentando el ancho de banda total. Existen algunas limitaciones en el tipo de carriers que pueden ser agregados, según la posición que ocupen en la banda: En la siguiente figura se muestran las separaciones máximas en frecuencia soportadas, para las RAUs 6365: 
+Página 24 de 48 
+11. Radio link bonding 
+“Radio link bonding” (radio link = radioenlace) es una funcionalidad de los equipos Minilink que permite el transporte transparente de tramas Ethernet sobre varios “Packet Links” paralelos. En esta tabla se puede ver el número máximo de links vinculados, y la máxima capacidad correspondiente: 
+Con el “Hierarchical Radio Link Bonding” (hRLB) existe la posibilidad de incrementar tanto el número de links vinculados cuanto la capacidad agregada de los mismos. El hRLB es soportado por las placas NPU 1005 y MMU 1002, o por la placa MMU 1004. También por los MINI-LINK 6651/4 y 6371. Características principales: 
+Página 25 de 48 
+12. Antenas 
+Las antenas son parte fundamental de los radioenlaces (en nuestro caso, se trata de radioenlaces punto a punto y antenas parabólicas). En cada radioenlace se debe elegir la antena adecuada, en función de sus parámetros, los cuales se pueden consultar en los manuales de antenas. Algunos de los parámetros eléctricos fundamentales son el tipo de antena, banda, ganancia, HPBW, XPD, VSWR, front to back ratio, patrón de radiación, etc. Deben ser tenidos en cuenta también los parámetros mecánicos para evaluar la carga que representan las antenas para las estructuras portantes (torres, mástiles, etc.): dimensiones, peso, fuerza y torque provocados por el viento, etc. 
+Las antenas que se adquieren a Ericsson se clasifican además en distintas familias, según la compatibilidad con las diferentes generaciones de equipos Ericsson Minilink. Si bien no profundizaremos más en el tema antenas en este documento, presentamos a continuación un cuadro en que se muestran los distintos tamaños disponibles de antenas (dados por sus diámetros) para cada banda radioeléctrica. 
+Página 26 de 48 
+13. Parámetros de los equipos 
+Los equipos Ericsson Minilink, del mismo modo que otros equipos de radio, tienen varios parámetros que pueden ser elegidos de manera de obtener las características deseadas en cada radioenlace particular. Algunos de los parámetros más importantes son: 
+• Banda radioeléctrica de trabajo. Está determinada por la RAU en los equipos TN o por los transceptores en los equipos LH. Las bandas utilizadas por nosotros son: 6L, 6U (ambas para los equipos LH), 7 GHz y 8 GHz (para los equipos TN y 6363) y 15 GHz (para los equipos 6365). 
+• Potencia de transmisión (PTx). Está determinada por la RAU en los equipos TN y 6363 o por los transceptores en los equipos LH. Existen dos tipos de RAU: una de alta potencia, con PTx igual o menor que 30 dBm, y una de potencia media, con PTx igual o menor que 26 dBm. Además, PTx depende de la modulación usada. En la banda de 15 GHz, PTx es menor. 
+• Ancho de banda del radiocanal. Los utilizados por nosotros son: 28 MHz en la banda 6L; 40 MHz en la banda 6U; 28 MHz y 56 MHz en la banda de 7 GHz, 56 MHz y 112 MHz en las bandas de 8 GHz y 15 GHz. 
+• Modulación. Algunas de las modulaciones utilizadas son 4QAM, 16 QAM, 128 QAM, 256 QAM, 512 QAM, 1024 QAM. Los nuevos equipos de las familias 6300 y 6600 permiten también 2048 QAM y 4096 QAM. 
+• Versión del modo físico (Physical Mode Version): v0, v1, v2, etc. Para un mismo ancho de banda de radiocanal y una misma modulación, se tienen distintas capacidades de tráfico (en Mbps) según la versión del modo físico sea v0, v1 o v2, etc. Los modos físicos de los nuevos equipos 6363 tienen otras denominaciones (light, strong, etc.). 
+• Potencia umbral de recepción (Pth). Es la potencia mínima con la que el equipo receptor garantiza una determinada tasa de error (BER), por ejemplo, de 10-6. Depende del ancho de banda del radiocanal, de la modulación y de la versión del modo físico. Pth es un parámetro fundamental en el cálculo del radioenlace, cuanto mayor sea requerirá una mayor potencia de recepción y por tanto, antenas mayores. 
+Se intenta que las antenas tengan tamaños lo menores que sea posible, para minimizar la carga sobre las estructuras portantes (torres y mástiles). Una vez determinados los parámetros de los equipos, con las configuraciones de diversidad (de frecuencia o de espacio) mencionadas en las secciones anteriores se puede reducir el tamaño de las antenas necesarias. 
+En cambio, algunas de las configuraciones que permiten más capacidad de tráfico (uso de XPIC, uso de radiocanales de 56 MHz en vez de de 28 MHz, uso de modulaciones altas) pueden significar la necesidad de antenas mayores. 
+Página 27 de 48 
+En el siguiente cuadro se pueden ver las potencias de transmisión (PTx) máximas en las bandas bajas (hasta 8 GHz) para las RAUs tanto del tipo 2X (de los equipos TN) como del tipo 6363. 
+En el siguiente cuadro (que abarca ésta y dos páginas más) se pueden ver las potencias umbrales de recepción (Pth) de los equipos de la nueva familia 6600 funcionando en conjunto con RAUs tanto del tipo 2X (de los equipos TN) como del tipo 6363. Se presentan los valores para tasas de error (BER) de 10-6 y de 10-9. 
+Página 28 de 48 
+Página 29 de 48 
+Página 30 de 48 
+En el siguiente cuadro se pueden ver las potencias de transmisión (PTx) máximas para las RAUs del tipo 6365. 
+En las últimas ediciones (releases) de las RAUs (por ejemplo, del tipo 6365) está disponible la modulación 8192 QAM para algunos anchos de banda (28 MHz y 40 MHz). 
+Página 31 de 48 
+14. Modulación adaptativa 
+En los equipos de radio se utilizaba hace algunos años solamente una estrategia de modulación estática: una vez determinada en la etapa de cálculo, la modulación de un radioenlace no se cambiaba. Se tenía que garantizar una capacidad de tráfico determinada (por ejemplo, expresada en número de E1s) y se elegían los parámetros del radioenlace de manera de garantizar una determinada calidad. 
+Sin embargo, los equipos de radio desde hace algún tiempo permiten además de la modulación estática, la llamada modulación adaptativa. Esta estrategia consiste en fijar una modulación mínima y otra máxima (por ejemplo, 128 QAM y 4096 QAM) entre las que el equipo puede variar. Si la señal en recepción es buena, el equipo trabaja en una modulación alta (en el ejemplo, 4096 QAM) que permitirá una capacidad de tráfico alta. Si la señal en recepción empeora debido a malas condiciones de propagación en el radioenlace, el equipo trabajará en una modulación baja (en el ejemplo, 128 QAM) que permitirá una capacidad de tráfico menor. 
+La modulación adaptativa es especialmente adecuada cuando se tiene un tráfico que se puede subdividir en porciones de mayor y menor prioridad. Por ejemplo, un tráfico PDH en E1s de alta prioridad y un tráfico Ethernet de menor prioridad. Se diseña el radioenlace a una modulación baja para garantizar la capacidad de tráfico de mayor prioridad, y se permite escalar con modulación adaptativa para permitir mayores capacidades cuando las condiciones de propagación del radioenlace son buenas. 
+En la página siguiente se pueden ver dos diagramas ilustrando el funcionamiento de la modulación adaptativa en dos equipos, la modulación máxima en el primero es 512 QAM y en el segundo 4096 QAM. Se grafica la señal recibida en función del tiempo, y se muestra cuando la señal baja de nivel cómo el equipo conmuta a modulaciones de menor nivel, y cómo en esos casos la capacidad del tráfico en Mbps también desciende, indicando la disponibilidad correspondiente como porcentaje del tiempo. 
+Página 32 de 48 
+Página 33 de 48 
+15. Tipos de placas moduladoras MMU 
+Las placas MMU, que se instalan en las unidades interiores de los equipos Ericsson Minilink, son las responsables de llevar a cabo la modulación. Las siguientes son algunas de las versiones de placas MMU para equipos Minilink TN adquiridas por Antel en los últimos años, mostrando su evolución en prestaciones. Las cinco primeras no se instalan más, últimamente sólo se instalan placas MMU4A: 
+• MMU2B: Para tráfico PDH, incluyendo Ethernet sobre PDH. Capacidad 	hasta 16 E1s. 
+• MMU2C: Para tráfico PDH, incluyendo Ethernet sobre PDH. Capacidad 	hasta 32 E1s. 
+• MMU2D: Para tráfico Ehternet nativo y Ethernet sobre PDH. 
+• MMU2H: Para tráfico Ehternet nativo y Ethernet sobre PDH. Incluye soporte para XPIC y modulación adaptativa. Modulación máxima: 512 QAM. Anchos de banda máximos: 28 MHz, 40 MHz, 56 MHz. 
+• MMU3A: Para tráfico Ehternet nativo y Ethernet sobre PDH. Incluye soporte para XPIC y modulación adaptativa. Modulación máxima: 1024 QAM. Anchos de banda máximos: 28 MHz, 40 MHz, 56 MHz. 
+• MMU4A: Placa con prestaciones similares a las de las placas MMU 1001 y MMU 1002 de los equipos 6600 (que se mencionarán a continuación), pero diseñada para los equipos Minilink TN. Modulación máxima: 4096 QAM. Anchos de banda máximos: 80 MHz y 112 MHz. 
+Para los equipos Minilink LH: 
+• MMU3B: Para tráfico Ehternet nativo y SDH. Incluye soporte para modulación adaptativa. Modulación máxima: 1024 QAM. Anchos de banda máximos: 28 MHz, 40 MHz, 56 MHz. 
+Los equipos Minilink de la nueva familia 6600 tienen propiedades adicionales a los anteriormente mencionados: dos niveles más de modulación: 2048 QAM y 4096 QAM, y dos anchos de banda más: 80 MHz y 112 MHz. 
+• Minilink 6651: Este equipo es compacto, y tiene la función de módem 	incorporada. 
+• MMU 1001 
+• MMU 1002 
+Página 34 de 48 
+16. Capacidades de tráfico en distintas configuraciones 
+Después de haber visto las configuraciones utilizadas de equipos y antenas y de haber mencionado los parámetros fundamentales de los equipos, estamos en condiciones de ver las capacidades de tráfico disponibles. En los cuadros siguientes se presentan las capacidades de tráfico expresadas en Mbps, dependiendo del tipo de modulación, del ancho de banda del canal, de la versión del modo físico v0, v1, v2, light, strong, etc. Utilizando el XPIC se puede duplicar aproximadamente las capacidades indicadas. 
+• Cuadro de capacidades de tráfico que se pueden conseguir con la placa 	MMU2H (para equipos Minilink TN): 
+Página 35 de 48 
+• Cuadro de capacidades de tráfico que se pueden conseguir con la placa 	MMU3A (para equipos Minilink TN): 
+Página 36 de 48 
+• Cuadro de capacidades de tráfico que se pueden conseguir con la placa 	MMU3B (para equipos Minilink LH): 
+Página 37 de 48 
+• Cuadro de capacidades de tráfico que se pueden conseguir con la nueva familia de equipos Minilink 6600. Los equipos de esta familia tienen propiedades adicionales a los anteriormente mencionados: dos niveles más de modulación: 2048 QAM y 4096 QAM, y dos anchos de banda más: 80 MHz y 112 MHz, todo lo cual permite conseguir capacidades de tráfico mayores. Se presenta el cuadro correspondiente a las placas módem MMU 1002, que es igual al cuadro de las placas MMU 1001, al de los equipos compactos 6651 y al de las placas MMU4A de los equipos TN. Existe además la opción de canales de 80 MHz, la cual no se muestra en el cuadro. 
+Página 38 de 48 
+17. Canalización de algunas bandas radioeléctricas 
+• 	Radiocanales de la banda 6L (28 MHz de ancho de banda) 
+Canal 1 low o 1 	Canal 1 high o 1’ 
+Límite inferior = 5931,20 MHz 
+Frecuencia central = 5945,20 MHz Límite superior = 5959,20 MHz 
+Límite inferior = 6183,24 MHz 
+Frecuencia central = 6197,24 MHz Límite superior = 6211,24 MHz 
+Canal 2 low o 2 	Canal 2 high o 2’ 
+Límite inferior = 5960,85 MHz 
+Frecuencia central = 5974,85 MHz Límite superior = 5988,85 MHz 
+Límite inferior = 6212,89 MHz 
+Frecuencia central = 6226,89 MHz Límite superior = 6240,89 MHz 
+Canal 3 low o 3 	Canal 3 high o 3’ 
+Límite inferior = 5990,50 MHz 
+Frecuencia central = 6004,50 MHz Límite superior = 6018,50 MHz 
+Límite inferior = 6242,54 MHz 
+Frecuencia central = 6256,54 MHz Límite superior = 6270,54 MHz 
+Canal 4 low o 4 	Canal 4 high o 4’ 
+Límite inferior = 6020,15 MHz 
+Frecuencia central = 6034,15 MHz Límite superior = 6048,15 MHz 
+Límite inferior = 6272,19 MHz 
+Frecuencia central = 6286,19 MHz Límite superior = 6300,19 MHz 
+Canal 5 low o 5 	Canal 5 high o 5’ 
+Límite inferior = 6049,80 MHz 
+Frecuencia central = 6063,80 MHz Límite superior = 6077,80 MHz 
+Límite inferior = 6301,84 MHz 
+Frecuencia central = 6315,84 MHz Límite superior = 6329,84 MHz 
+Canal 6 low o 6 	Canal 6 high o 6’ 
+Límite inferior = 6079,45 MHz 
+Frecuencia central = 6093,45 MHz Límite superior = 6107,45 MHz 
+Límite inferior = 6331,49 MHz 
+Frecuencia central = 6345,49 MHz Límite superior = 6359,49 MHz 
+Canal 7 low o 7 	Canal 7 high o 7’ 
+Límite inferior = 6109,10 MHz 
+Frecuencia central = 6123,10 MHz Límite superior = 6137,10 MHz 
+Límite inferior = 6361,14 MHz 
+Frecuencia central = 6375,14 MHz Límite superior = 6389,14 MHz 
+Canal 8 low u 8 	Canal 8 high u 8’ 
+Límite inferior = 6138,75 MHz 
+Frecuencia central = 6152,75 MHz Límite superior = 6166,75 MHz 
+Límite inferior = 6390,79 MHz 
+Frecuencia central = 6404,79 MHz Límite superior = 6418,79 MHz 
+Página 39 de 48 
+Límite inferior = 6420 MHz 
+Frecuencia central = 6440 MHz Límite superior = 6460 MHz 
+Límite inferior = 6760 MHz 
+Frecuencia central = 6780 MHz Límite superior = 6800 MHz 
+Canal 2 low o 2 	Canal 2 high o 2’ 
+Límite inferior = 6460 MHz 
+Frecuencia central = 6480 MHz Límite superior = 6500 MHz 
+Límite inferior = 6800 MHz 
+Frecuencia central = 6820 MHz Límite superior = 6840 MHz 
+Canal 3 low o 3 	Canal 3 high o 3’ 
+Límite inferior = 6500 MHz 
+Frecuencia central = 6520 MHz Límite superior = 6540 MHz 
+Límite inferior = 6840 MHz 
+Frecuencia central = 6860 MHz Límite superior = 6880 MHz 
+Canal 4 low o 4 	Canal 4 high o 4’ 
+Límite inferior = 6540 MHz 
+Frecuencia central = 6560 MHz Límite superior = 6580 MHz 
+Límite inferior = 6880 MHz 
+Frecuencia central = 6900 MHz Límite superior = 6920 MHz 
+Canal 5 low o 5 	Canal 5 high o 5’ 
+Límite inferior = 6580 MHz 
+Frecuencia central = 6600 MHz Límite superior = 6620 MHz 
+Límite inferior = 6920 MHz 
+Frecuencia central = 6940 MHz Límite superior = 6960 MHz 
+Canal 6 low o 6 	Canal 6 high o 6’ 
+Límite inferior = 6620 MHz 
+Frecuencia central = 6640 MHz Límite superior = 6660 MHz 
+Límite inferior = 6960 MHz 
+Frecuencia central = 6980 MHz Límite superior = 7000 MHz 
+Canal 7 low o 7 	Canal 7 high o 7’ 
+Límite inferior = 6660 MHz 
+Frecuencia central = 6680 MHz Límite superior = 6700 MHz 
+Límite inferior = 7000 MHz 
+Frecuencia central = 7020 MHz Límite superior = 7040 MHz 
+Canal 8 low u 8 	Canal 8 high u 8’ 
+Límite inferior = 6700 MHz 
+Frecuencia central = 6720 MHz Límite superior = 6740 MHz 
+Límite inferior = 7040 MHz 
+Frecuencia central = 7060 MHz Límite superior = 7080 MHz 
+Página 40 de 48 
+Límite inferior = 7428 MHz 
+Frecuencia central = 7442 MHz Límite superior = 7456 MHz 
+Límite inferior = 7582 MHz 
+Frecuencia central = 7596 MHz Límite superior = 7610 MHz 
+Canal 2 low o 2 	Canal 2 high o 2’ 
+Límite inferior = 7456 MHz 
+Frecuencia central = 7470 MHz Límite superior = 7484 MHz 
+Límite inferior = 7610 MHz 
+Frecuencia central = 7624 MHz Límite superior = 7638 MHz 
+Canal 3 low o 3 	Canal 3 high o 3’ 
+Límite inferior = 7484 MHz 
+Frecuencia central = 7498 MHz Límite superior = 7512 MHz 
+Límite inferior = 7638 MHz 
+Frecuencia central = 7652 MHz Límite superior = 7666 MHz 
+Canal 4 low o 4 	Canal 4 high o 4’ 
+Límite inferior = 7512 MHz 
+Frecuencia central = 7526 MHz Límite superior = 7540 MHz 
+Límite inferior = 7666 MHz 
+Frecuencia central = 7680 MHz Límite superior = 7694 MHz 
+Canal 5 low o 5 	Canal 5 high o 5’ 
+Límite inferior = 7540 MHz 
+Frecuencia central = 7554 MHz Límite superior = 7568 MHz 
+Límite inferior = 7694 MHz 
+Frecuencia central = 7708 MHz Límite superior = 7722 MHz 
+• 	Radiocanales de la banda de 7 GHz (56 MHz de ancho de banda) 
+Canal B low o B 	Canal B high o B’ 
+Límite inferior = 7456 MHz 
+Frecuencia central = 7484 MHz Límite superior = 7512 MHz 
+Límite inferior = 7610 MHz 
+Frecuencia central = 7638 MHz Límite superior = 7666 MHz 
+Canal D low o D 	Canal D high o D’ 
+Límite inferior = 7512 MHz 
+Frecuencia central = 7540 MHz Límite superior = 7568 MHz 
+Límite inferior = 7666 MHz 
+Frecuencia central = 7694 MHz Límite superior = 7722 MHz 
+Página 41 de 48 
+Límite inferior = 7733,70 MHz 
+Frecuencia central = 7747,70 MHz Límite superior = 7761,70 MHz 
+Límite inferior = 8045,02 MHz 
+Frecuencia central = 8059,02 MHz Límite superior = 8073,02 MHz 
+Canal 2 low o 2 	Canal 2 high o 2’ 
+Límite inferior = 7763,35 MHz 
+Frecuencia central = 7777,35 MHz Límite superior = 7791,35 MHz 
+Límite inferior = 8074,67 MHz 
+Frecuencia central = 8088,67 MHz Límite superior = 8102,67 MHz 
+Canal 3 low o 3 	Canal 3 high o 3’ 
+Límite inferior = 7793,00 MHz 
+Frecuencia central = 7807,00 MHz Límite superior = 7821,00 MHz 
+Límite inferior = 8104,32 MHz 
+Frecuencia central = 8118,32 MHz Límite superior = 8132,32 MHz 
+Canal 4 low o 4 	Canal 4 high o 4’ 
+Límite inferior = 7822,65 MHz 
+Frecuencia central = 7836,65 MHz Límite superior = 7850,65 MHz 
+Límite inferior = 8133,97 MHz 
+Frecuencia central = 8147,97 MHz Límite superior = 8161,97 MHz 
+Canal 5 low o 5 	Canal 5 high o 5’ 
+Límite inferior = 7852,30 MHz 
+Frecuencia central = 7866,30 MHz Límite superior = 7880,30 MHz 
+Límite inferior = 8163,62 MHz 
+Frecuencia central = 8177,62 MHz Límite superior = 8191,62 MHz 
+Canal 6 low o 6 	Canal 6 high o 6’ 
+Límite inferior = 7881,95 MHz 
+Frecuencia central = 7895,95 MHz Límite superior = 7909,95 MHz 
+Límite inferior = 8193,27 MHz 
+Frecuencia central = 8207,27 MHz Límite superior = 8221,27 MHz 
+Canal 7 low o 7 	Canal 7 high o 7’ 
+Límite inferior = 7911,60 MHz 
+Frecuencia central = 7925,60 MHz Límite superior = 7939,60 MHz 
+Límite inferior = 8222,92 MHz 
+Frecuencia central = 8236,92 MHz Límite superior = 8250,92 MHz 
+Canal 8 low u 8 	Canal 8 high u 8’ 
+Límite inferior = 7941,25 MHz 
+Frecuencia central = 7955,25 MHz Límite superior = 7969,25 MHz 
+Límite inferior = 8252,57 MHz 
+Frecuencia central = 8266,57 MHz Límite superior = 8280,57 MHz 
+Página 42 de 48 
+Canal 34 low o 34 
+	Límite inferior = 7793,825 MHz 
+Canal 34 high o 34’ 
+Límite inferior = 8105,15 MHz 
+Frecuencia central = 7821,825 MHz Frecuencia central = 8133,15 MHz 
+	Límite superior = 7849,825 MHz Canal 56 low o 56 
+	Límite inferior = 7853,125 MHz 
+Límite superior = 8161,15 MHz Canal 56 high o 56’ 
+Límite inferior = 8164,45 MHz 
+Frecuencia central = 7881,125 MHz Frecuencia central = 8192,45 MHz 
+	Límite superior = 7909,125 MHz Canal 78 low o 78 
+	Límite inferior = 7912,425 MHz 
+Límite superior = 8220,45 MHz Canal 78 high o 78’ 
+Límite inferior = 8223,75 MHz 
+Frecuencia central = 7940,425 MHz Frecuencia central = 8251,75 MHz 
+Límite superior = 7968,425 MHz Límite superior = 8279,75 MHz 
+• 	Radiocanales de la banda de 8 GHz (112 MHz de ancho de banda) 
+Canal 3456 low o 3456 
+	Límite inferior = 7795,475 MHz 
+Canal 3456 high o 3456’ 
+Límite inferior = 8106,80 MHz 
+Frecuencia central = 7851,475 MHz Frecuencia central = 8162,80 MHz 
+	Límite superior = 7907,475 MHz Canal 5678 low o 5678 
+	Límite inferior = 7854,770 MHz 
+Límite superior = 8218,80 MHz Canal 5678 high o 5678’ 
+Límite inferior = 8166,09 MHz 
+Frecuencia central = 7910,770 MHz Frecuencia central = 8222,09 MHz 
+Límite superior = 7966,770 MHz Límite superior = 8278,09 MHz 
+Página 43 de 48 
+Límite inferior = 14501 MHz 
+Frecuencia central = 14515 MHz Límite superior = 14529 MHz 
+Límite inferior = 14921 MHz 
+Frecuencia central = 14935 MHz Límite superior = 14949 MHz 
+Canal 2 low o 2 	Canal 2 high o 2’ 
+Límite inferior = 14529 MHz 
+Frecuencia central = 14543 MHz Límite superior = 14557 MHz 
+Límite inferior = 14949 MHz 
+Frecuencia central = 14963 MHz Límite superior = 14977 MHz 
+Canal 3 low o 3 	Canal 3 high o 3’ 
+Límite inferior = 14557 MHz 
+Frecuencia central = 14571 MHz Límite superior = 14585 MHz 
+Límite inferior = 14977 MHz 
+Frecuencia central = 14991 MHz Límite superior = 15005 MHz 
+Canal 4 low o 4 	Canal 4 high o 4’ 
+Límite inferior = 14585 MHz 
+Frecuencia central = 14599 MHz Límite superior = 14613 MHz 
+Límite inferior = 15005 MHz 
+Frecuencia central = 15019 MHz Límite superior = 15033 MHz 
+Canal 5 low o 5 	Canal 5 high o 5’ 
+Límite inferior = 14613 MHz 
+Frecuencia central = 14627 MHz Límite superior = 14641 MHz 
+Límite inferior = 15033 MHz 
+Frecuencia central = 15047 MHz Límite superior = 15061 MHz 
+Canal 6 low o 6 	Canal 6 high o 6’ 
+Límite inferior = 14641 MHz 
+Frecuencia central = 14655 MHz Límite superior = 14669 MHz 
+Límite inferior = 15061 MHz 
+Frecuencia central = 15075 MHz Límite superior = 15089 MHz 
+Canal 7 low o 7 	Canal 7 high o 7’ 
+Límite inferior = 14669 MHz 
+Frecuencia central = 14683 MHz Límite superior = 14697 MHz 
+Límite inferior = 15089 MHz 
+Frecuencia central = 15103 MHz Límite superior = 15117 MHz 
+Canal 8 low u 8 	Canal 8 high u 8’ 
+Límite inferior = 14697 MHz 
+Frecuencia central = 14711 MHz Límite superior = 14725 MHz 
+Límite inferior = 15117 MHz 
+Frecuencia central = 15131 MHz Límite superior = 15145 MHz 
+Página 44 de 48 
+	Límite inferior = 14725 MHz 
+	Frecuencia central = 14739 MHz 	Límite superior = 14753 MHz Canal 10 low o 10 
+	Límite inferior = 14753 MHz 
+	Frecuencia central = 14767 MHz 	Límite superior = 14781 MHz Canal 11 low u 11 
+	Límite inferior = 14781 MHz 
+	Frecuencia central = 14795 MHz 	Límite superior = 14809 MHz Canal 12 low o 12 
+	Límite inferior = 14809 MHz 
+	Frecuencia central = 14823 MHz 	Límite superior = 14837 MHz Canal 13 low o 13 
+	Límite inferior = 14837 MHz 
+	Frecuencia central = 14851 MHz 	Límite superior = 14865 MHz Canal 14 low o 14 
+	Límite inferior = 14865 MHz 
+	Frecuencia central = 14879 MHz 	Límite superior = 14893 MHz Canal 15 low o 15 
+	Límite inferior = 14893 MHz 
+	Frecuencia central = 14907 MHz 	Límite superior = 14921 MHz 
+Límite inferior = 15145 MHz 
+Frecuencia central = 15159 MHz Límite superior = 15173 MHz Canal 10 high o 10’ 
+Límite inferior = 15173 MHz 
+Frecuencia central = 15187 MHz Límite superior = 15201 MHz Canal 11 high u 11’ 
+Límite inferior = 15201 MHz 
+Frecuencia central = 15215 MHz Límite superior = 15229 MHz Canal 12 high o 12’ 
+Límite inferior = 15229 MHz 
+Frecuencia central = 15243 MHz Límite superior = 15257 MHz Canal 13 high o 13’ 
+Límite inferior = 15257 MHz 
+Frecuencia central = 15271 MHz Límite superior = 15285 MHz Canal 14 high o 14’ 
+Límite inferior = 15285 MHz 
+Frecuencia central = 15299 MHz Límite superior = 15313 MHz Canal 15 high o 15’ 
+Límite inferior = 15313 MHz 
+Frecuencia central = 15327 MHz Límite superior = 15341 MHz 
+Página 45 de 48 
+18. Conclusiones 
+En la sección 16 hemos visto las capacidades de tráfico disponibles. Éste suele ser el dato de partida en el diseño del radioenlace, es la característica que se requiere. El diseño del radioenlace tiene como objetivo lograr esa capacidad de tráfico, y consiste en elegir la configuración más adecuada en cada caso. Para ello hay que basarse en las propiedades de los equipos resumidas en este documento, y en el cálculo del radioenlace. 
+Nuestra red de radio consta hoy de radioenlaces implementados con equipos Ericsson Minilink del tipo TN (Traffic Node) y LH (Long Haul), algunas de cuyas características fundamentales hemos descripto en este documento. En 2019 hemos empezado a instalar equipos Ericsson Minilink del nuevo tipo 6363, desde 2021 estamos instalando también equipos de la nueva familia 6600, y desde 2024, equipos 6365. 
+Todo ello permite continuar aumentando la capacidad de tráfico de nuestros radioenlaces. 
+Página 46 de 48 
+19. Referencias 
+1. MINI-LINK TN R5 Technical Description (Ericsson 2013) 
+2. MINI-LINK TN R5 Technical Description (Ericsson 2015) 
+3. MINI-LINK TN R5 Product Specification (Ericsson 2015) 
+4. MINI-LINK LH ETSI Technical Description (Ericsson 2015) 
+5. MINI-LINK LH ETSI Product Specification (Ericsson 2015) 
+6. MINI-LINK The Network Node (Ericsson 2017) 
+7. MINI-LINK Product Catalog (Ericsson 2017) 
+8. MINI-LINK Indoor Units (Ericsson 2017) 
+9. MINI-LINK PT Product Presentation (Ericsson 2017) 
+10. MINI-LINK 6600 Technical Description (Ericsson 2017) 
+11. MINI-LINK 6600 and MINI-LINK 6366 Product Specification (Ericsson 2019) 12. MINI-LINK The ultimate microwave toolbox (Ericsson 2019) 
+13. Microwave Antennas Product Specification (Ericsson 2019) 
+14. Demystifying MIMO for microwave (Ericsson 2019) 
+15. Simple path planning guideline for MIMO hops (Ericsson 2020) 
+16. MINI-LINK TN R6 Product Specification (Ericsson 2021) 
+17. MINI-LINK 6600 and MINI-LINK 6366 Product Specification (Ericsson 2021) 18. MINI-LINK 6600 (Ericsson 2023) 
+Página 47 de 48 
+Índice 
+1. 	Introducción.....................................................................................................2
+2. 	Equipos TN, LH, 6300, 6600 ...........................................................................3
+3. 	Bandas radioeléctricas ....................................................................................4
+4. 	Rangos de frecuencias de las RAUs...............................................................7
+5. 	Configuraciones de radiocanales ..................................................................14
+6. 	Configuraciones de equipos TN y antenas....................................................15
+7. 	Configuraciones de equipos LH y antenas....................................................19
+8. 	Nuevas familias Minilink 6300 (outdoor) y 6600 (indoor)...............................21
+9. 	Multi-band booster.........................................................................................23
+10. 	Carrier aggregation....................................................................................24
+11. 	Radio link bonding .....................................................................................25
+12. 	Antenas......................................................................................................26
+13. 	Parámetros de los equipos ........................................................................27
+14. 	Modulación adaptativa...............................................................................32
+15. 	Tipos de placas moduladoras MMU ..........................................................34
+16. 	Capacidades de tráfico en distintas configuraciones.................................35
+17. 	Canalización de algunas bandas radioeléctricas.......................................39
+18. 	Conclusiones .............................................................................................46
+19. 	Referencias................................................................................................47
+Índice....................................................................................................................48
+Página 48 de 48 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+• 
+Radiocanales de la banda 6U (40 MHz de ancho de banda)
+Radiocanales de la banda 6U (40 MHz de ancho de banda)
+Canal 1 low o 1 
+Canal 1 low o 1 
+Canal 1 high o 1’ 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+• 
+Radiocanales de la banda de 7 GHz (28 MHz de ancho de banda) 
+Radiocanales de la banda de 7 GHz (28 MHz de ancho de banda) 
+Canal 1 low o 1 
+Canal 1 low o 1 
+Canal 1 high o 1’ 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+• 
+Radiocanales de la banda de 8 GHz (28 MHz de ancho de banda) 
+Radiocanales de la banda de 8 GHz (28 MHz de ancho de banda) 
+Canal 1 low o 1 
+Canal 1 low o 1 
+Canal 1 high o 1’ 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+• 
+Radiocanales de la banda de 8 GHz (56 MHz de ancho de banda) 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+• 
+Radiocanales de la banda de 15 GHz (28 MHz de ancho de banda) 
+Radiocanales de la banda de 15 GHz (28 MHz de ancho de banda) 
+Canal 1 low o 1 
+Canal 1 low o 1 
+Canal 1 high o 1’ 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+Canal 9 low o 9 
+Canal 9 high o 9’ 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 
+	los equipos de radio Ericsson Minilink 
+Distintas configuraciones y capacidades de tráfico de 
+Texto: Ing. Juan Carlos Sturzenegger                                                                      Marzo de 2024 

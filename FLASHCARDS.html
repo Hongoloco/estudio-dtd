@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards de Estudio - Llamados Técnicos 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            opacity: 0.8;
+            font-size: 1.1em;
+        }
+        
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            background: rgba(255,255,255,0.1);
+            padding: 15px 25px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            min-width: 120px;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        .stat.correct .stat-number { color: #4caf50; }
+        .stat.incorrect .stat-number { color: #f44336; }
+        .stat.remaining .stat-number { color: #ffc107; }
+        
+        .category-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .category-btn {
+            padding: 12px 25px;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: transparent;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+        }
+        
+        .category-btn:hover, .category-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-color: transparent;
+            transform: scale(1.05);
+        }
+        
+        .flashcard-container {
+            perspective: 1000px;
+            margin-bottom: 30px;
+        }
+        
+        .flashcard {
+            width: 100%;
+            min-height: 350px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+        }
+        
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+        
+        .flashcard-face {
+            position: absolute;
+            width: 100%;
+            min-height: 350px;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .flashcard-front {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .flashcard-back {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            transform: rotateY(180deg);
+        }
+        
+        .flashcard-category {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+        
+        .flashcard-number {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+        
+        .flashcard-content {
+            font-size: 1.4em;
+            line-height: 1.6;
+        }
+        
+        .flashcard-hint {
+            position: absolute;
+            bottom: 20px;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .control-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .btn-incorrect {
+            background: #f44336;
+            color: white;
+        }
+        
+        .btn-correct {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .btn-skip {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        .btn-reset {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            margin-top: 20px;
+        }
+        
+        .progress-container {
+            margin: 30px 0;
+        }
+        
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50, #8bc34a);
+            transition: width 0.5s;
+        }
+        
+        .end-screen {
+            display: none;
+            text-align: center;
+            color: white;
+            padding: 50px;
+        }
+        
+        .end-screen h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        
+        .end-screen .score {
+            font-size: 4em;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        
+        .end-screen.excellent .score { color: #4caf50; }
+        .end-screen.good .score { color: #8bc34a; }
+        .end-screen.average .score { color: #ffc107; }
+        .end-screen.poor .score { color: #f44336; }
+        
+        .keyboard-hint {
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+        
+        .keyboard-hint kbd {
+            background: rgba(255,255,255,0.2);
+            padding: 3px 8px;
+            border-radius: 5px;
+            margin: 0 3px;
+        }
+        
+        .nav-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        @media (max-width: 600px) {
+            .flashcard-content {
+                font-size: 1.1em;
+            }
+            .controls {
+                flex-direction: column;
+            }
+            .control-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="INDEX.html" class="nav-link">← Menú Principal</a>
+    
+    <div class="container">
+        <div class="header">
+            <h1>🎴 Flashcards de Estudio</h1>
+            <p>Haz clic en la tarjeta para ver la respuesta</p>
+        </div>
+        
+        <div class="stats-bar">
+            <div class="stat correct">
+                <div class="stat-number" id="correct-count">0</div>
+                <div class="stat-label">✓ Correctas</div>
+            </div>
+            <div class="stat incorrect">
+                <div class="stat-number" id="incorrect-count">0</div>
+                <div class="stat-label">✗ A Repasar</div>
+            </div>
+            <div class="stat remaining">
+                <div class="stat-number" id="remaining-count">0</div>
+                <div class="stat-label">📚 Restantes</div>
+            </div>
+        </div>
+        
+        <div class="category-selector">
+            <button class="category-btn active" data-category="all">📚 Todas</button>
+            <button class="category-btn" data-category="radio">📡 Radio</button>
+            <button class="category-btn" data-category="ip">🌐 IP/Redes</button>
+            <button class="category-btn" data-category="fibra">💡 Fibra Óptica</button>
+            <button class="category-btn" data-category="formulas">🧮 Fórmulas</button>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+        </div>
+        
+        <div id="flashcard-area">
+            <div class="flashcard-container">
+                <div class="flashcard" id="flashcard" onclick="flipCard()">
+                    <div class="flashcard-face flashcard-front">
+                        <span class="flashcard-category" id="card-category">Categoría</span>
+                        <span class="flashcard-number" id="card-number">1/50</span>
+                        <div class="flashcard-content" id="card-question">Pregunta</div>
+                        <div class="flashcard-hint">👆 Clic para ver respuesta</div>
+                    </div>
+                    <div class="flashcard-face flashcard-back">
+                        <span class="flashcard-category" id="card-category-back">Categoría</span>
+                        <span class="flashcard-number" id="card-number-back">1/50</span>
+                        <div class="flashcard-content" id="card-answer">Respuesta</div>
+                        <div class="flashcard-hint">¿Lo sabías?</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button class="control-btn btn-incorrect" onclick="markCard(false)">
+                    ❌ No lo sabía
+                </button>
+                <button class="control-btn btn-skip" onclick="skipCard()">
+                    ⏭️ Saltar
+                </button>
+                <button class="control-btn btn-correct" onclick="markCard(true)">
+                    ✅ Lo sabía
+                </button>
+            </div>
+            
+            <div class="keyboard-hint">
+                Atajos: <kbd>Espacio</kbd> voltear | <kbd>←</kbd> no sabía | <kbd>→</kbd> sabía | <kbd>↓</kbd> saltar
+            </div>
+        </div>
+        
+        <div class="end-screen" id="end-screen">
+            <h2>🎉 ¡Sesión Completada!</h2>
+            <div class="score" id="final-score">85%</div>
+            <p id="final-message">¡Excelente trabajo!</p>
+            <div style="margin-top: 30px;">
+                <p>Correctas: <strong id="final-correct">0</strong></p>
+                <p>A repasar: <strong id="final-incorrect">0</strong></p>
+            </div>
+            <button class="control-btn btn-reset" onclick="resetCards()">🔄 Reiniciar</button>
+            <button class="control-btn btn-skip" onclick="reviewMistakes()" id="review-btn" style="display:none; margin-top: 10px;">
+                📖 Repasar Errores
+            </button>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <button class="control-btn btn-reset" onclick="resetCards()">🔄 Reiniciar Mazo</button>
+        </div>
+    </div>
+
+    <script>
+        // Base de datos de Flashcards
+        const flashcardsDB = [
+            // RADIO - Propagación
+            { category: "radio", q: "¿Cuál es la fórmula para calcular la longitud de onda en microondas?", a: "λ (cm) = 30 / f (GHz)\n\nEjemplo: A 6 GHz → λ = 30/6 = 5 cm" },
+            { category: "radio", q: "¿Cuál es el valor del factor k en atmósfera estándar?", a: "k ≈ 4/3 = 1.33\n\nEsto hace que el radio efectivo de la Tierra sea ~8,500 km" },
+            { category: "radio", q: "¿A partir de qué frecuencia la lluvia comienza a dominar la atenuación?", a: "≥ 10 GHz\n\nPor debajo de 10 GHz dominan efectos de terreno y tropósfera" },
+            { category: "radio", q: "¿A qué frecuencia ocurre el pico de absorción del vapor de agua?", a: "~23 GHz\n\nEvitar usar esta frecuencia en enlaces críticos" },
+            { category: "radio", q: "¿A qué frecuencia ocurre el pico de absorción del oxígeno?", a: "50-70 GHz (máximo ~60 GHz)\n\nEsta banda se usa para enlaces cortos de alta seguridad" },
+            { category: "radio", q: "¿Cuánto debe despejarse la primera zona de Fresnel como mínimo?", a: "60% de la primera zona de Fresnel\n\nMenos despejamiento causa pérdidas por difracción" },
+            { category: "radio", q: "¿Qué significa EIRP?", a: "Effective Isotropic Radiated Power\n\n(Potencia Radiada Isotrópica Efectiva)" },
+            { category: "radio", q: "¿Cuál es el margen de desvanecimiento (fading margin) típico?", a: "Hasta 40 dB\n\nDepende de la disponibilidad requerida del enlace" },
+            { category: "radio", q: "¿Qué tipo de fading domina en frecuencias < 10 GHz?", a: "Multipath fading\n\n(Desvanecimiento por trayectos múltiples)" },
+            { category: "radio", q: "¿Para qué sirve el criterio de Rayleigh?", a: "Determina si una superficie es lisa (reflexión especular) o rugosa (dispersión)\n\nDepende de λ, rugosidad y ángulo de incidencia" },
+            
+            // RADIO - Ericsson Minilink
+            { category: "radio", q: "¿Qué significa ACCP en configuraciones de radiocanales?", a: "Adjacent Channel Co-Polarization\n\nCanales adyacentes, misma polarización. Usa antena de simple polarización" },
+            { category: "radio", q: "¿Qué significa ACAP?", a: "Adjacent Channel Alternate Polarized\n\nCanales adyacentes, polarizaciones alternadas. Requiere antena de doble polarización" },
+            { category: "radio", q: "¿Qué significa CCDP?", a: "Co-Channel Dual Polarized\n\nMismo canal, polarizaciones opuestas. Requiere XPIC y antena de doble polarización" },
+            { category: "radio", q: "¿Qué es XPIC y cuándo se necesita?", a: "Cross-Polar Interference Canceller\n\nSe necesita en configuración CCDP para cancelar la interferencia entre polarizaciones" },
+            { category: "radio", q: "¿Cuál es la diferencia entre RAU y AMM?", a: "RAU: Unidad exterior (junto a la antena)\nAMM: Unidad interior (con placas MMU)\n\nConfiguración Split típica de equipos TN" },
+            { category: "radio", q: "¿Qué modulación máxima soporta la placa MMU4A?", a: "4096 QAM\n\nSoporta anchos de banda de 80 y 112 MHz" },
+            { category: "radio", q: "¿Para qué sirve la modulación adaptativa?", a: "Varía la modulación según condiciones del enlace\n\nEj: 128 QAM (mínima) ↔ 4096 QAM (máxima)\nGarantiza tráfico prioritario en condiciones adversas" },
+            { category: "radio", q: "¿Qué es Multi-band Booster?", a: "Combina 2 radioenlaces en bandas diferentes\n\nBanda baja: tráfico prioritario (mayor confiabilidad)\nBanda alta: mayor capacidad (variable según propagación)" },
+            { category: "radio", q: "¿Qué capacidad máxima se puede alcanzar con MMU 1002, 112 MHz y 4096 QAM?", a: "~2.4 Gbps\n\nCon XPIC se puede duplicar aproximadamente" },
+            { category: "radio", q: "¿Cuál es la potencia máxima de transmisión de RAUs de alta potencia?", a: "PTx ≤ 30 dBm\n\nRAUs de potencia media: PTx ≤ 26 dBm" },
+            
+            // IP/REDES - TCP/IP
+            { category: "ip", q: "¿Cuántas capas tiene el modelo OSI vs TCP/IP híbrido?", a: "OSI: 7 capas\nTCP/IP híbrido: 5 capas\n\n(Aplicación, Transporte, Red, Enlace, Física)" },
+            { category: "ip", q: "¿Cuál es el tamaño de una dirección MAC?", a: "48 bits (6 bytes)\n\nFormato: XX:XX:XX:XX:XX:XX\nPrimeros 3 bytes = OUI (fabricante)" },
+            { category: "ip", q: "¿Cuál es la dirección MAC de broadcast?", a: "FF:FF:FF:FF:FF:FF\n\nSe envía a todos los dispositivos en el segmento de red" },
+            { category: "ip", q: "¿Qué significa CSMA/CD?", a: "Carrier Sense Multiple Access with Collision Detection\n\nProtocolo de acceso al medio en Ethernet clásico" },
+            { category: "ip", q: "¿Cuál es el tamaño mínimo y máximo de una trama Ethernet?", a: "Mínimo: 64 bytes\nMáximo: 1518 bytes\n\nDatos: 46-1500 bytes (MTU)" },
+            { category: "ip", q: "¿Qué diferencia hay entre Hub y Switch?", a: "Hub: Capa 1, repite a todos los puertos (bus lógico)\nSwitch: Capa 2, aprende MACs, reenvío selectivo\n\nEl switch segmenta dominios de colisión" },
+            { category: "ip", q: "¿Cuántos bits tiene una dirección IPv4?", a: "32 bits (4 bytes)\n\nFormato: XXX.XXX.XXX.XXX (0-255 cada octeto)" },
+            { category: "ip", q: "¿Cuáles son los rangos de direcciones IP privadas (RFC 1918)?", a: "Clase A: 10.0.0.0/8\nClase B: 172.16.0.0/12\nClase C: 192.168.0.0/16" },
+            { category: "ip", q: "¿Para qué sirve ARP?", a: "Address Resolution Protocol\n\nResuelve IP → MAC\nPermite conocer la dirección física a partir de la lógica" },
+            { category: "ip", q: "¿Cuál es la diferencia principal entre TCP y UDP?", a: "TCP: Orientado a conexión, confiable (ACKs, retransmisión)\nUDP: Sin conexión, no confiable, más rápido\n\nTCP para HTTP/FTP, UDP para VoIP/video" },
+            { category: "ip", q: "¿Cuántos hosts utilizables hay en una red /24?", a: "254 hosts utilizables\n\n2^8 - 2 = 256 - 2 = 254\n(Se resta dirección de red y broadcast)" },
+            { category: "ip", q: "¿Qué protocolo de routing usa 'número de saltos' como métrica?", a: "RIP (Routing Information Protocol)\n\nMáximo 15 saltos. OSPF usa costo basado en ancho de banda" },
+            
+            // FIBRA ÓPTICA
+            { category: "fibra", q: "¿Cuáles son los dos tipos principales de fibra óptica?", a: "Monomodo (SM) y Multimodo (MM)\n\nMonomodo: largas distancias (>100 km)\nMultimodo: distancias cortas (pocos km)" },
+            { category: "fibra", q: "¿De qué color es típicamente la fibra monomodo?", a: "Amarillo o azul\n\nLa fibra multimodo es típicamente naranja" },
+            { category: "fibra", q: "¿Cuál es el diámetro típico del núcleo de fibra monomodo?", a: "8-10 μm (micrómetros)\n\nPermite solo un modo de propagación de luz" },
+            { category: "fibra", q: "¿Qué es el 'cladding' en una fibra óptica?", a: "El revestimiento de vidrio alrededor del núcleo\n\nTiene diferente índice de refracción para confinar la luz" },
+            { category: "fibra", q: "¿Para qué sirve el gel en cables de fibra de tubos holgados?", a: "Protección anticongelante\n\nNo se escurre fácilmente y protege las fibras" },
+            { category: "fibra", q: "¿Qué material se usa como elemento de refuerzo en cables de fibra?", a: "Kevlar (aramida)\n\nProporciona resistencia a la tracción" },
+            
+            // TRANSCEPTORES
+            { category: "fibra", q: "¿Qué significa SFP?", a: "Small Form-Factor Pluggable\n\nTransceptor compacto hot-swappable" },
+            { category: "fibra", q: "¿Qué significa QSFP?", a: "Quad Small Form-Factor Pluggable\n\n4 canales, usado para 40G/100G" },
+            { category: "fibra", q: "¿Qué significan SR, LR, ER, ZR en transceptores?", a: "SR: Short Reach (corto alcance)\nLR: Long Reach (~10 km)\nER: Extended Reach (~40 km)\nZR: Very Long Reach (~80 km+)" },
+            { category: "fibra", q: "¿Cómo se calcula el Power Budget de un transceptor?", a: "Power Budget = Tx mínimo - Rx sensibilidad\n\nEjemplo: -5 dBm - (-28 dBm) = 23 dB" },
+            { category: "fibra", q: "¿Cuál es la atenuación típica de fibra monomodo?", a: "0.22 - 0.5 dB/km\n\nDepende de la longitud de onda (1310nm o 1550nm)" },
+            { category: "fibra", q: "¿Cuál es la pérdida típica por empalme de fusión?", a: "~0.1 dB por empalme\n\nLos conectores tienen pérdida mayor (~0.75 dB)" },
+            { category: "fibra", q: "¿Cuál es la pérdida típica por conector óptico?", a: "~0.75 dB por conector\n\nAlgunos de alta calidad pueden ser 0.3-0.5 dB" },
+            
+            // BERT y RFC 2544
+            { category: "ip", q: "¿Qué significa BER?", a: "Bit Error Rate\n\nTasa de errores de bits = Bits con error / Bits totales" },
+            { category: "ip", q: "¿Qué valor de BER es aceptable para telecomunicaciones?", a: "10⁻⁹ (general)\n10⁻¹³ (transmisión de datos críticos)" },
+            { category: "ip", q: "¿Qué significa PRBS?", a: "Pseudo-Random Bit Sequence\n\nSecuencia pseudo-aleatoria para pruebas BERT" },
+            { category: "ip", q: "¿Qué organización publicó RFC 2544?", a: "IETF (Internet Engineering Task Force)\n\nPublicado en 1999" },
+            { category: "ip", q: "¿Cuáles son los tamaños de trama estándar en RFC 2544?", a: "64, 128, 256, 512, 1024, 1280, 1518 bytes\n\nSe prueba con cada tamaño" },
+            { category: "ip", q: "¿Qué mide el 'throughput' en RFC 2544?", a: "La tasa máxima de transferencia sin pérdida de tramas\n\nSe expresa como % del line rate" },
+            { category: "ip", q: "¿Qué mide la prueba 'Back-to-Back' en RFC 2544?", a: "Capacidad para procesar ráfagas sucesivas sin pérdida\n\nMide el tamaño máximo de ráfaga soportado" },
+            { category: "ip", q: "¿Qué estándar reemplaza a RFC 2544 para múltiples servicios?", a: "ITU-T Y.1564\n\nModela mejor múltiples servicios simultáneos" },
+            
+            // FÓRMULAS
+            { category: "formulas", q: "Fórmula: Longitud de onda en microondas", a: "λ (cm) = 30 / f (GHz)\n\nDonde λ es longitud de onda y f es frecuencia" },
+            { category: "formulas", q: "Fórmula: Radio de la zona de Fresnel", a: "rF = 17.3 × √(d₁ × d₂) / (f × d)\n\nDonde d₁, d₂ = distancias parciales, f = frecuencia, d = distancia total (en km)" },
+            { category: "formulas", q: "Fórmula: BER (Bit Error Rate)", a: "BER = Bits con error / Bits totales transmitidos\n\nEjemplo: 1 error en 10⁹ bits = BER de 10⁻⁹" },
+            { category: "formulas", q: "Fórmula: Power Budget óptico", a: "Power Budget = Tx min (dBm) - Rx sensibilidad (dBm)\n\nDebe ser mayor que las pérdidas totales" },
+            { category: "formulas", q: "Fórmula: Pérdidas totales en fibra", a: "Pérdida total = (L × α) + (N_e × 0.1) + (N_c × 0.75) + Margen\n\nL=distancia, α=atenuación/km, N_e=empalmes, N_c=conectores" },
+            { category: "formulas", q: "Fórmula: Hosts utilizables en una subred", a: "Hosts = 2^n - 2\n\nDonde n = bits de host (32 - prefijo CIDR)\nSe restan dirección de red y broadcast" },
+            { category: "formulas", q: "Fórmula: Máscara de subred /24", a: "/24 = 255.255.255.0\n\n24 bits de red, 8 bits de host\n256 - 2 = 254 hosts utilizables" },
+            { category: "formulas", q: "Fórmula: Factor k (radio efectivo Tierra)", a: "k ≈ 4/3 = 1.33 (atmósfera estándar)\n\nRadio efectivo = k × 6,371 km ≈ 8,500 km" },
+            { category: "formulas", q: "Conversión: dBm a mW", a: "P(mW) = 10^(P(dBm)/10)\n\n0 dBm = 1 mW\n30 dBm = 1000 mW = 1 W" },
+            { category: "formulas", q: "Fórmula: Pérdida en espacio libre (ABF)", a: "ABF (dB) = 92.4 + 20×log(f) + 20×log(d)\n\nf en GHz, d en km" }
+        ];
+        
+        let currentCards = [];
+        let currentIndex = 0;
+        let correctCount = 0;
+        let incorrectCount = 0;
+        let incorrectCards = [];
+        let isFlipped = false;
+        
+        // Inicializar
+        function init() {
+            loadProgress();
+            filterCards('all');
+            setupKeyboard();
+            setupCategoryButtons();
+        }
+        
+        // Filtrar tarjetas por categoría
+        function filterCards(category) {
+            if (category === 'all') {
+                currentCards = [...flashcardsDB];
+            } else {
+                currentCards = flashcardsDB.filter(c => c.category === category);
+            }
+            shuffleCards();
+            currentIndex = 0;
+            correctCount = 0;
+            incorrectCount = 0;
+            incorrectCards = [];
+            updateStats();
+            showCard();
+            document.getElementById('flashcard-area').style.display = 'block';
+            document.getElementById('end-screen').style.display = 'none';
+        }
+        
+        // Mezclar tarjetas
+        function shuffleCards() {
+            for (let i = currentCards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [currentCards[i], currentCards[j]] = [currentCards[j], currentCards[i]];
+            }
+        }
+        
+        // Mostrar tarjeta actual
+        function showCard() {
+            if (currentIndex >= currentCards.length) {
+                showEndScreen();
+                return;
+            }
+            
+            const card = currentCards[currentIndex];
+            const categoryNames = {
+                'radio': '📡 Radio',
+                'ip': '🌐 IP/Redes',
+                'fibra': '💡 Fibra',
+                'formulas': '🧮 Fórmulas'
+            };
+            
+            document.getElementById('card-category').textContent = categoryNames[card.category] || card.category;
+            document.getElementById('card-category-back').textContent = categoryNames[card.category] || card.category;
+            document.getElementById('card-number').textContent = `${currentIndex + 1}/${currentCards.length}`;
+            document.getElementById('card-number-back').textContent = `${currentIndex + 1}/${currentCards.length}`;
+            document.getElementById('card-question').textContent = card.q;
+            document.getElementById('card-answer').innerHTML = card.a.replace(/\n/g, '<br>');
+            
+            // Resetear flip
+            isFlipped = false;
+            document.getElementById('flashcard').classList.remove('flipped');
+            
+            updateProgress();
+        }
+        
+        // Voltear tarjeta
+        function flipCard() {
+            isFlipped = !isFlipped;
+            document.getElementById('flashcard').classList.toggle('flipped');
+        }
+        
+        // Marcar tarjeta
+        function markCard(isCorrect) {
+            if (isCorrect) {
+                correctCount++;
+            } else {
+                incorrectCount++;
+                incorrectCards.push(currentCards[currentIndex]);
+            }
+            
+            currentIndex++;
+            updateStats();
+            showCard();
+            saveProgress();
+        }
+        
+        // Saltar tarjeta
+        function skipCard() {
+            currentIndex++;
+            showCard();
+        }
+        
+        // Actualizar estadísticas
+        function updateStats() {
+            document.getElementById('correct-count').textContent = correctCount;
+            document.getElementById('incorrect-count').textContent = incorrectCount;
+            document.getElementById('remaining-count').textContent = Math.max(0, currentCards.length - currentIndex);
+        }
+        
+        // Actualizar barra de progreso
+        function updateProgress() {
+            const progress = (currentIndex / currentCards.length) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+        }
+        
+        // Mostrar pantalla final
+        function showEndScreen() {
+            document.getElementById('flashcard-area').style.display = 'none';
+            const endScreen = document.getElementById('end-screen');
+            endScreen.style.display = 'block';
+            
+            const total = correctCount + incorrectCount;
+            const percentage = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+            
+            document.getElementById('final-score').textContent = percentage + '%';
+            document.getElementById('final-correct').textContent = correctCount;
+            document.getElementById('final-incorrect').textContent = incorrectCount;
+            
+            let message = '';
+            endScreen.className = 'end-screen';
+            
+            if (percentage >= 90) {
+                message = '🏆 ¡Excelente! Dominas el material';
+                endScreen.classList.add('excellent');
+            } else if (percentage >= 70) {
+                message = '👍 ¡Muy bien! Sigue practicando';
+                endScreen.classList.add('good');
+            } else if (percentage >= 50) {
+                message = '📚 Buen intento. Repasa los temas difíciles';
+                endScreen.classList.add('average');
+            } else {
+                message = '💪 No te rindas. Practica más y mejorarás';
+                endScreen.classList.add('poor');
+            }
+            
+            document.getElementById('final-message').textContent = message;
+            
+            // Mostrar botón de repasar si hay errores
+            const reviewBtn = document.getElementById('review-btn');
+            if (incorrectCards.length > 0) {
+                reviewBtn.style.display = 'inline-flex';
+            } else {
+                reviewBtn.style.display = 'none';
+            }
+        }
+        
+        // Repasar errores
+        function reviewMistakes() {
+            currentCards = [...incorrectCards];
+            incorrectCards = [];
+            currentIndex = 0;
+            correctCount = 0;
+            incorrectCount = 0;
+            updateStats();
+            showCard();
+            document.getElementById('flashcard-area').style.display = 'block';
+            document.getElementById('end-screen').style.display = 'none';
+        }
+        
+        // Reiniciar
+        function resetCards() {
+            const activeBtn = document.querySelector('.category-btn.active');
+            const category = activeBtn ? activeBtn.dataset.category : 'all';
+            filterCards(category);
+        }
+        
+        // Configurar botones de categoría
+        function setupCategoryButtons() {
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    filterCards(this.dataset.category);
+                });
+            });
+        }
+        
+        // Atajos de teclado
+        function setupKeyboard() {
+            document.addEventListener('keydown', function(e) {
+                if (document.getElementById('end-screen').style.display === 'block') return;
+                
+                switch(e.code) {
+                    case 'Space':
+                        e.preventDefault();
+                        flipCard();
+                        break;
+                    case 'ArrowLeft':
+                        markCard(false);
+                        break;
+                    case 'ArrowRight':
+                        markCard(true);
+                        break;
+                    case 'ArrowDown':
+                        skipCard();
+                        break;
+                }
+            });
+        }
+        
+        // Guardar progreso en localStorage
+        function saveProgress() {
+            const progress = {
+                date: new Date().toISOString(),
+                correct: correctCount,
+                incorrect: incorrectCount,
+                total: currentCards.length
+            };
+            
+            let history = JSON.parse(localStorage.getItem('flashcard_history') || '[]');
+            history.push(progress);
+            if (history.length > 50) history = history.slice(-50);
+            localStorage.setItem('flashcard_history', JSON.stringify(history));
+        }
+        
+        // Cargar progreso
+        function loadProgress() {
+            // El progreso se usa en el dashboard
+        }
+        
+        // Iniciar
+        init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicios de Fórmulas - Llamados Técnicos 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: white;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            opacity: 0.8;
+            font-size: 1.1em;
+        }
+        
+        .nav-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            transition: all 0.3s;
+            z-index: 100;
+        }
+        
+        .nav-link:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            background: rgba(255,255,255,0.1);
+            padding: 15px 25px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 120px;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        .stat.correct .stat-number { color: #4caf50; }
+        .stat.incorrect .stat-number { color: #f44336; }
+        
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .category-tab {
+            padding: 12px 25px;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: transparent;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+        }
+        
+        .category-tab:hover, .category-tab.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-color: transparent;
+        }
+        
+        .exercise-container {
+            background: rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 20px;
+        }
+        
+        .exercise-number {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+        
+        .exercise-title {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            color: #ffc107;
+        }
+        
+        .exercise-description {
+            opacity: 0.9;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .formula-exercise {
+            background: rgba(0,0,0,0.3);
+            padding: 30px;
+            border-radius: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.4em;
+            text-align: center;
+            margin-bottom: 25px;
+            line-height: 2;
+        }
+        
+        .blank-input {
+            background: rgba(255,255,255,0.15);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            padding: 8px 15px;
+            color: white;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            width: 100px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .blank-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .blank-input.correct {
+            border-color: #4caf50;
+            background: rgba(76, 175, 80, 0.3);
+        }
+        
+        .blank-input.incorrect {
+            border-color: #f44336;
+            background: rgba(244, 67, 54, 0.3);
+        }
+        
+        .blank-input:disabled {
+            opacity: 0.8;
+        }
+        
+        .check-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .check-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .check-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .feedback {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            display: none;
+        }
+        
+        .feedback.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        .feedback.correct {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.3), rgba(139, 195, 74, 0.3));
+            border: 2px solid #4caf50;
+        }
+        
+        .feedback.incorrect {
+            background: linear-gradient(135deg, rgba(244, 67, 54, 0.3), rgba(233, 30, 99, 0.3));
+            border: 2px solid #f44336;
+        }
+        
+        .feedback h4 {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .feedback p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .hint-btn {
+            background: rgba(255,193,7,0.2);
+            border: 2px solid #ffc107;
+            color: #ffc107;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+            margin-right: 10px;
+        }
+        
+        .hint-btn:hover {
+            background: rgba(255,193,7,0.3);
+        }
+        
+        .hint-text {
+            background: rgba(255,193,7,0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            margin-top: 15px;
+            border-radius: 0 10px 10px 0;
+            display: none;
+        }
+        
+        .hint-text.show {
+            display: block;
+        }
+        
+        .navigation-btns {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+        
+        .nav-btn {
+            padding: 15px 30px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 15px;
+            color: white;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.5s;
+        }
+        
+        .end-screen {
+            text-align: center;
+            padding: 50px;
+            display: none;
+        }
+        
+        .end-screen.show {
+            display: block;
+        }
+        
+        .end-screen h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        
+        .end-screen .score {
+            font-size: 4em;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        
+        .end-screen.excellent .score { color: #4caf50; }
+        .end-screen.good .score { color: #8bc34a; }
+        .end-screen.average .score { color: #ffc107; }
+        .end-screen.poor .score { color: #f44336; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 600px) {
+            .formula-exercise {
+                font-size: 1em;
+                padding: 20px;
+            }
+            
+            .blank-input {
+                width: 70px;
+                font-size: 0.9em;
+                padding: 5px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="INDEX.html" class="nav-link">← Menú Principal</a>
+    
+    <div class="container">
+        <div class="header">
+            <h1>✍️ Ejercicios de Fórmulas</h1>
+            <p>Completa los espacios en blanco para memorizar las fórmulas clave</p>
+        </div>
+        
+        <div class="stats-bar">
+            <div class="stat correct">
+                <div class="stat-number" id="correct-count">0</div>
+                <div class="stat-label">✓ Correctas</div>
+            </div>
+            <div class="stat incorrect">
+                <div class="stat-number" id="incorrect-count">0</div>
+                <div class="stat-label">✗ Incorrectas</div>
+            </div>
+        </div>
+        
+        <div class="category-tabs">
+            <button class="category-tab active" data-category="all">📚 Todas</button>
+            <button class="category-tab" data-category="radio">📡 Radio</button>
+            <button class="category-tab" data-category="optica">💡 Óptica</button>
+            <button class="category-tab" data-category="redes">🌐 Redes</button>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+        </div>
+        
+        <div id="exercise-area">
+            <!-- Ejercicio se carga dinámicamente -->
+        </div>
+        
+        <div class="end-screen" id="end-screen">
+            <h2>🎉 ¡Ejercicios Completados!</h2>
+            <div class="score" id="final-score">0%</div>
+            <p id="final-message">Mensaje de resultado</p>
+            <div style="margin-top: 30px;">
+                <button class="check-btn" onclick="resetExercises()">🔄 Reiniciar Ejercicios</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Base de datos de ejercicios
+        const exercisesDB = [
+            // RADIO
+            {
+                category: "radio",
+                title: "Longitud de Onda en Microondas",
+                description: "Fórmula para calcular la longitud de onda a partir de la frecuencia en GHz",
+                formula: "λ (cm) = <input type='text' class='blank-input' data-answer='30'> / f (GHz)",
+                hint: "Es un número entero que representa la velocidad de la luz en unidades adecuadas",
+                explanation: "λ (cm) = 30 / f (GHz). Por ejemplo, a 6 GHz: λ = 30/6 = 5 cm"
+            },
+            {
+                category: "radio",
+                title: "Factor k - Atmósfera Estándar",
+                description: "Valor del factor k (Earth radius factor) en condiciones de atmósfera estándar",
+                formula: "k ≈ <input type='text' class='blank-input' data-answer='4/3,4/3,1.33,1,33'> (equivalente a ≈ 1.33)",
+                hint: "Es una fracción con 4 en el numerador",
+                explanation: "k ≈ 4/3 = 1.33 en atmósfera estándar. Esto hace que el radio efectivo de la Tierra sea ~8,500 km"
+            },
+            {
+                category: "radio",
+                title: "Radio de Zona de Fresnel",
+                description: "Fórmula para calcular el radio de la primera zona de Fresnel",
+                formula: "rF = <input type='text' class='blank-input' data-answer='17.3,17,3'> × √(d₁ × d₂ / f × d)",
+                hint: "Es un número cercano a 17",
+                explanation: "rF = 17.3 × √(d₁ × d₂)/(f × d), donde d₁ y d₂ son distancias parciales, f es frecuencia en GHz, d es distancia total en km"
+            },
+            {
+                category: "radio",
+                title: "Despejamiento de Zona de Fresnel",
+                description: "Porcentaje mínimo de despejamiento de la primera zona de Fresnel",
+                formula: "Despejamiento mínimo: <input type='text' class='blank-input' data-answer='60'>%",
+                hint: "Es un valor entre 50% y 70%",
+                explanation: "Se requiere despejar al menos el 60% de la primera zona de Fresnel para evitar pérdidas por difracción"
+            },
+            {
+                category: "radio",
+                title: "Pérdida en Espacio Libre (FSL/ABF)",
+                description: "Fórmula para calcular la pérdida en espacio libre",
+                formula: "ABF (dB) = <input type='text' class='blank-input' data-answer='92.4,92,4'> + 20×log(f) + 20×log(d)",
+                hint: "Es un número cercano a 92",
+                explanation: "ABF = 92.4 + 20×log(f) + 20×log(d), donde f está en GHz y d en km"
+            },
+            {
+                category: "radio",
+                title: "Frecuencia de Absorción del Vapor de Agua",
+                description: "Frecuencia aproximada donde ocurre el pico de absorción del vapor de agua",
+                formula: "Pico de absorción H₂O: ~<input type='text' class='blank-input' data-answer='23'> GHz",
+                hint: "Es un valor entre 20 y 25 GHz",
+                explanation: "El pico de absorción del vapor de agua ocurre aproximadamente a 23 GHz"
+            },
+            {
+                category: "radio",
+                title: "Frecuencia de Absorción del Oxígeno",
+                description: "Rango de frecuencias donde ocurre el pico de absorción del oxígeno",
+                formula: "Pico de absorción O₂: <input type='text' class='blank-input' data-answer='50,60'>-70 GHz (máximo ~60 GHz)",
+                hint: "Es un valor entre 50 y 60 GHz",
+                explanation: "El pico de absorción del oxígeno ocurre entre 50-70 GHz, con máximo alrededor de 60 GHz"
+            },
+            
+            // ÓPTICA
+            {
+                category: "optica",
+                title: "Power Budget Óptico",
+                description: "Fórmula para calcular el power budget de un transceptor óptico",
+                formula: "Power Budget = Tx mín - <input type='text' class='blank-input' data-answer='Rx sensibilidad,rx sensibilidad,sensibilidad'>",
+                hint: "Es la sensibilidad del receptor",
+                explanation: "Power Budget = Tx mín (dBm) - Rx sensibilidad (dBm). Ejemplo: -5 dBm - (-28 dBm) = 23 dB"
+            },
+            {
+                category: "optica",
+                title: "Pérdida por Empalme de Fusión",
+                description: "Valor típico de pérdida por empalme de fusión en fibra óptica",
+                formula: "Pérdida por empalme: ~<input type='text' class='blank-input' data-answer='0.1,0,1'> dB",
+                hint: "Es un valor menor a 0.5 dB",
+                explanation: "La pérdida típica por empalme de fusión es aproximadamente 0.1 dB"
+            },
+            {
+                category: "optica",
+                title: "Pérdida por Conector Óptico",
+                description: "Valor típico de pérdida por conector óptico",
+                formula: "Pérdida por conector: ~<input type='text' class='blank-input' data-answer='0.75,0,75'> dB",
+                hint: "Es un valor entre 0.5 y 1 dB",
+                explanation: "La pérdida típica por conector óptico es aproximadamente 0.75 dB (algunos de alta calidad pueden ser 0.3-0.5 dB)"
+            },
+            {
+                category: "optica",
+                title: "Atenuación Fibra Monomodo 1550nm",
+                description: "Atenuación típica de fibra monomodo a 1550nm",
+                formula: "Atenuación SM 1550nm: ~<input type='text' class='blank-input' data-answer='0.22,0,22'> dB/km",
+                hint: "Es un valor menor a 0.3 dB/km",
+                explanation: "La atenuación típica de fibra monomodo a 1550nm es aproximadamente 0.22 dB/km"
+            },
+            {
+                category: "optica",
+                title: "Atenuación Fibra Monomodo 1310nm",
+                description: "Atenuación típica de fibra monomodo a 1310nm",
+                formula: "Atenuación SM 1310nm: ~<input type='text' class='blank-input' data-answer='0.35,0,35'> dB/km",
+                hint: "Es un valor entre 0.3 y 0.4 dB/km",
+                explanation: "La atenuación típica de fibra monomodo a 1310nm es aproximadamente 0.35 dB/km"
+            },
+            {
+                category: "optica",
+                title: "Diámetro del Núcleo - Fibra Monomodo",
+                description: "Diámetro típico del núcleo de fibra monomodo",
+                formula: "Núcleo fibra SM: <input type='text' class='blank-input' data-answer='8-10,8,9,10'>μm",
+                hint: "Es un valor entre 8 y 10 micrómetros",
+                explanation: "El núcleo de fibra monomodo tiene típicamente 8-10 μm de diámetro"
+            },
+            
+            // REDES
+            {
+                category: "redes",
+                title: "Hosts Utilizables en Subred",
+                description: "Fórmula para calcular hosts utilizables en una subred",
+                formula: "Hosts = 2^n - <input type='text' class='blank-input' data-answer='2'>",
+                hint: "Se restan la dirección de red y la de broadcast",
+                explanation: "Hosts = 2^n - 2, donde n = bits de host (32 - prefijo CIDR). Se restan dirección de red y broadcast"
+            },
+            {
+                category: "redes",
+                title: "Máscara de Subred /24",
+                description: "Valor de la máscara de subred para un prefijo /24",
+                formula: "/24 = 255.255.255.<input type='text' class='blank-input' data-answer='0'>",
+                hint: "24 bits de red significa que el último octeto es...",
+                explanation: "/24 = 255.255.255.0, equivale a 254 hosts utilizables"
+            },
+            {
+                category: "redes",
+                title: "Hosts en Red /24",
+                description: "Número de hosts utilizables en una red con máscara /24",
+                formula: "Red /24 tiene <input type='text' class='blank-input' data-answer='254'> hosts utilizables",
+                hint: "2^8 - 2 = ?",
+                explanation: "Una red /24 tiene 2^8 - 2 = 256 - 2 = 254 hosts utilizables"
+            },
+            {
+                category: "redes",
+                title: "Tamaño de Dirección MAC",
+                description: "Longitud en bits de una dirección MAC",
+                formula: "Dirección MAC: <input type='text' class='blank-input' data-answer='48'> bits (<input type='text' class='blank-input' data-answer='6'> bytes)",
+                hint: "Es 6 bytes, cada byte tiene 8 bits",
+                explanation: "Una dirección MAC tiene 48 bits (6 bytes), formato: XX:XX:XX:XX:XX:XX"
+            },
+            {
+                category: "redes",
+                title: "Tamaño de Dirección IPv4",
+                description: "Longitud en bits de una dirección IPv4",
+                formula: "Dirección IPv4: <input type='text' class='blank-input' data-answer='32'> bits (<input type='text' class='blank-input' data-answer='4'> bytes)",
+                hint: "Son 4 octetos",
+                explanation: "Una dirección IPv4 tiene 32 bits (4 bytes), formato: XXX.XXX.XXX.XXX"
+            },
+            {
+                category: "redes",
+                title: "Tamaño Mínimo Trama Ethernet",
+                description: "Tamaño mínimo de una trama Ethernet",
+                formula: "Trama Ethernet mínima: <input type='text' class='blank-input' data-answer='64'> bytes",
+                hint: "Es un valor cercano a 60 bytes",
+                explanation: "El tamaño mínimo de una trama Ethernet es 64 bytes"
+            },
+            {
+                category: "redes",
+                title: "Tamaño Máximo Trama Ethernet (MTU)",
+                description: "Tamaño máximo de una trama Ethernet estándar",
+                formula: "Trama Ethernet máxima: <input type='text' class='blank-input' data-answer='1518'> bytes (datos: <input type='text' class='blank-input' data-answer='1500'> bytes)",
+                hint: "El MTU estándar es 1500 bytes de datos",
+                explanation: "El tamaño máximo es 1518 bytes, con MTU (datos) de 1500 bytes"
+            },
+            {
+                category: "redes",
+                title: "BER - Tasa de Error de Bits",
+                description: "Fórmula para calcular la tasa de error de bits",
+                formula: "BER = <input type='text' class='blank-input' data-answer='bits con error,errores'> / Bits totales",
+                hint: "Es una relación entre errores y total",
+                explanation: "BER = Bits con error / Bits totales transmitidos"
+            },
+            {
+                category: "redes",
+                title: "BER Estándar Telecomunicaciones",
+                description: "Valor de BER considerado estándar para telecomunicaciones",
+                formula: "BER estándar: 10^<input type='text' class='blank-input' data-answer='-9'>",
+                hint: "Es un exponente negativo alrededor de -9",
+                explanation: "El BER estándar para telecomunicaciones es 10⁻⁹. Para datos críticos se usa 10⁻¹³"
+            },
+            {
+                category: "redes",
+                title: "Saltos Máximos en RIP",
+                description: "Número máximo de saltos permitidos en el protocolo RIP",
+                formula: "RIP máximo saltos: <input type='text' class='blank-input' data-answer='15'>",
+                hint: "Es un valor cercano a 15",
+                explanation: "RIP permite máximo 15 saltos. 16 significa destino inalcanzable"
+            }
+        ];
+        
+        let currentExercises = [];
+        let currentIndex = 0;
+        let correctCount = 0;
+        let incorrectCount = 0;
+        
+        // Inicializar
+        function init() {
+            setupCategoryTabs();
+            filterExercises('all');
+        }
+        
+        // Configurar tabs de categoría
+        function setupCategoryTabs() {
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    filterExercises(this.dataset.category);
+                });
+            });
+        }
+        
+        // Filtrar ejercicios por categoría
+        function filterExercises(category) {
+            if (category === 'all') {
+                currentExercises = [...exercisesDB];
+            } else {
+                currentExercises = exercisesDB.filter(e => e.category === category);
+            }
+            
+            // Mezclar
+            shuffleArray(currentExercises);
+            
+            currentIndex = 0;
+            correctCount = 0;
+            incorrectCount = 0;
+            updateStats();
+            
+            document.getElementById('exercise-area').style.display = 'block';
+            document.getElementById('end-screen').classList.remove('show');
+            
+            showExercise();
+        }
+        
+        // Mezclar array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+        
+        // Mostrar ejercicio actual
+        function showExercise() {
+            if (currentIndex >= currentExercises.length) {
+                showEndScreen();
+                return;
+            }
+            
+            const exercise = currentExercises[currentIndex];
+            const categoryIcons = {
+                'radio': '📡',
+                'optica': '💡',
+                'redes': '🌐'
+            };
+            
+            const html = `
+                <div class="exercise-container">
+                    <span class="exercise-number">${categoryIcons[exercise.category]} Ejercicio ${currentIndex + 1} de ${currentExercises.length}</span>
+                    <h3 class="exercise-title">${exercise.title}</h3>
+                    <p class="exercise-description">${exercise.description}</p>
+                    
+                    <div class="formula-exercise" id="formula-area">
+                        ${exercise.formula}
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <button class="hint-btn" onclick="showHint()">💡 Ver Pista</button>
+                    </div>
+                    <div class="hint-text" id="hint-text">${exercise.hint}</div>
+                    
+                    <button class="check-btn" id="check-btn" onclick="checkAnswer()">Verificar Respuesta</button>
+                    
+                    <div class="feedback" id="feedback">
+                        <h4 id="feedback-title"></h4>
+                        <p id="feedback-text"></p>
+                    </div>
+                    
+                    <div class="navigation-btns">
+                        <button class="nav-btn" onclick="previousExercise()" ${currentIndex === 0 ? 'disabled' : ''}>← Anterior</button>
+                        <button class="nav-btn" onclick="nextExercise()" id="next-btn" disabled>Siguiente →</button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('exercise-area').innerHTML = html;
+            updateProgress();
+            
+            // Focus en el primer input
+            const firstInput = document.querySelector('.blank-input');
+            if (firstInput) firstInput.focus();
+        }
+        
+        // Mostrar pista
+        function showHint() {
+            document.getElementById('hint-text').classList.toggle('show');
+        }
+        
+        // Verificar respuesta
+        function checkAnswer() {
+            const inputs = document.querySelectorAll('.blank-input');
+            let allCorrect = true;
+            
+            inputs.forEach(input => {
+                const userAnswer = input.value.trim().toLowerCase();
+                const correctAnswers = input.dataset.answer.split(',').map(a => a.trim().toLowerCase());
+                
+                if (correctAnswers.some(ans => userAnswer === ans)) {
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                } else {
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                    allCorrect = false;
+                }
+                input.disabled = true;
+            });
+            
+            const exercise = currentExercises[currentIndex];
+            const feedback = document.getElementById('feedback');
+            const feedbackTitle = document.getElementById('feedback-title');
+            const feedbackText = document.getElementById('feedback-text');
+            
+            if (allCorrect) {
+                correctCount++;
+                feedback.classList.add('correct');
+                feedback.classList.remove('incorrect');
+                feedbackTitle.innerHTML = '✅ ¡Correcto!';
+            } else {
+                incorrectCount++;
+                feedback.classList.add('incorrect');
+                feedback.classList.remove('correct');
+                feedbackTitle.innerHTML = '❌ Incorrecto';
+            }
+            
+            feedbackText.textContent = exercise.explanation;
+            feedback.classList.add('show');
+            
+            document.getElementById('check-btn').disabled = true;
+            document.getElementById('next-btn').disabled = false;
+            
+            updateStats();
+        }
+        
+        // Siguiente ejercicio
+        function nextExercise() {
+            currentIndex++;
+            showExercise();
+        }
+        
+        // Ejercicio anterior
+        function previousExercise() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                showExercise();
+            }
+        }
+        
+        // Actualizar estadísticas
+        function updateStats() {
+            document.getElementById('correct-count').textContent = correctCount;
+            document.getElementById('incorrect-count').textContent = incorrectCount;
+        }
+        
+        // Actualizar barra de progreso
+        function updateProgress() {
+            const progress = (currentIndex / currentExercises.length) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+        }
+        
+        // Mostrar pantalla final
+        function showEndScreen() {
+            document.getElementById('exercise-area').style.display = 'none';
+            const endScreen = document.getElementById('end-screen');
+            endScreen.classList.add('show');
+            
+            const total = correctCount + incorrectCount;
+            const percentage = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+            
+            document.getElementById('final-score').textContent = percentage + '%';
+            
+            let message = '';
+            endScreen.className = 'end-screen show';
+            
+            if (percentage >= 90) {
+                message = '🏆 ¡Excelente! Dominas las fórmulas';
+                endScreen.classList.add('excellent');
+            } else if (percentage >= 70) {
+                message = '👍 ¡Muy bien! Sigue practicando';
+                endScreen.classList.add('good');
+            } else if (percentage >= 50) {
+                message = '📚 Buen intento. Repasa las fórmulas difíciles';
+                endScreen.classList.add('average');
+            } else {
+                message = '💪 No te rindas. Practica más y mejorarás';
+                endScreen.classList.add('poor');
+            }
+            
+            document.getElementById('final-message').textContent = message;
+        }
+        
+        // Reiniciar
+        function resetExercises() {
+            const activeTab = document.querySelector('.category-tab.active');
+            const category = activeTab ? activeTab.dataset.category : 'all';
+            filterExercises(category);
+        }
+        
+        // Iniciar
+        init();
+    </script>
+</body>
+</html>
