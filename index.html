@@ -15,7 +15,18 @@
             --warning: #ffc107;
             --dark: #1a1a2e;
             --darker: #16213e;
+            --text-size: 1;
         }
+        
+        /* Tamaños de texto dinámicos */
+        html {
+            font-size: calc(16px * var(--text-size));
+        }
+        
+        html.text-small { --text-size: 0.9; }
+        html.text-normal { --text-size: 1; }
+        html.text-large { --text-size: 1.15; }
+        html.text-xlarge { --text-size: 1.3; }
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -55,6 +66,28 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+        }
+        
+        /* Botones de tamaño de texto */
+        .text-size-btn {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+        
+        .text-size-btn:hover {
+            background: rgba(255,255,255,0.15);
+        }
+        
+        .text-size-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: transparent;
         }
         
         .nav-item {
@@ -1878,6 +1911,29 @@
             <span class="nav-item-icon">📊</span>
             <span>Dashboard</span>
         </button>
+        
+        <div class="nav-section">Ajustes</div>
+        
+        <div style="padding: 10px 15px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                <span style="font-size: 1.2em;">🔤</span>
+                <span style="font-size: 0.9em;">Tamaño de texto</span>
+            </div>
+            <div style="display: flex; gap: 5px;">
+                <button class="text-size-btn" onclick="setTextSize('small')" data-size="small" title="Pequeño">
+                    <span style="font-size: 0.75em;">A</span>
+                </button>
+                <button class="text-size-btn active" onclick="setTextSize('normal')" data-size="normal" title="Normal">
+                    <span style="font-size: 0.9em;">A</span>
+                </button>
+                <button class="text-size-btn" onclick="setTextSize('large')" data-size="large" title="Grande">
+                    <span style="font-size: 1.1em;">A</span>
+                </button>
+                <button class="text-size-btn" onclick="setTextSize('xlarge')" data-size="xlarge" title="Extra Grande">
+                    <span style="font-size: 1.3em;">A</span>
+                </button>
+            </div>
+        </div>
         
         <div style="position: absolute; bottom: 20px; left: 20px; right: 20px; text-align: center; opacity: 0.5; font-size: 0.85em;">
             Febrero 2026
@@ -5625,6 +5681,33 @@
             document.getElementById('sidebar-overlay').classList.remove('visible');
         }
         
+        // ============ TAMAÑO DE TEXTO ============
+        function setTextSize(size) {
+            const html = document.documentElement;
+            
+            // Remover clases anteriores
+            html.classList.remove('text-small', 'text-normal', 'text-large', 'text-xlarge');
+            
+            // Agregar nueva clase
+            html.classList.add('text-' + size);
+            
+            // Actualizar botones activos
+            document.querySelectorAll('.text-size-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.size === size) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Guardar preferencia
+            localStorage.setItem('textSize', size);
+        }
+        
+        function loadTextSize() {
+            const savedSize = localStorage.getItem('textSize') || 'normal';
+            setTextSize(savedSize);
+        }
+        
         // ============ DESAFÍO RÁPIDO - JUEGO ============
         let desafioTimer = null;
         let desafioTimeLeft = 60;
@@ -7163,6 +7246,7 @@
         
         // ============ INICIALIZACIÓN ============
         document.addEventListener('DOMContentLoaded', function() {
+            loadTextSize(); // Cargar tamaño de texto guardado
             showRandomTip();
             initDesafio();
             initMemoria();
