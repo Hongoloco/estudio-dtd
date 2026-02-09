@@ -283,6 +283,323 @@
             background: rgba(255,255,255,0.05);
         }
         
+        /* Desafío Rápido - Juego */
+        .desafio-screen {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .desafio-intro {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+        }
+        
+        .desafio-trophy {
+            font-size: 4em;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .desafio-intro h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .desafio-rules {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+            text-align: left;
+        }
+        
+        .desafio-rules .rule {
+            background: rgba(255,255,255,0.08);
+            padding: 12px 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .desafio-rules .rule span:first-child {
+            font-size: 1.3em;
+        }
+        
+        .desafio-category-select {
+            margin: 25px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .desafio-category-select select {
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: 2px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        
+        .desafio-highscore {
+            background: linear-gradient(135deg, rgba(255,193,7,0.2), rgba(255,152,0,0.2));
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin: 20px auto;
+            display: inline-block;
+            font-size: 1.2em;
+        }
+        
+        .btn-large {
+            padding: 18px 50px;
+            font-size: 1.3em;
+            margin-top: 20px;
+        }
+        
+        /* HUD del juego */
+        .desafio-hud {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+        }
+        
+        .hud-item {
+            text-align: center;
+            padding: 10px 20px;
+        }
+        
+        .hud-label {
+            display: block;
+            font-size: 0.85em;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+        
+        .hud-value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        
+        .hud-time .hud-value { color: #ff6b6b; }
+        .hud-score .hud-value { color: var(--warning); }
+        .hud-combo .hud-value { color: #ff9f43; }
+        
+        .hud-time.warning .hud-value {
+            animation: pulse-red 0.5s infinite;
+        }
+        
+        @keyframes pulse-red {
+            0%, 100% { color: #ff6b6b; }
+            50% { color: #ff0000; transform: scale(1.1); }
+        }
+        
+        /* Pregunta del juego */
+        .desafio-question-container {
+            background: rgba(255,255,255,0.08);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .desafio-progress {
+            font-size: 0.9em;
+            opacity: 0.7;
+            margin-bottom: 15px;
+        }
+        
+        .desafio-question {
+            font-size: 1.3em;
+            line-height: 1.6;
+        }
+        
+        /* Opciones */
+        .desafio-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .desafio-option {
+            padding: 18px 20px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            color: white;
+            font-size: 1.05em;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        
+        .desafio-option:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: var(--secondary);
+            transform: scale(1.02);
+        }
+        
+        .desafio-option.correct {
+            background: rgba(0, 212, 170, 0.3);
+            border-color: var(--success);
+            animation: correct-flash 0.5s;
+        }
+        
+        .desafio-option.incorrect {
+            background: rgba(255, 71, 87, 0.3);
+            border-color: var(--danger);
+            animation: shake 0.3s;
+        }
+        
+        @keyframes correct-flash {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        /* Feedback */
+        .desafio-feedback {
+            text-align: center;
+            margin-top: 20px;
+            min-height: 40px;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        
+        .desafio-feedback.correct { color: var(--success); }
+        .desafio-feedback.incorrect { color: var(--danger); }
+        
+        /* Combo popup */
+        .combo-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3em;
+            font-weight: bold;
+            color: #ff9f43;
+            text-shadow: 0 0 20px rgba(255, 159, 67, 0.8);
+            animation: combo-pop 0.6s forwards;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        
+        @keyframes combo-pop {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+            100% { transform: translate(-50%, -60%) scale(1); opacity: 0; }
+        }
+        
+        /* Resultados */
+        .desafio-results-content {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+        }
+        
+        .results-header {
+            margin-bottom: 30px;
+        }
+        
+        .results-emoji {
+            font-size: 4em;
+            display: block;
+            margin-bottom: 15px;
+        }
+        
+        .results-header h3 {
+            font-size: 1.8em;
+            color: var(--secondary);
+        }
+        
+        .results-score {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 25px 40px;
+            border-radius: 15px;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+        
+        .score-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+        
+        .score-value {
+            font-size: 3em;
+            font-weight: bold;
+        }
+        
+        .results-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 25px;
+        }
+        
+        .result-stat {
+            text-align: center;
+        }
+        
+        .result-stat .stat-icon {
+            font-size: 1.5em;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .result-stat .stat-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            display: block;
+        }
+        
+        .result-stat .stat-label {
+            font-size: 0.85em;
+            opacity: 0.7;
+        }
+        
+        .new-record {
+            background: linear-gradient(135deg, #ffd700, #ffb347);
+            color: #333;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 25px;
+            animation: glow 1s infinite;
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.8); }
+        }
+        
+        .results-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
         /* Tarjetas */
         .card {
             background: rgba(255,255,255,0.08);
@@ -913,6 +1230,39 @@
             .concepto-card th, .concepto-card td {
                 padding: 8px 6px;
             }
+            
+            /* Desafío Rápido responsivo */
+            .desafio-rules {
+                grid-template-columns: 1fr;
+            }
+            .desafio-hud {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .hud-item {
+                flex: 1;
+                min-width: 80px;
+            }
+            .hud-value {
+                font-size: 1.5em;
+            }
+            .desafio-options {
+                grid-template-columns: 1fr;
+            }
+            .desafio-question {
+                font-size: 1.1em;
+            }
+            .results-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .results-buttons {
+                flex-direction: column;
+            }
+            .results-buttons .btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -965,6 +1315,13 @@
         <button class="nav-item" onclick="showSection('mapas')">
             <span class="nav-item-icon">🗺️</span>
             <span>Mapas Conceptuales</span>
+        </button>
+        
+        <div class="nav-section">Juegos</div>
+        
+        <button class="nav-item" onclick="showSection('desafio')">
+            <span class="nav-item-icon">🎯</span>
+            <span>Desafío Rápido</span>
         </button>
         
         <div class="nav-section">Progreso</div>
@@ -1068,11 +1425,137 @@
                     <span class="home-card-tag">5 mapas</span>
                 </div>
                 
+                <div class="home-card" onclick="showSection('desafio')">
+                    <div class="home-card-icon">🎯</div>
+                    <h3>Desafío Rápido</h3>
+                    <p>60 segundos para responder. ¡Combos y puntuación!</p>
+                    <span class="home-card-tag">🔥 Juego</span>
+                </div>
+                
                 <div class="home-card" onclick="showSection('dashboard')">
                     <div class="home-card-icon">📊</div>
                     <h3>Dashboard</h3>
                     <p>Seguimiento de tu progreso</p>
                     <span class="home-card-tag">Analíticas</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- DESAFÍO RÁPIDO -->
+        <section class="section" id="section-desafio">
+            <div class="section-header">
+                <h2>🎯 Desafío Rápido</h2>
+                <p>60 segundos para responder. ¡Acumula combos y bate tu récord!</p>
+            </div>
+            
+            <!-- Pantalla de inicio del juego -->
+            <div id="desafio-start" class="desafio-screen">
+                <div class="desafio-intro">
+                    <div class="desafio-trophy">🏆</div>
+                    <h3>¿Listo para el desafío?</h3>
+                    <p>Responde correctamente la mayor cantidad de preguntas en 60 segundos.</p>
+                    
+                    <div class="desafio-rules">
+                        <div class="rule"><span>⚡</span> Respuesta correcta: +10 pts</div>
+                        <div class="rule"><span>🔥</span> Combo x2, x3, x4...: multiplicador</div>
+                        <div class="rule"><span>❌</span> Error: pierdes el combo</div>
+                        <div class="rule"><span>⏱️</span> 60 segundos de tiempo</div>
+                    </div>
+                    
+                    <div class="desafio-category-select">
+                        <label>Categoría:</label>
+                        <select id="desafio-category">
+                            <option value="all">🎲 Todas las categorías</option>
+                            <option value="radio">📡 Radio</option>
+                            <option value="ip">🌐 Redes IP</option>
+                            <option value="fibra">💡 Fibra Óptica</option>
+                            <option value="bert">📊 BERT/RFC2544</option>
+                        </select>
+                    </div>
+                    
+                    <div class="desafio-highscore">
+                        <span>🏆 Récord:</span>
+                        <span id="desafio-record">0</span> pts
+                    </div>
+                    
+                    <button class="btn btn-primary btn-large" onclick="startDesafio()">
+                        🚀 ¡Comenzar!
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Pantalla del juego -->
+            <div id="desafio-game" class="desafio-screen" style="display: none;">
+                <div class="desafio-hud">
+                    <div class="hud-item hud-time">
+                        <span class="hud-label">⏱️ Tiempo</span>
+                        <span class="hud-value" id="desafio-timer">60</span>
+                    </div>
+                    <div class="hud-item hud-score">
+                        <span class="hud-label">⭐ Puntos</span>
+                        <span class="hud-value" id="desafio-score">0</span>
+                    </div>
+                    <div class="hud-item hud-combo">
+                        <span class="hud-label">🔥 Combo</span>
+                        <span class="hud-value" id="desafio-combo">x1</span>
+                    </div>
+                </div>
+                
+                <div class="desafio-question-container">
+                    <div class="desafio-progress">
+                        <span id="desafio-question-num">1</span>
+                    </div>
+                    <div class="desafio-question" id="desafio-question">
+                        Cargando pregunta...
+                    </div>
+                </div>
+                
+                <div class="desafio-options" id="desafio-options">
+                    <!-- Opciones dinámicas -->
+                </div>
+                
+                <div class="desafio-feedback" id="desafio-feedback"></div>
+            </div>
+            
+            <!-- Pantalla de resultados -->
+            <div id="desafio-results" class="desafio-screen" style="display: none;">
+                <div class="desafio-results-content">
+                    <div class="results-header">
+                        <span class="results-emoji" id="results-emoji">🎉</span>
+                        <h3 id="results-title">¡Tiempo!</h3>
+                    </div>
+                    
+                    <div class="results-score">
+                        <div class="score-label">Puntuación Final</div>
+                        <div class="score-value" id="final-score">0</div>
+                    </div>
+                    
+                    <div class="results-stats">
+                        <div class="result-stat">
+                            <span class="stat-icon">✅</span>
+                            <span class="stat-value" id="result-correct">0</span>
+                            <span class="stat-label">Correctas</span>
+                        </div>
+                        <div class="result-stat">
+                            <span class="stat-icon">❌</span>
+                            <span class="stat-value" id="result-incorrect">0</span>
+                            <span class="stat-label">Incorrectas</span>
+                        </div>
+                        <div class="result-stat">
+                            <span class="stat-icon">🔥</span>
+                            <span class="stat-value" id="result-max-combo">x1</span>
+                            <span class="stat-label">Mejor Combo</span>
+                        </div>
+                    </div>
+                    
+                    <div class="new-record" id="new-record" style="display: none;">
+                        🏆 ¡NUEVO RÉCORD! 🏆
+                    </div>
+                    
+                    <div class="results-buttons">
+                        <button class="btn btn-primary" onclick="startDesafio()">🔄 Jugar de nuevo</button>
+                        <button class="btn btn-secondary" onclick="showDesafioStart()">📋 Menú</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -4216,6 +4699,234 @@
             document.getElementById('sidebar').classList.toggle('visible');
         }
         
+        // ============ DESAFÍO RÁPIDO - JUEGO ============
+        let desafioTimer = null;
+        let desafioTimeLeft = 60;
+        let desafioScore = 0;
+        let desafioCombo = 1;
+        let desafioMaxCombo = 1;
+        let desafioCorrect = 0;
+        let desafioIncorrect = 0;
+        let desafioQuestions = [];
+        let desafioCurrentQ = 0;
+        let desafioRecord = parseInt(localStorage.getItem('desafioRecord') || '0');
+        let desafioAnswered = false;
+        
+        function initDesafio() {
+            document.getElementById('desafio-record').textContent = desafioRecord;
+        }
+        
+        function showDesafioStart() {
+            document.getElementById('desafio-start').style.display = 'block';
+            document.getElementById('desafio-game').style.display = 'none';
+            document.getElementById('desafio-results').style.display = 'none';
+            document.getElementById('desafio-record').textContent = desafioRecord;
+        }
+        
+        function startDesafio() {
+            // Reset
+            desafioTimeLeft = 60;
+            desafioScore = 0;
+            desafioCombo = 1;
+            desafioMaxCombo = 1;
+            desafioCorrect = 0;
+            desafioIncorrect = 0;
+            desafioCurrentQ = 0;
+            desafioAnswered = false;
+            
+            // Preparar preguntas
+            const category = document.getElementById('desafio-category').value;
+            desafioQuestions = prepareDesafioQuestions(category);
+            
+            // Mostrar pantalla de juego
+            document.getElementById('desafio-start').style.display = 'none';
+            document.getElementById('desafio-game').style.display = 'block';
+            document.getElementById('desafio-results').style.display = 'none';
+            
+            // Actualizar HUD
+            updateDesafioHUD();
+            
+            // Mostrar primera pregunta
+            showDesafioQuestion();
+            
+            // Iniciar timer
+            desafioTimer = setInterval(updateDesafioTimer, 1000);
+        }
+        
+        function prepareDesafioQuestions(category) {
+            // Combinar preguntas de vofQuestionsDB (convertir a formato quiz)
+            let questions = [];
+            
+            let vofFiltered = category === 'all' ? [...vofQuestionsDB] : 
+                vofQuestionsDB.filter(q => q.category === category);
+            
+            // Convertir V/F a formato de opciones
+            vofFiltered.forEach(q => {
+                questions.push({
+                    question: q.statement,
+                    options: ['Verdadero', 'Falso'],
+                    correct: q.answer ? 0 : 1,
+                    explanation: q.explanation
+                });
+            });
+            
+            // Agregar preguntas de questionsDB si hay
+            Object.values(questionsDB).forEach(topicQuestions => {
+                topicQuestions.forEach(q => {
+                    questions.push({
+                        question: q.q,
+                        options: q.o,
+                        correct: q.a,
+                        explanation: q.e
+                    });
+                });
+            });
+            
+            shuffleArray(questions);
+            return questions;
+        }
+        
+        function showDesafioQuestion() {
+            if (desafioCurrentQ >= desafioQuestions.length) {
+                desafioCurrentQ = 0;
+                shuffleArray(desafioQuestions);
+            }
+            
+            const q = desafioQuestions[desafioCurrentQ];
+            desafioAnswered = false;
+            
+            document.getElementById('desafio-question-num').textContent = 
+                `Pregunta ${desafioCorrect + desafioIncorrect + 1}`;
+            document.getElementById('desafio-question').textContent = q.question;
+            document.getElementById('desafio-feedback').textContent = '';
+            document.getElementById('desafio-feedback').className = 'desafio-feedback';
+            
+            const optionsContainer = document.getElementById('desafio-options');
+            optionsContainer.innerHTML = q.options.map((opt, i) => `
+                <button class="desafio-option" onclick="answerDesafio(${i})">${opt}</button>
+            `).join('');
+        }
+        
+        function answerDesafio(selected) {
+            if (desafioAnswered || desafioTimeLeft <= 0) return;
+            desafioAnswered = true;
+            
+            const q = desafioQuestions[desafioCurrentQ];
+            const buttons = document.querySelectorAll('.desafio-option');
+            const feedback = document.getElementById('desafio-feedback');
+            
+            buttons.forEach((btn, i) => {
+                btn.style.pointerEvents = 'none';
+                if (i === q.correct) btn.classList.add('correct');
+                if (i === selected && selected !== q.correct) btn.classList.add('incorrect');
+            });
+            
+            if (selected === q.correct) {
+                // Correcto
+                desafioCorrect++;
+                const points = 10 * desafioCombo;
+                desafioScore += points;
+                desafioCombo++;
+                if (desafioCombo > desafioMaxCombo) desafioMaxCombo = desafioCombo;
+                
+                feedback.textContent = `✅ ¡Correcto! +${points} pts`;
+                feedback.className = 'desafio-feedback correct';
+                
+                // Mostrar combo popup si es mayor a 2
+                if (desafioCombo > 2) {
+                    showComboPopup(desafioCombo);
+                }
+            } else {
+                // Incorrecto
+                desafioIncorrect++;
+                desafioCombo = 1;
+                feedback.textContent = `❌ Incorrecto`;
+                feedback.className = 'desafio-feedback incorrect';
+            }
+            
+            updateDesafioHUD();
+            desafioCurrentQ++;
+            
+            // Siguiente pregunta después de un breve delay
+            setTimeout(() => {
+                if (desafioTimeLeft > 0) {
+                    showDesafioQuestion();
+                }
+            }, 800);
+        }
+        
+        function updateDesafioTimer() {
+            desafioTimeLeft--;
+            document.getElementById('desafio-timer').textContent = desafioTimeLeft;
+            
+            const hudTime = document.querySelector('.hud-time');
+            if (desafioTimeLeft <= 10) {
+                hudTime.classList.add('warning');
+            }
+            
+            if (desafioTimeLeft <= 0) {
+                endDesafio();
+            }
+        }
+        
+        function updateDesafioHUD() {
+            document.getElementById('desafio-score').textContent = desafioScore;
+            document.getElementById('desafio-combo').textContent = `x${desafioCombo}`;
+        }
+        
+        function showComboPopup(combo) {
+            const popup = document.createElement('div');
+            popup.className = 'combo-popup';
+            popup.textContent = `🔥 x${combo} COMBO!`;
+            document.body.appendChild(popup);
+            
+            setTimeout(() => popup.remove(), 600);
+        }
+        
+        function endDesafio() {
+            clearInterval(desafioTimer);
+            document.querySelector('.hud-time').classList.remove('warning');
+            
+            // Mostrar resultados
+            document.getElementById('desafio-game').style.display = 'none';
+            document.getElementById('desafio-results').style.display = 'block';
+            
+            // Determinar emoji y título según puntuación
+            let emoji, title;
+            if (desafioScore >= 500) {
+                emoji = '🏆';
+                title = '¡INCREÍBLE!';
+            } else if (desafioScore >= 300) {
+                emoji = '🎉';
+                title = '¡Excelente!';
+            } else if (desafioScore >= 150) {
+                emoji = '👏';
+                title = '¡Muy bien!';
+            } else if (desafioScore >= 50) {
+                emoji = '💪';
+                title = 'Buen intento';
+            } else {
+                emoji = '📚';
+                title = 'Sigue practicando';
+            }
+            
+            document.getElementById('results-emoji').textContent = emoji;
+            document.getElementById('results-title').textContent = title;
+            document.getElementById('final-score').textContent = desafioScore;
+            document.getElementById('result-correct').textContent = desafioCorrect;
+            document.getElementById('result-incorrect').textContent = desafioIncorrect;
+            document.getElementById('result-max-combo').textContent = `x${desafioMaxCombo}`;
+            
+            // Verificar récord
+            if (desafioScore > desafioRecord) {
+                desafioRecord = desafioScore;
+                localStorage.setItem('desafioRecord', desafioRecord);
+                document.getElementById('new-record').style.display = 'block';
+            } else {
+                document.getElementById('new-record').style.display = 'none';
+            }
+        }
+        
         // ============ CONCEPTOS Y TEORÍA ============
         function initConceptos() {
             document.querySelectorAll('#conceptos-tabs .filter-tab').forEach(tab => {
@@ -5185,6 +5896,7 @@
         // ============ INICIALIZACIÓN ============
         document.addEventListener('DOMContentLoaded', function() {
             showRandomTip();
+            initDesafio();
             initConceptos();
             initFlashcards();
             initTests();
