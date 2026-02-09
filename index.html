@@ -145,6 +145,101 @@
         
         .section-header p { opacity: 0.8; font-size: 1.1em; }
         
+        /* Conceptos y Teoría */
+        .conceptos-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .concepto-card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .concepto-card h3 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .concepto-card p {
+            line-height: 1.8;
+            margin-bottom: 12px;
+            color: rgba(255,255,255,0.9);
+        }
+        
+        .concepto-card ul, .concepto-card ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+        
+        .concepto-card li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        
+        .concepto-card .highlight {
+            background: rgba(0, 212, 170, 0.2);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 1px solid rgba(0, 212, 170, 0.3);
+        }
+        
+        .concepto-card .formula-box {
+            background: rgba(102, 126, 234, 0.2);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            text-align: center;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+        
+        .concepto-card .warning-box {
+            background: rgba(255, 193, 7, 0.15);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid var(--warning);
+        }
+        
+        .concepto-card .example-box {
+            background: rgba(255,255,255,0.05);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-style: italic;
+        }
+        
+        .concepto-card table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .concepto-card th, .concepto-card td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .concepto-card th {
+            background: rgba(102, 126, 234, 0.2);
+            color: var(--secondary);
+        }
+        
+        .concepto-card tr:hover {
+            background: rgba(255,255,255,0.05);
+        }
+        
         /* Tarjetas */
         .card {
             background: rgba(255,255,255,0.08);
@@ -772,6 +867,11 @@
         
         <div class="nav-section">Herramientas de Estudio</div>
         
+        <button class="nav-item" onclick="showSection('conceptos')">
+            <span class="nav-item-icon">📚</span>
+            <span>Conceptos</span>
+        </button>
+        
         <button class="nav-item" onclick="showSection('flashcards')">
             <span class="nav-item-icon">🎴</span>
             <span>Flashcards</span>
@@ -854,6 +954,13 @@
             </div>
             
             <div class="cards-grid">
+                <div class="home-card" onclick="showSection('conceptos')">
+                    <div class="home-card-icon">📚</div>
+                    <h3>Conceptos y Teoría</h3>
+                    <p>Lee y estudia explicaciones detalladas de cada tema</p>
+                    <span class="home-card-tag">8 temas</span>
+                </div>
+                
                 <div class="home-card" onclick="showSection('flashcards')">
                     <div class="home-card-icon">🎴</div>
                     <h3>Flashcards</h3>
@@ -902,6 +1009,29 @@
                     <p>Seguimiento de tu progreso</p>
                     <span class="home-card-tag">Analíticas</span>
                 </div>
+            </div>
+        </section>
+        
+        <!-- CONCEPTOS Y TEORÍA -->
+        <section class="section" id="section-conceptos">
+            <div class="section-header">
+                <h2>📚 Conceptos y Teoría</h2>
+                <p>Estudia las explicaciones detalladas de cada tema</p>
+            </div>
+            
+            <div class="filter-tabs" id="conceptos-tabs">
+                <button class="filter-tab active" data-topic="radio">📡 Radio</button>
+                <button class="filter-tab" data-topic="propagacion">🌊 Propagación</button>
+                <button class="filter-tab" data-topic="redes">🌐 Redes IP</button>
+                <button class="filter-tab" data-topic="ethernet">🔌 Ethernet</button>
+                <button class="filter-tab" data-topic="fibra">💡 Fibra Óptica</button>
+                <button class="filter-tab" data-topic="gpon">🏠 GPON/FTTH</button>
+                <button class="filter-tab" data-topic="bert">📊 BERT/RFC2544</button>
+                <button class="filter-tab" data-topic="seguridad">🔒 Seguridad</button>
+            </div>
+            
+            <div id="conceptos-content" class="conceptos-container">
+                <!-- Contenido dinámico -->
             </div>
         </section>
         
@@ -3246,6 +3376,763 @@
         let vofList = [], vofIndex = 0, vofCorrect = 0, vofIncorrect = 0, vofAnswered = false, vofAnswers = [];
         let currentVofCategory = 'all';
         
+        // ============ BASE DE DATOS DE CONCEPTOS ============
+        const conceptosDB = {
+            radio: [
+                {
+                    titulo: "📡 Introducción a Radioenlaces",
+                    contenido: `
+                        <p>Los <strong>radioenlaces de microondas</strong> son sistemas de comunicación punto a punto que utilizan ondas electromagnéticas para transmitir información entre dos ubicaciones.</p>
+                        
+                        <div class="highlight">
+                            <strong>Características principales:</strong>
+                            <ul>
+                                <li>Frecuencias típicas: 6 GHz a 80 GHz</li>
+                                <li>Requieren línea de vista (LOS - Line of Sight)</li>
+                                <li>Alcance típico: 5-50 km según frecuencia y condiciones</li>
+                                <li>Capacidad: desde 10 Mbps hasta varios Gbps</li>
+                            </ul>
+                        </div>
+                        
+                        <p>Los radioenlaces son fundamentales para:</p>
+                        <ul>
+                            <li>Backhaul de redes móviles (3G, 4G, 5G)</li>
+                            <li>Conexión de sitios remotos</li>
+                            <li>Redes corporativas</li>
+                            <li>Redundancia de enlaces de fibra</li>
+                        </ul>
+                    `
+                },
+                {
+                    titulo: "📊 Modulaciones y Capacidad",
+                    contenido: `
+                        <p>La <strong>modulación</strong> determina cuántos bits se transmiten por símbolo. A mayor orden de modulación, mayor capacidad pero menor robustez.</p>
+                        
+                        <table>
+                            <tr><th>Modulación</th><th>Bits/Símbolo</th><th>Uso Típico</th></tr>
+                            <tr><td>QPSK</td><td>2</td><td>Condiciones adversas</td></tr>
+                            <tr><td>16-QAM</td><td>4</td><td>Lluvia moderada</td></tr>
+                            <tr><td>64-QAM</td><td>6</td><td>Condiciones normales</td></tr>
+                            <tr><td>256-QAM</td><td>8</td><td>Buen tiempo</td></tr>
+                            <tr><td>1024-QAM</td><td>10</td><td>Condiciones óptimas</td></tr>
+                            <tr><td>4096-QAM</td><td>12</td><td>Excelentes condiciones</td></tr>
+                        </table>
+                        
+                        <div class="warning-box">
+                            <strong>⚠️ Importante:</strong> La modulación adaptativa (ACM) permite cambiar dinámicamente la modulación según las condiciones del enlace.
+                        </div>
+                    `
+                },
+                {
+                    titulo: "🎚️ Configuraciones de Canal",
+                    contenido: `
+                        <p>Existen diferentes configuraciones para aumentar la capacidad:</p>
+                        
+                        <div class="highlight">
+                            <strong>ACAP (Adjacent Channel Alternate Polarization):</strong>
+                            <ul>
+                                <li>Canales adyacentes con polarizaciones alternas</li>
+                                <li>Reduce interferencia entre canales cercanos</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="highlight">
+                            <strong>CCDP (Co-Channel Dual Polarization):</strong>
+                            <ul>
+                                <li>Mismo canal, ambas polarizaciones (H y V)</li>
+                                <li>Duplica la capacidad del canal</li>
+                                <li>Requiere XPIC (Cross-Polar Interference Canceller)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="example-box">
+                            <strong>Ejemplo:</strong> Un canal de 56 MHz con 1024-QAM en CCDP puede alcanzar ~1.6 Gbps de capacidad.
+                        </div>
+                    `
+                },
+                {
+                    titulo: "📻 Equipos Ericsson Minilink",
+                    contenido: `
+                        <p>La familia <strong>Minilink</strong> de Ericsson incluye diferentes unidades:</p>
+                        
+                        <table>
+                            <tr><th>Unidad</th><th>Función</th><th>Características</th></tr>
+                            <tr><td>RAU2 (6352)</td><td>Radio Unit</td><td>6-42 GHz, hasta 2048-QAM</td></tr>
+                            <tr><td>MMU2 (MMU4A)</td><td>Modem Unit</td><td>Procesamiento banda base, hasta 4096-QAM</td></tr>
+                            <tr><td>NPU3 (NPU4)</td><td>Network Unit</td><td>Switching, agregación, gestión</td></tr>
+                            <tr><td>OD2</td><td>Outdoor Unit</td><td>Split-mount completo</td></tr>
+                        </table>
+                        
+                        <p><strong>Anchos de banda soportados:</strong> 7, 14, 28, 40, 56, 80, 112 MHz</p>
+                    `
+                }
+            ],
+            propagacion: [
+                {
+                    titulo: "🌍 Factor K y Radio Efectivo",
+                    contenido: `
+                        <p>El <strong>factor k</strong> representa la relación entre el radio efectivo de la Tierra y su radio real, debido a la refracción atmosférica.</p>
+                        
+                        <div class="formula-box">
+                            k = Radio efectivo / Radio real ≈ 4/3 = 1.33 (atmósfera estándar)
+                        </div>
+                        
+                        <table>
+                            <tr><th>Valor de k</th><th>Condición</th><th>Efecto</th></tr>
+                            <tr><td>k > 1</td><td>Normal</td><td>Rayo se curva hacia abajo</td></tr>
+                            <tr><td>k = 1</td><td>Sin refracción</td><td>Rayo recto</td></tr>
+                            <tr><td>k < 1</td><td>Subrefractive</td><td>Rayo se curva hacia arriba</td></tr>
+                            <tr><td>k = ∞</td><td>Ducting</td><td>Propagación guiada</td></tr>
+                        </table>
+                        
+                        <div class="warning-box">
+                            <strong>⚠️ Diseño:</strong> Para peor caso se usa k = 2/3, lo que aumenta el despejamiento requerido.
+                        </div>
+                    `
+                },
+                {
+                    titulo: "🔘 Zona de Fresnel",
+                    contenido: `
+                        <p>La <strong>primera zona de Fresnel</strong> es un elipsoide imaginario alrededor de la línea de vista donde la energía se concentra.</p>
+                        
+                        <div class="formula-box">
+                            r₁ = 17.3 × √(d₁ × d₂ / (f × d))<br>
+                            <small>d₁, d₂, d en km; f en GHz; r₁ en metros</small>
+                        </div>
+                        
+                        <div class="highlight">
+                            <strong>Criterio de despejamiento:</strong>
+                            <ul>
+                                <li><strong>60% mínimo</strong> - Enlace aceptable</li>
+                                <li><strong>100%</strong> - Enlace ideal (espacio libre)</li>
+                                <li><strong>< 40%</strong> - Pérdidas significativas por difracción</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="example-box">
+                            <strong>Ejemplo:</strong> Enlace de 10 km a 18 GHz:<br>
+                            r₁ = 17.3 × √(5 × 5 / (18 × 10)) = 17.3 × √(1.39) = 20.4 metros<br>
+                            Despejamiento 60% = 12.2 metros sobre obstáculos.
+                        </div>
+                    `
+                },
+                {
+                    titulo: "🌧️ Atenuación por Lluvia",
+                    contenido: `
+                        <p>La lluvia es el factor dominante de atenuación para frecuencias <strong>superiores a 10 GHz</strong>.</p>
+                        
+                        <table>
+                            <tr><th>Frecuencia</th><th>Atenuación (dB/km) - 25 mm/h</th></tr>
+                            <tr><td>10 GHz</td><td>~1 dB/km</td></tr>
+                            <tr><td>18 GHz</td><td>~4 dB/km</td></tr>
+                            <tr><td>23 GHz</td><td>~6 dB/km</td></tr>
+                            <tr><td>38 GHz</td><td>~10 dB/km</td></tr>
+                            <tr><td>80 GHz</td><td>~15 dB/km</td></tr>
+                        </table>
+                        
+                        <div class="highlight">
+                            <strong>Zonas climáticas ITU-R P.837:</strong>
+                            <ul>
+                                <li>Zona A-C: Clima seco (poca lluvia)</li>
+                                <li>Zona E-K: Clima templado</li>
+                                <li>Zona M-Q: Clima tropical (mucha lluvia)</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                {
+                    titulo: "📏 Pérdida en Espacio Libre (FSL)",
+                    contenido: `
+                        <p>La <strong>pérdida en espacio libre</strong> es la atenuación natural de la señal con la distancia.</p>
+                        
+                        <div class="formula-box">
+                            FSL (dB) = 92.4 + 20×log₁₀(f) + 20×log₁₀(d)<br>
+                            <small>f en GHz, d en km</small>
+                        </div>
+                        
+                        <div class="example-box">
+                            <strong>Ejemplo:</strong> Enlace de 15 km a 18 GHz:<br>
+                            FSL = 92.4 + 20×log(18) + 20×log(15)<br>
+                            FSL = 92.4 + 25.1 + 23.5 = <strong>141 dB</strong>
+                        </div>
+                        
+                        <div class="warning-box">
+                            <strong>⚠️ Nota:</strong> La FSL aumenta 6 dB cada vez que se duplica la distancia o la frecuencia.
+                        </div>
+                    `
+                }
+            ],
+            redes: [
+                {
+                    titulo: "📚 Modelo OSI vs TCP/IP",
+                    contenido: `
+                        <p>Los modelos de referencia definen cómo se organizan las comunicaciones en capas.</p>
+                        
+                        <table>
+                            <tr><th>Capa OSI</th><th>#</th><th>TCP/IP</th><th>Función</th></tr>
+                            <tr><td>Aplicación</td><td>7</td><td rowspan="3">Aplicación</td><td>HTTP, FTP, DNS</td></tr>
+                            <tr><td>Presentación</td><td>6</td><td>Cifrado, compresión</td></tr>
+                            <tr><td>Sesión</td><td>5</td><td>Control de diálogo</td></tr>
+                            <tr><td>Transporte</td><td>4</td><td>Transporte</td><td>TCP, UDP</td></tr>
+                            <tr><td>Red</td><td>3</td><td>Internet</td><td>IP, ICMP, enrutamiento</td></tr>
+                            <tr><td>Enlace</td><td>2</td><td rowspan="2">Acceso a Red</td><td>Ethernet, MAC</td></tr>
+                            <tr><td>Física</td><td>1</td><td>Cables, señales</td></tr>
+                        </table>
+                    `
+                },
+                {
+                    titulo: "🔢 Direccionamiento IPv4",
+                    contenido: `
+                        <p>IPv4 usa direcciones de <strong>32 bits</strong> en formato decimal con puntos.</p>
+                        
+                        <div class="highlight">
+                            <strong>Clases de direcciones (legacy):</strong>
+                            <ul>
+                                <li><strong>Clase A:</strong> 1.0.0.0 - 126.255.255.255 (/8)</li>
+                                <li><strong>Clase B:</strong> 128.0.0.0 - 191.255.255.255 (/16)</li>
+                                <li><strong>Clase C:</strong> 192.0.0.0 - 223.255.255.255 (/24)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="formula-box">
+                            Hosts = 2ⁿ - 2<br>
+                            <small>n = bits de host</small>
+                        </div>
+                        
+                        <table>
+                            <tr><th>CIDR</th><th>Máscara</th><th>Hosts</th></tr>
+                            <tr><td>/24</td><td>255.255.255.0</td><td>254</td></tr>
+                            <tr><td>/25</td><td>255.255.255.128</td><td>126</td></tr>
+                            <tr><td>/26</td><td>255.255.255.192</td><td>62</td></tr>
+                            <tr><td>/27</td><td>255.255.255.224</td><td>30</td></tr>
+                            <tr><td>/28</td><td>255.255.255.240</td><td>14</td></tr>
+                            <tr><td>/30</td><td>255.255.255.252</td><td>2</td></tr>
+                        </table>
+                    `
+                },
+                {
+                    titulo: "🌐 Direccionamiento IPv6",
+                    contenido: `
+                        <p>IPv6 usa direcciones de <strong>128 bits</strong> en formato hexadecimal.</p>
+                        
+                        <div class="highlight">
+                            <strong>Tipos de direcciones:</strong>
+                            <ul>
+                                <li><strong>::1</strong> - Loopback</li>
+                                <li><strong>::</strong> - No especificada</li>
+                                <li><strong>FE80::/10</strong> - Link-local (no ruteable)</li>
+                                <li><strong>2000::/3</strong> - Global Unicast (públicas)</li>
+                                <li><strong>FC00::/7</strong> - Unique Local (privadas)</li>
+                                <li><strong>FF00::/8</strong> - Multicast</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="example-box">
+                            <strong>Formato:</strong> 2001:0db8:85a3:0000:0000:8a2e:0370:7334<br>
+                            <strong>Abreviado:</strong> 2001:db8:85a3::8a2e:370:7334
+                        </div>
+                        
+                        <p><strong>Ventajas de IPv6:</strong></p>
+                        <ul>
+                            <li>2¹²⁸ direcciones (340 undecillones)</li>
+                            <li>Autoconfiguración (SLAAC)</li>
+                            <li>IPsec obligatorio</li>
+                            <li>Sin NAT necesario</li>
+                        </ul>
+                    `
+                },
+                {
+                    titulo: "🔄 TCP vs UDP",
+                    contenido: `
+                        <p>Los dos protocolos de capa de transporte principales.</p>
+                        
+                        <table>
+                            <tr><th>Característica</th><th>TCP</th><th>UDP</th></tr>
+                            <tr><td>Conexión</td><td>Orientado (3-way handshake)</td><td>Sin conexión</td></tr>
+                            <tr><td>Confiabilidad</td><td>ACKs, retransmisiones</td><td>Best-effort</td></tr>
+                            <tr><td>Orden</td><td>Garantizado</td><td>No garantizado</td></tr>
+                            <tr><td>Control flujo</td><td>Sí (ventana)</td><td>No</td></tr>
+                            <tr><td>Overhead</td><td>20 bytes mínimo</td><td>8 bytes</td></tr>
+                            <tr><td>Velocidad</td><td>Menor</td><td>Mayor</td></tr>
+                        </table>
+                        
+                        <div class="highlight">
+                            <strong>Uso típico:</strong>
+                            <ul>
+                                <li><strong>TCP:</strong> HTTP, HTTPS, FTP, SSH, correo</li>
+                                <li><strong>UDP:</strong> VoIP, video streaming, DNS, SNMP</li>
+                            </ul>
+                        </div>
+                    `
+                }
+            ],
+            ethernet: [
+                {
+                    titulo: "🔌 Fundamentos de Ethernet",
+                    contenido: `
+                        <p><strong>Ethernet</strong> es el estándar dominante para redes de área local (LAN).</p>
+                        
+                        <div class="highlight">
+                            <strong>Características clave:</strong>
+                            <ul>
+                                <li>Estándar IEEE 802.3</li>
+                                <li>Direcciones MAC de 48 bits</li>
+                                <li>Tamaño de trama: 64-1518 bytes (MTU 1500)</li>
+                                <li>Half-duplex (CSMA/CD) o Full-duplex</li>
+                            </ul>
+                        </div>
+                        
+                        <table>
+                            <tr><th>Velocidad</th><th>Nombre</th><th>Estándar</th></tr>
+                            <tr><td>10 Mbps</td><td>Ethernet</td><td>802.3</td></tr>
+                            <tr><td>100 Mbps</td><td>Fast Ethernet</td><td>802.3u</td></tr>
+                            <tr><td>1 Gbps</td><td>Gigabit Ethernet</td><td>802.3ab/802.3z</td></tr>
+                            <tr><td>10 Gbps</td><td>10 Gigabit Ethernet</td><td>802.3ae</td></tr>
+                            <tr><td>25 Gbps</td><td>25 Gigabit Ethernet</td><td>802.3by</td></tr>
+                            <tr><td>40 Gbps</td><td>40 Gigabit Ethernet</td><td>802.3ba</td></tr>
+                            <tr><td>100 Gbps</td><td>100 Gigabit Ethernet</td><td>802.3ba</td></tr>
+                        </table>
+                    `
+                },
+                {
+                    titulo: "🏢 Metro Ethernet y Servicios MEF",
+                    contenido: `
+                        <p><strong>Metro Ethernet Forum (MEF)</strong> define servicios Carrier Ethernet estandarizados.</p>
+                        
+                        <div class="highlight">
+                            <strong>Tipos de servicios:</strong>
+                            <ul>
+                                <li><strong>E-Line:</strong> Punto a punto (como línea dedicada)</li>
+                                <li><strong>E-LAN:</strong> Multipunto a multipunto (como LAN extendida)</li>
+                                <li><strong>E-Tree:</strong> Punto a multipunto (hub-and-spoke)</li>
+                            </ul>
+                        </div>
+                        
+                        <table>
+                            <tr><th>Parámetro</th><th>Descripción</th></tr>
+                            <tr><td>CIR</td><td>Committed Information Rate - BW garantizado</td></tr>
+                            <tr><td>EIR</td><td>Excess Information Rate - BW extra permitido</td></tr>
+                            <tr><td>CBS</td><td>Committed Burst Size - Ráfaga garantizada</td></tr>
+                            <tr><td>EBS</td><td>Excess Burst Size - Ráfaga extra</td></tr>
+                        </table>
+                        
+                        <div class="example-box">
+                            <strong>Ejemplo:</strong> Servicio E-Line con CIR=100 Mbps, EIR=50 Mbps significa que tienes 100 Mbps garantizados y puedes usar hasta 150 Mbps si hay capacidad disponible.
+                        </div>
+                    `
+                },
+                {
+                    titulo: "🏷️ VLANs y 802.1Q",
+                    contenido: `
+                        <p>Las <strong>VLANs</strong> segmentan una red física en múltiples redes lógicas.</p>
+                        
+                        <div class="formula-box">
+                            Trama 802.1Q = Trama Ethernet + 4 bytes de tag VLAN
+                        </div>
+                        
+                        <div class="highlight">
+                            <strong>Campos del tag VLAN:</strong>
+                            <ul>
+                                <li><strong>TPID:</strong> 0x8100 (identificador de protocolo)</li>
+                                <li><strong>PCP:</strong> 3 bits de prioridad (0-7)</li>
+                                <li><strong>DEI:</strong> 1 bit de elegibilidad de descarte</li>
+                                <li><strong>VID:</strong> 12 bits de ID (1-4094)</li>
+                            </ul>
+                        </div>
+                        
+                        <p><strong>Tipos de puertos:</strong></p>
+                        <ul>
+                            <li><strong>Access:</strong> Pertenece a una VLAN, sin tag</li>
+                            <li><strong>Trunk:</strong> Transporta múltiples VLANs, con tag</li>
+                            <li><strong>Native VLAN:</strong> VLAN sin tag en trunk</li>
+                        </ul>
+                    `
+                },
+                {
+                    titulo: "🌉 Spanning Tree Protocol (STP)",
+                    contenido: `
+                        <p><strong>STP (802.1D)</strong> previene loops en redes con redundancia.</p>
+                        
+                        <div class="highlight">
+                            <strong>Proceso de convergencia:</strong>
+                            <ol>
+                                <li>Elección de Root Bridge (menor Bridge ID)</li>
+                                <li>Selección de Root Ports (mejor camino al root)</li>
+                                <li>Selección de Designated Ports</li>
+                                <li>Bloqueo de puertos restantes</li>
+                            </ol>
+                        </div>
+                        
+                        <table>
+                            <tr><th>Variante</th><th>Convergencia</th><th>Estándar</th></tr>
+                            <tr><td>STP</td><td>30-50 seg</td><td>802.1D</td></tr>
+                            <tr><td>RSTP</td><td>1-2 seg</td><td>802.1w</td></tr>
+                            <tr><td>MSTP</td><td>1-2 seg</td><td>802.1s</td></tr>
+                        </table>
+                        
+                        <div class="warning-box">
+                            <strong>⚠️ BPDU Guard:</strong> Protege puertos de acceso. Si recibe BPDU, desactiva el puerto para prevenir ataques.
+                        </div>
+                    `
+                }
+            ],
+            fibra: [
+                {
+                    titulo: "💡 Principios de Fibra Óptica",
+                    contenido: `
+                        <p>La fibra óptica transmite información mediante <strong>pulsos de luz</strong> que viajan por reflexión interna total.</p>
+                        
+                        <div class="highlight">
+                            <strong>Componentes de la fibra:</strong>
+                            <ul>
+                                <li><strong>Núcleo (core):</strong> Por donde viaja la luz</li>
+                                <li><strong>Revestimiento (cladding):</strong> Confina la luz</li>
+                                <li><strong>Recubrimiento:</strong> Protección mecánica</li>
+                            </ul>
+                        </div>
+                        
+                        <table>
+                            <tr><th>Tipo</th><th>Núcleo</th><th>Color</th><th>Distancia</th></tr>
+                            <tr><td>Monomodo (SM)</td><td>8-10 μm</td><td>Amarillo</td><td>Hasta 100+ km</td></tr>
+                            <tr><td>Multimodo OM1</td><td>62.5 μm</td><td>Naranja</td><td>~300 m</td></tr>
+                            <tr><td>Multimodo OM3</td><td>50 μm</td><td>Aqua</td><td>~300 m @10G</td></tr>
+                            <tr><td>Multimodo OM4</td><td>50 μm</td><td>Aqua</td><td>~400 m @10G</td></tr>
+                        </table>
+                    `
+                },
+                {
+                    titulo: "📉 Atenuación y Pérdidas",
+                    contenido: `
+                        <p>La <strong>atenuación</strong> es la pérdida de potencia óptica a lo largo de la fibra.</p>
+                        
+                        <table>
+                            <tr><th>Tipo de Pérdida</th><th>Valor Típico</th></tr>
+                            <tr><td>Fibra SM @ 1310 nm</td><td>~0.35 dB/km</td></tr>
+                            <tr><td>Fibra SM @ 1550 nm</td><td>~0.22 dB/km</td></tr>
+                            <tr><td>Empalme de fusión</td><td>~0.1 dB</td></tr>
+                            <tr><td>Empalme mecánico</td><td>~0.3 dB</td></tr>
+                            <tr><td>Conector óptico</td><td>~0.5-0.75 dB</td></tr>
+                        </table>
+                        
+                        <div class="formula-box">
+                            Power Budget = Tx (dBm) - Rx sensibilidad (dBm)
+                        </div>
+                        
+                        <div class="example-box">
+                            <strong>Ejemplo:</strong> Tx = -3 dBm, Rx = -28 dBm<br>
+                            Power Budget = -3 - (-28) = <strong>25 dB disponibles</strong>
+                        </div>
+                    `
+                },
+                {
+                    titulo: "🔧 Transceptores Ópticos",
+                    contenido: `
+                        <p>Los <strong>transceptores</strong> (transceivers) convierten señales eléctricas en ópticas y viceversa.</p>
+                        
+                        <table>
+                            <tr><th>Tipo</th><th>Velocidad</th><th>Uso</th></tr>
+                            <tr><td>SFP</td><td>1 Gbps</td><td>Gigabit Ethernet</td></tr>
+                            <tr><td>SFP+</td><td>10 Gbps</td><td>10G Ethernet</td></tr>
+                            <tr><td>SFP28</td><td>25 Gbps</td><td>25G Ethernet</td></tr>
+                            <tr><td>QSFP+</td><td>40 Gbps</td><td>40G (4x10G)</td></tr>
+                            <tr><td>QSFP28</td><td>100 Gbps</td><td>100G (4x25G)</td></tr>
+                            <tr><td>QSFP-DD</td><td>400 Gbps</td><td>400G (8x50G)</td></tr>
+                        </table>
+                        
+                        <div class="highlight">
+                            <strong>Alcances por tipo:</strong>
+                            <ul>
+                                <li><strong>SR:</strong> Short Range (~300m multimodo)</li>
+                                <li><strong>LR:</strong> Long Range (~10 km)</li>
+                                <li><strong>ER:</strong> Extended Range (~40 km)</li>
+                                <li><strong>ZR:</strong> Very Long (~80+ km)</li>
+                            </ul>
+                        </div>
+                    `
+                }
+            ],
+            gpon: [
+                {
+                    titulo: "🏠 Arquitectura GPON",
+                    contenido: `
+                        <p><strong>GPON (Gigabit Passive Optical Network)</strong> es una tecnología de acceso de fibra hasta el hogar.</p>
+                        
+                        <div class="highlight">
+                            <strong>Componentes principales:</strong>
+                            <ul>
+                                <li><strong>OLT:</strong> Optical Line Terminal (en la central)</li>
+                                <li><strong>Splitter:</strong> Divisor pasivo (no requiere energía)</li>
+                                <li><strong>ONT/ONU:</strong> Optical Network Terminal (en el cliente)</li>
+                            </ul>
+                        </div>
+                        
+                        <table>
+                            <tr><th>Característica</th><th>GPON</th><th>XGS-PON</th></tr>
+                            <tr><td>Downstream</td><td>2.488 Gbps</td><td>10 Gbps</td></tr>
+                            <tr><td>Upstream</td><td>1.244 Gbps</td><td>10 Gbps</td></tr>
+                            <tr><td>Split ratio</td><td>1:64 (típico 1:32)</td><td>1:128</td></tr>
+                            <tr><td>Distancia máx</td><td>20 km (60 km clase C+)</td><td>20 km</td></tr>
+                        </table>
+                        
+                        <div class="formula-box">
+                            λ Downstream: 1490 nm | λ Upstream: 1310 nm | λ Video RF: 1550 nm
+                        </div>
+                    `
+                },
+                {
+                    titulo: "➗ Pérdidas por Splitter",
+                    contenido: `
+                        <p>Los <strong>splitters</strong> dividen la señal óptica en múltiples salidas, introduciendo pérdidas.</p>
+                        
+                        <table>
+                            <tr><th>Ratio</th><th>Pérdida Teórica</th><th>Pérdida Real</th></tr>
+                            <tr><td>1:2</td><td>3.0 dB</td><td>~3.5 dB</td></tr>
+                            <tr><td>1:4</td><td>6.0 dB</td><td>~7.0 dB</td></tr>
+                            <tr><td>1:8</td><td>9.0 dB</td><td>~10.5 dB</td></tr>
+                            <tr><td>1:16</td><td>12.0 dB</td><td>~14.0 dB</td></tr>
+                            <tr><td>1:32</td><td>15.0 dB</td><td>~17.5 dB</td></tr>
+                            <tr><td>1:64</td><td>18.0 dB</td><td>~21.0 dB</td></tr>
+                        </table>
+                        
+                        <div class="formula-box">
+                            Pérdida teórica = 10 × log₁₀(N)<br>
+                            <small>donde N = número de salidas</small>
+                        </div>
+                        
+                        <div class="warning-box">
+                            <strong>⚠️ Importante:</strong> Se suelen usar 2 niveles de splitting (ej: 1:4 + 1:8 = 1:32 total). La pérdida se suma.
+                        </div>
+                    `
+                },
+                {
+                    titulo: "⚡ Power Budget GPON",
+                    contenido: `
+                        <p>El <strong>Power Budget</strong> determina la distancia y cantidad de divisiones posibles.</p>
+                        
+                        <div class="highlight">
+                            <strong>Clases de potencia GPON:</strong>
+                            <ul>
+                                <li><strong>Clase B:</strong> 25 dB</li>
+                                <li><strong>Clase B+:</strong> 28 dB (más común)</li>
+                                <li><strong>Clase C:</strong> 30 dB</li>
+                                <li><strong>Clase C+:</strong> 32 dB (larga distancia)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="example-box">
+                            <strong>Ejemplo de cálculo:</strong><br>
+                            Power Budget disponible: 28 dB (Clase B+)<br><br>
+                            - Fibra 15 km @ 0.35 dB/km = 5.25 dB<br>
+                            - Splitter 1:32 = 17.5 dB<br>
+                            - 4 conectores @ 0.5 dB = 2.0 dB<br>
+                            - 2 empalmes @ 0.1 dB = 0.2 dB<br>
+                            - Margen = 3.0 dB<br><br>
+                            <strong>Total: 27.95 dB ✅ Viable</strong>
+                        </div>
+                    `
+                }
+            ],
+            bert: [
+                {
+                    titulo: "📊 BERT - Bit Error Rate Testing",
+                    contenido: `
+                        <p><strong>BERT</strong> (Bit Error Rate Test) mide la tasa de errores en una transmisión digital.</p>
+                        
+                        <div class="formula-box">
+                            BER = Bits con error / Bits totales transmitidos
+                        </div>
+                        
+                        <table>
+                            <tr><th>BER</th><th>Aplicación</th><th>Calidad</th></tr>
+                            <tr><td>10⁻⁹</td><td>Telecomunicaciones estándar</td><td>Aceptable</td></tr>
+                            <tr><td>10⁻¹⁰</td><td>Redes carrier</td><td>Buena</td></tr>
+                            <tr><td>10⁻¹²</td><td>Redes de alta calidad</td><td>Muy buena</td></tr>
+                            <tr><td>10⁻¹³</td><td>Datos críticos</td><td>Excelente</td></tr>
+                        </table>
+                        
+                        <div class="highlight">
+                            <strong>Patrones de prueba (PRBS):</strong>
+                            <ul>
+                                <li><strong>PRBS-7:</strong> 2⁷-1 = 127 bits</li>
+                                <li><strong>PRBS-15:</strong> 2¹⁵-1 = 32,767 bits</li>
+                                <li><strong>PRBS-23:</strong> 2²³-1 = 8,388,607 bits</li>
+                                <li><strong>PRBS-31:</strong> 2³¹-1 = 2,147,483,647 bits</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                {
+                    titulo: "📋 RFC 2544 - Benchmarking Ethernet",
+                    contenido: `
+                        <p><strong>RFC 2544</strong> define pruebas estándar para medir rendimiento de equipos de red.</p>
+                        
+                        <div class="highlight">
+                            <strong>Pruebas definidas:</strong>
+                            <ol>
+                                <li><strong>Throughput:</strong> Máxima tasa sin pérdida</li>
+                                <li><strong>Latency:</strong> Tiempo de tránsito</li>
+                                <li><strong>Frame Loss:</strong> Porcentaje de pérdida</li>
+                                <li><strong>Back-to-Back:</strong> Capacidad de ráfaga</li>
+                                <li><strong>System Reset:</strong> Tiempo de recuperación</li>
+                            </ol>
+                        </div>
+                        
+                        <table>
+                            <tr><th>Tamaño Trama</th><th>Uso</th></tr>
+                            <tr><td>64 bytes</td><td>VoIP, paquetes pequeños</td></tr>
+                            <tr><td>128 bytes</td><td>Señalización</td></tr>
+                            <tr><td>256 bytes</td><td>Control</td></tr>
+                            <tr><td>512 bytes</td><td>Datos mixtos</td></tr>
+                            <tr><td>1024 bytes</td><td>Streaming</td></tr>
+                            <tr><td>1280 bytes</td><td>IPv6 mínimo</td></tr>
+                            <tr><td>1518 bytes</td><td>Datos grandes</td></tr>
+                        </table>
+                    `
+                },
+                {
+                    titulo: "🎯 Criterios de Aceptación",
+                    contenido: `
+                        <p>Criterios típicos para validar enlaces Ethernet según RFC 2544.</p>
+                        
+                        <table>
+                            <tr><th>Parámetro</th><th>Criterio</th></tr>
+                            <tr><td>Throughput</td><td>≥ 99% del rate teórico</td></tr>
+                            <tr><td>Latencia @ 1G</td><td>≤ 1 ms</td></tr>
+                            <tr><td>Latencia @ 10G</td><td>≤ 300 μs</td></tr>
+                            <tr><td>Latencia @ 100G</td><td>≤ 100 μs</td></tr>
+                            <tr><td>Frame Loss</td><td>≤ 0.01%</td></tr>
+                            <tr><td>Jitter</td><td>≤ 1 ms (VoIP)</td></tr>
+                        </table>
+                        
+                        <div class="warning-box">
+                            <strong>⚠️ ITU-T Y.1564:</strong> Estándar más moderno que reemplaza RFC 2544 para pruebas de múltiples servicios simultáneos.
+                        </div>
+                    `
+                },
+                {
+                    titulo: "⏱️ Sincronización de Red",
+                    contenido: `
+                        <p>La sincronización es crítica para servicios de tiempo real.</p>
+                        
+                        <table>
+                            <tr><th>Protocolo</th><th>Precisión</th><th>Uso</th></tr>
+                            <tr><td>NTP</td><td>Milisegundos</td><td>IT general</td></tr>
+                            <tr><td>PTP (IEEE 1588)</td><td>Microsegundos a nanosegundos</td><td>Telecom, 5G</td></tr>
+                            <tr><td>SyncE</td><td>Frecuencia</td><td>Carrier Ethernet</td></tr>
+                            <tr><td>GPS</td><td>Nanosegundos</td><td>Referencia primaria</td></tr>
+                        </table>
+                        
+                        <div class="highlight">
+                            <strong>Conceptos clave:</strong>
+                            <ul>
+                                <li><strong>Frecuencia:</strong> Velocidad del reloj</li>
+                                <li><strong>Fase:</strong> Alineación del reloj</li>
+                                <li><strong>ToD:</strong> Time of Day (hora absoluta)</li>
+                            </ul>
+                        </div>
+                    `
+                }
+            ],
+            seguridad: [
+                {
+                    titulo: "🔐 Control de Acceso - 802.1X",
+                    contenido: `
+                        <p><strong>802.1X</strong> proporciona autenticación basada en puerto para redes.</p>
+                        
+                        <div class="highlight">
+                            <strong>Componentes:</strong>
+                            <ul>
+                                <li><strong>Supplicant:</strong> Cliente que solicita acceso</li>
+                                <li><strong>Authenticator:</strong> Switch o AP que controla acceso</li>
+                                <li><strong>Authentication Server:</strong> RADIUS que valida credenciales</li>
+                            </ul>
+                        </div>
+                        
+                        <p><strong>Métodos EAP comunes:</strong></p>
+                        <ul>
+                            <li><strong>EAP-TLS:</strong> Certificados (más seguro)</li>
+                            <li><strong>EAP-PEAP:</strong> Usuario/contraseña con túnel TLS</li>
+                            <li><strong>EAP-MD5:</strong> Solo usuario/contraseña (no recomendado)</li>
+                        </ul>
+                    `
+                },
+                {
+                    titulo: "🛡️ Protecciones de Capa 2",
+                    contenido: `
+                        <p>Mecanismos de seguridad para proteger la red a nivel de enlace.</p>
+                        
+                        <table>
+                            <tr><th>Protección</th><th>Función</th><th>Ataque que previene</th></tr>
+                            <tr><td>DHCP Snooping</td><td>Filtra DHCP no autorizado</td><td>Rogue DHCP</td></tr>
+                            <tr><td>Dynamic ARP Inspection</td><td>Valida mensajes ARP</td><td>ARP Spoofing</td></tr>
+                            <tr><td>IP Source Guard</td><td>Filtra IPs falsas</td><td>IP Spoofing</td></tr>
+                            <tr><td>Port Security</td><td>Limita MACs por puerto</td><td>MAC Flooding</td></tr>
+                            <tr><td>BPDU Guard</td><td>Protege STP</td><td>STP Attack</td></tr>
+                            <tr><td>Root Guard</td><td>Previene nuevo root</td><td>Root Bridge Attack</td></tr>
+                        </table>
+                        
+                        <div class="warning-box">
+                            <strong>⚠️ Importante:</strong> DHCP Snooping debe estar activo para que DAI e IP Source Guard funcionen.
+                        </div>
+                    `
+                },
+                {
+                    titulo: "🔒 MACsec (802.1AE)",
+                    contenido: `
+                        <p><strong>MACsec</strong> proporciona cifrado y autenticación a nivel de capa 2.</p>
+                        
+                        <div class="highlight">
+                            <strong>Características:</strong>
+                            <ul>
+                                <li>Cifrado AES-GCM-128 o AES-GCM-256</li>
+                                <li>Autenticación de origen</li>
+                                <li>Integridad de datos</li>
+                                <li>Protección anti-replay</li>
+                            </ul>
+                        </div>
+                        
+                        <p><strong>Componentes:</strong></p>
+                        <ul>
+                            <li><strong>SecY:</strong> Entidad de seguridad (por puerto)</li>
+                            <li><strong>CAK:</strong> Connectivity Association Key</li>
+                            <li><strong>SAK:</strong> Secure Association Key (derivada del CAK)</li>
+                            <li><strong>MKA:</strong> MACsec Key Agreement (802.1X-2010)</li>
+                        </ul>
+                        
+                        <div class="example-box">
+                            <strong>Uso típico:</strong> Enlaces punto a punto críticos, conexiones de data center, backhaul móvil.
+                        </div>
+                    `
+                },
+                {
+                    titulo: "📡 SNMP - Gestión de Red",
+                    contenido: `
+                        <p><strong>SNMP</strong> (Simple Network Management Protocol) permite monitorear y gestionar dispositivos de red.</p>
+                        
+                        <table>
+                            <tr><th>Versión</th><th>Autenticación</th><th>Cifrado</th><th>Uso</th></tr>
+                            <tr><td>SNMPv1</td><td>Community string</td><td>No</td><td>Legacy</td></tr>
+                            <tr><td>SNMPv2c</td><td>Community string</td><td>No</td><td>Común</td></tr>
+                            <tr><td>SNMPv3</td><td>Usuario/contraseña</td><td>Sí (AES)</td><td>Recomendado</td></tr>
+                        </table>
+                        
+                        <div class="highlight">
+                            <strong>Operaciones SNMP:</strong>
+                            <ul>
+                                <li><strong>GET:</strong> Obtener valor de un OID</li>
+                                <li><strong>SET:</strong> Modificar valor de un OID</li>
+                                <li><strong>GETNEXT:</strong> Obtener siguiente OID</li>
+                                <li><strong>GETBULK:</strong> Obtener múltiples OIDs</li>
+                                <li><strong>TRAP:</strong> Notificación asíncrona del agente</li>
+                            </ul>
+                        </div>
+                        
+                        <p><strong>Puertos:</strong> UDP 161 (queries), UDP 162 (traps)</p>
+                    `
+                }
+            ]
+        };
+        
         // ============ NAVEGACIÓN ============
         function showSection(sectionId) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -3262,6 +4149,35 @@
         
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('visible');
+        }
+        
+        // ============ CONCEPTOS Y TEORÍA ============
+        function initConceptos() {
+            document.querySelectorAll('#conceptos-tabs .filter-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('#conceptos-tabs .filter-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    showConceptos(this.dataset.topic);
+                });
+            });
+            showConceptos('radio'); // Mostrar radio por defecto
+        }
+        
+        function showConceptos(topic) {
+            const container = document.getElementById('conceptos-content');
+            const conceptos = conceptosDB[topic] || [];
+            
+            if (conceptos.length === 0) {
+                container.innerHTML = '<div class="concepto-card"><p>No hay conceptos disponibles para este tema.</p></div>';
+                return;
+            }
+            
+            container.innerHTML = conceptos.map(c => `
+                <div class="concepto-card">
+                    <h3>${c.titulo}</h3>
+                    ${c.contenido}
+                </div>
+            `).join('');
         }
         
         // ============ FLASHCARDS ============
@@ -4204,6 +5120,7 @@
         // ============ INICIALIZACIÓN ============
         document.addEventListener('DOMContentLoaded', function() {
             showRandomTip();
+            initConceptos();
             initFlashcards();
             initTests();
             initVoF();
