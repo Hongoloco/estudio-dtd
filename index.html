@@ -9,13 +9,13 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            --primary: #667eea;
-            --secondary: #764ba2;
-            --success: #4caf50;
-            --danger: #f44336;
-            --warning: #ffc107;
-            --dark: #1a1a2e;
-            --darker: #16213e;
+            --primary: #5B8CFF;
+            --secondary: #7B61FF;
+            --success: #22C55E;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --dark: #0B1220;
+            --darker: #0F172A;
             --surface: rgba(255,255,255,0.06);
             --surface-2: rgba(255,255,255,0.1);
             --border: rgba(255,255,255,0.12);
@@ -52,7 +52,9 @@
             top: 0;
             width: 280px;
             height: 100vh;
-            background: rgba(0,0,0,0.3);
+            background: rgba(10,14,28,0.7);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid var(--border);
             padding: 20px;
             overflow-y: auto;
             z-index: 1000;
@@ -82,8 +84,8 @@
         .text-size-btn {
             flex: 1;
             padding: 8px;
-            border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            background: var(--surface);
             color: white;
             border-radius: 8px;
             cursor: pointer;
@@ -91,9 +93,7 @@
             font-weight: bold;
         }
         
-        .text-size-btn:hover {
-            background: rgba(255,255,255,0.15);
-        }
+        .text-size-btn:hover { background: var(--surface-2); }
         
         .text-size-btn.active {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
@@ -117,11 +117,36 @@
             font-size: 1em;
         }
         
-        .nav-item:hover, .nav-item.active {
+        .nav-item:hover {
+            background: rgba(91,140,255,0.18);
+            border: 1px solid rgba(91,140,255,0.25);
+        }
+
+        .nav-item.active {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
+            box-shadow: 0 8px 18px rgba(91,140,255,0.35);
         }
         
-        .nav-item-icon { font-size: 1.4em; }
+        .nav-item-icon {
+            width: 20px;
+            height: 20px;
+            stroke-width: 1.8;
+            color: rgba(255,255,255,0.9);
+            flex-shrink: 0;
+        }
+
+        .header-icon {
+            width: 20px;
+            height: 20px;
+            stroke-width: 1.8;
+            vertical-align: -3px;
+            margin-right: 8px;
+        }
+
+        .tip-icon {
+            width: 22px;
+            height: 22px;
+        }
         
         .nav-section {
             font-size: 0.8em;
@@ -192,7 +217,7 @@
             background-clip: text;
         }
         
-        .section-header p { opacity: 0.8; font-size: 1.1em; }
+        .section-header p { color: var(--text-muted); font-size: 1.1em; }
         
         /* Conceptos y Teoría */
         .filter-tabs {
@@ -202,7 +227,8 @@
             justify-content: center;
             margin-bottom: 30px;
             padding: 15px;
-            background: rgba(255,255,255,0.05);
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 15px;
         }
         
@@ -955,9 +981,9 @@
             width: 100%;
             padding: 15px 20px;
             margin-bottom: 10px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 10px;
-            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--surface);
             color: white;
             font-size: 1em;
             text-align: left;
@@ -966,9 +992,9 @@
         }
         
         .option-btn:hover:not(:disabled) {
-            background: rgba(255,255,255,0.2);
-            border-color: var(--primary);
-            transform: translateX(5px);
+            background: var(--surface-2);
+            border-color: rgba(91,140,255,0.4);
+            transform: translateX(4px);
         }
         
         .option-btn .option-letter {
@@ -1005,9 +1031,9 @@
         .input {
             width: 100%;
             padding: 15px;
-            border: 2px solid rgba(255,255,255,0.2);
-            border-radius: 10px;
-            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--surface);
             color: white;
             font-size: 1.1em;
             transition: all 0.3s;
@@ -1015,8 +1041,9 @@
         
         .input:focus {
             outline: none;
-            border-color: var(--primary);
-            background: rgba(255,255,255,0.15);
+            border-color: rgba(91,140,255,0.6);
+            background: var(--surface-2);
+            box-shadow: 0 0 0 3px rgba(91,140,255,0.2);
         }
         
         .input::placeholder { color: rgba(255,255,255,0.5); }
@@ -1423,7 +1450,8 @@
             gap: 20px;
         }
         
-        .tip-icon { font-size: 2.5em; }
+        .tip-icon-wrap { display: flex; align-items: center; justify-content: center; }
+        .tip-icon { width: 28px; height: 28px; }
         .tip-content h4 { margin-bottom: 5px; color: var(--warning); }
         
         /* Fibra visual */
@@ -2674,8 +2702,12 @@
 </head>
 <body>
     <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
-    <button class="toggle-sidebar" onclick="toggleSidebar()">☰</button>
-    <button class="search-btn" onclick="openSearch()" title="Buscar (Ctrl+K)">🔍</button>
+    <button class="toggle-sidebar" onclick="toggleSidebar()" aria-label="Abrir menú">
+        <i data-lucide="menu" class="nav-item-icon"></i>
+    </button>
+    <button class="search-btn" onclick="openSearch()" title="Buscar (Ctrl+K)" aria-label="Buscar">
+        <i data-lucide="search" class="nav-item-icon"></i>
+    </button>
     
     <!-- Modal de Conceptos para Mapas -->
     <div class="concept-modal" id="concept-modal">
@@ -2706,85 +2738,85 @@
     
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <h1>📚 Centro de Estudio</h1>
+            <h1><i data-lucide="book-open" class="header-icon"></i>Centro de Estudio</h1>
             <p style="font-size: 0.9em; opacity: 0.7; margin-top: 5px;">Llamados Técnicos 2025</p>
         </div>
         
         <button class="nav-item active" onclick="showSection('home')">
-            <span class="nav-item-icon">🏠</span>
+            <i data-lucide="home" class="nav-item-icon"></i>
             <span>Inicio</span>
         </button>
         
         <div class="nav-section">Herramientas de Estudio</div>
         
         <button class="nav-item" onclick="showSection('conceptos')">
-            <span class="nav-item-icon">📚</span>
+            <i data-lucide="book-open" class="nav-item-icon"></i>
             <span>Conceptos</span>
         </button>
         
         <button class="nav-item" onclick="showSection('flashcards')">
-            <span class="nav-item-icon">🎴</span>
+            <i data-lucide="layers" class="nav-item-icon"></i>
             <span>Flashcards</span>
         </button>
         
         <button class="nav-item" onclick="showSection('pruebas')">
-            <span class="nav-item-icon">📝</span>
+            <i data-lucide="clipboard-check" class="nav-item-icon"></i>
             <span>Pruebas</span>
         </button>
         
         <button class="nav-item" onclick="showSection('vof')">
-            <span class="nav-item-icon">✅</span>
+            <i data-lucide="check-circle" class="nav-item-icon"></i>
             <span>Verdadero/Falso</span>
         </button>
         
         <button class="nav-item" onclick="showSection('ejercicios')">
-            <span class="nav-item-icon">✍️</span>
+            <i data-lucide="pen-tool" class="nav-item-icon"></i>
             <span>Ejercicios Fórmulas</span>
         </button>
         
         <button class="nav-item" onclick="showSection('calculadoras')">
-            <span class="nav-item-icon">🧮</span>
+            <i data-lucide="calculator" class="nav-item-icon"></i>
             <span>Calculadoras</span>
         </button>
         
         <button class="nav-item" onclick="showSection('mapas')">
-            <span class="nav-item-icon">🗺️</span>
+            <i data-lucide="map" class="nav-item-icon"></i>
             <span>Mapas Conceptuales</span>
         </button>
         
         <div class="nav-section">Práctica Avanzada</div>
         
         <button class="nav-item" onclick="showSection('examen')">
-            <span class="nav-item-icon">🎓</span>
+            <i data-lucide="graduation-cap" class="nav-item-icon"></i>
             <span>Examen Simulado</span>
         </button>
         
         <button class="nav-item" onclick="showSection('repaso')">
-            <span class="nav-item-icon">🔄</span>
+            <i data-lucide="rotate-cw" class="nav-item-icon"></i>
             <span>Repaso Inteligente</span>
         </button>
         
         <div class="nav-section">Juegos</div>
         
         <button class="nav-item" onclick="showSection('desafio')">
-            <span class="nav-item-icon">🎯</span>
+            <i data-lucide="target" class="nav-item-icon"></i>
             <span>Desafío Rápido</span>
         </button>
         
         <button class="nav-item" onclick="showSection('memoria')">
-            <span class="nav-item-icon">🧠</span>
+            <i data-lucide="brain" class="nav-item-icon"></i>
             <span>Memoria Técnica</span>
         </button>
         
         <button class="nav-item" onclick="showSection('supervivencia')">
-            <span class="nav-item-icon">❤️</span>
+            <i data-lucide="heart-pulse" class="nav-item-icon"></i>
             <span>Supervivencia</span>
         </button>
         
         <div class="nav-section">Progreso</div>
         
         <button class="nav-item" onclick="showSection('dashboard')">
-            <span class="nav-item-icon">📊</span>
+            <i data-lucide="bar-chart-3" class="nav-item-icon"></i>
             <span>Dashboard</span>
         </button>
         
@@ -2792,7 +2824,7 @@
         
         <div style="padding: 10px 15px;">
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                <span style="font-size: 1.2em;">🔤</span>
+                <i data-lucide="type" class="nav-item-icon"></i>
                 <span style="font-size: 0.9em;">Tamaño de texto</span>
             </div>
             <div style="display: flex; gap: 5px;">
@@ -2825,7 +2857,7 @@
             </div>
             
             <div class="tip-banner">
-                <div class="tip-icon">💡</div>
+                <div class="tip-icon-wrap"><i data-lucide="lightbulb" class="tip-icon"></i></div>
                 <div class="tip-content">
                     <h4>Consejo del día</h4>
                     <p id="daily-tip">La primera zona de Fresnel debe estar despejada al menos en un 60% para evitar pérdidas por difracción.</p>
@@ -5562,6 +5594,7 @@
         </section>
     </main>
 
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         // ============ DATOS ============
         
@@ -9749,6 +9782,10 @@
             document.getElementById('search-modal').addEventListener('click', function(e) {
                 if (e.target === this) closeSearch();
             });
+
+            if (window.lucide && typeof lucide.createIcons === 'function') {
+                lucide.createIcons();
+            }
         });
         
         // ============ SISTEMA DE MODALES PARA MAPAS CONCEPTUALES ============
