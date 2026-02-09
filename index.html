@@ -1834,11 +1834,190 @@
         .sidebar-overlay.visible {
             display: block;
         }
+        
+        /* Búsqueda Global */
+        .search-btn {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 1001;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: transform 0.2s;
+        }
+        
+        .search-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 2000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .search-modal.visible {
+            display: block;
+            animation: fadeIn 0.2s;
+        }
+        
+        .search-container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding-top: 20px;
+        }
+        
+        .search-header {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 18px 20px;
+            border: 2px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            color: white;
+            font-size: 1.1em;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .search-input:focus {
+            border-color: var(--primary);
+        }
+        
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+        
+        .search-close {
+            padding: 18px 22px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .search-close:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .search-results {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .search-result {
+            padding: 18px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .search-result:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateX(5px);
+        }
+        
+        .search-result-type {
+            font-size: 0.75em;
+            text-transform: uppercase;
+            opacity: 0.6;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .search-result-title {
+            font-size: 1.05em;
+            margin-bottom: 5px;
+        }
+        
+        .search-result-preview {
+            font-size: 0.9em;
+            opacity: 0.7;
+            line-height: 1.4;
+        }
+        
+        .search-result mark {
+            background: var(--warning);
+            color: black;
+            padding: 1px 3px;
+            border-radius: 3px;
+        }
+        
+        .search-empty {
+            text-align: center;
+            padding: 40px;
+            opacity: 0.6;
+        }
+        
+        .search-empty-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .search-hint {
+            text-align: center;
+            padding: 30px;
+            opacity: 0.5;
+            font-size: 0.95em;
+        }
+        
+        .search-stats {
+            text-align: center;
+            padding: 10px;
+            opacity: 0.6;
+            font-size: 0.85em;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
     <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
     <button class="toggle-sidebar" onclick="toggleSidebar()">☰</button>
+    <button class="search-btn" onclick="openSearch()" title="Buscar (Ctrl+K)">🔍</button>
+    
+    <!-- Modal de Búsqueda -->
+    <div class="search-modal" id="search-modal">
+        <div class="search-container">
+            <div class="search-header">
+                <input type="text" class="search-input" id="search-input" placeholder="Buscar conceptos, preguntas, flashcards..." oninput="performSearch(this.value)" autofocus>
+                <button class="search-close" onclick="closeSearch()">✕</button>
+            </div>
+            <div id="search-hint" class="search-hint">
+                💡 Escribe para buscar en flashcards, preguntas V/F, conceptos y más...
+            </div>
+            <div id="search-results" class="search-results"></div>
+        </div>
+    </div>
     
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -5708,6 +5887,210 @@
             setTextSize(savedSize);
         }
         
+        // ============ BÚSQUEDA GLOBAL ============
+        function openSearch() {
+            document.getElementById('search-modal').classList.add('visible');
+            document.getElementById('search-input').focus();
+            document.getElementById('search-input').value = '';
+            document.getElementById('search-results').innerHTML = '';
+            document.getElementById('search-hint').style.display = 'block';
+        }
+        
+        function closeSearch() {
+            document.getElementById('search-modal').classList.remove('visible');
+        }
+        
+        function performSearch(query) {
+            const resultsContainer = document.getElementById('search-results');
+            const hint = document.getElementById('search-hint');
+            
+            if (query.length < 2) {
+                resultsContainer.innerHTML = '';
+                hint.style.display = 'block';
+                return;
+            }
+            
+            hint.style.display = 'none';
+            const results = searchAll(query.toLowerCase());
+            
+            if (results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="search-empty">
+                        <div class="search-empty-icon">🔍</div>
+                        <p>No se encontraron resultados para "<strong>${escapeHtml(query)}</strong>"</p>
+                        <p style="margin-top: 10px; font-size: 0.9em;">Intenta con otras palabras clave</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = `<div class="search-stats">Se encontraron ${results.length} resultado${results.length !== 1 ? 's' : ''}</div>`;
+            
+            results.slice(0, 30).forEach(result => {
+                html += `
+                    <div class="search-result" onclick="${result.action}">
+                        <div class="search-result-type">${result.icon} ${result.type}</div>
+                        <div class="search-result-title">${highlightText(result.title, query)}</div>
+                        <div class="search-result-preview">${highlightText(result.preview, query)}</div>
+                    </div>
+                `;
+            });
+            
+            if (results.length > 30) {
+                html += `<div class="search-stats">Mostrando 30 de ${results.length} resultados</div>`;
+            }
+            
+            resultsContainer.innerHTML = html;
+        }
+        
+        function searchAll(query) {
+            const results = [];
+            
+            // Buscar en Flashcards
+            flashcardsDB.forEach((fc, index) => {
+                if (fc.q.toLowerCase().includes(query) || fc.a.toLowerCase().includes(query)) {
+                    results.push({
+                        type: 'Flashcard',
+                        icon: '🎴',
+                        title: fc.q,
+                        preview: fc.a.substring(0, 100) + (fc.a.length > 100 ? '...' : ''),
+                        action: `goToFlashcard('${fc.category}')`
+                    });
+                }
+            });
+            
+            // Buscar en V/F
+            vofQuestionsDB.forEach((vof, index) => {
+                if (vof.statement.toLowerCase().includes(query) || vof.explanation.toLowerCase().includes(query)) {
+                    results.push({
+                        type: 'Verdadero/Falso',
+                        icon: '✅',
+                        title: vof.statement,
+                        preview: (vof.answer ? '✓ Verdadero' : '✗ Falso') + ' - ' + vof.explanation.substring(0, 80),
+                        action: `goToVoF('${vof.category}')`
+                    });
+                }
+            });
+            
+            // Buscar en Conceptos
+            Object.keys(conceptosDB).forEach(categoria => {
+                conceptosDB[categoria].forEach(concepto => {
+                    const textoPlano = concepto.contenido.replace(/<[^>]*>/g, ' ').toLowerCase();
+                    if (concepto.titulo.toLowerCase().includes(query) || textoPlano.includes(query)) {
+                        results.push({
+                            type: 'Concepto - ' + categoria.charAt(0).toUpperCase() + categoria.slice(1),
+                            icon: '📚',
+                            title: concepto.titulo.replace(/^[^\s]+\s/, ''),
+                            preview: textoPlano.substring(0, 120) + '...',
+                            action: `goToConcepto('${categoria}')`
+                        });
+                    }
+                });
+            });
+            
+            // Buscar en Tips
+            tips.forEach(tip => {
+                if (tip.toLowerCase().includes(query)) {
+                    results.push({
+                        type: 'Tip',
+                        icon: '💡',
+                        title: 'Consejo de estudio',
+                        preview: tip,
+                        action: `closeSearch()`
+                    });
+                }
+            });
+            
+            // Buscar en ejercicios
+            exercisesDB.forEach(ex => {
+                if (ex.title.toLowerCase().includes(query) || ex.exp.toLowerCase().includes(query)) {
+                    results.push({
+                        type: 'Ejercicio',
+                        icon: '✍️',
+                        title: ex.title,
+                        preview: ex.exp,
+                        action: `goToExercises('${ex.cat}')`
+                    });
+                }
+            });
+            
+            return results;
+        }
+        
+        function highlightText(text, query) {
+            if (!query) return escapeHtml(text);
+            const escaped = escapeHtml(text);
+            const regex = new RegExp(`(${escapeRegex(query)})`, 'gi');
+            return escaped.replace(regex, '<mark>$1</mark>');
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function escapeRegex(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+        
+        function goToFlashcard(category) {
+            closeSearch();
+            showSection('flashcards');
+            // Activar categoría
+            document.querySelectorAll('#fc-tabs .tab').forEach(t => {
+                t.classList.remove('active');
+                if (t.dataset.category === category) t.classList.add('active');
+            });
+            currentFcCategory = category;
+            loadFlashcards();
+        }
+        
+        function goToVoF(category) {
+            closeSearch();
+            showSection('vof');
+            currentVofCategory = category;
+            document.querySelectorAll('#vof-tabs .tab').forEach(t => {
+                t.classList.remove('active');
+                if (t.dataset.category === category) t.classList.add('active');
+            });
+        }
+        
+        function goToConcepto(categoria) {
+            closeSearch();
+            showSection('conceptos');
+            currentConceptCategory = categoria;
+            document.querySelectorAll('.filter-tab').forEach(t => {
+                t.classList.remove('active');
+                if (t.dataset.category === categoria) t.classList.add('active');
+            });
+            renderConceptos();
+        }
+        
+        function goToExercises(category) {
+            closeSearch();
+            showSection('ejercicios');
+            currentExCategory = category;
+            document.querySelectorAll('#ex-tabs .tab').forEach(t => {
+                t.classList.remove('active');
+                if (t.dataset.category === category) t.classList.add('active');
+            });
+            loadExercises();
+        }
+        
+        // Atajos de teclado para búsqueda
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+K o Cmd+K para abrir búsqueda
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearch();
+            }
+            // Escape para cerrar
+            if (e.key === 'Escape') {
+                closeSearch();
+            }
+        });
+        
         // ============ DESAFÍO RÁPIDO - JUEGO ============
         let desafioTimer = null;
         let desafioTimeLeft = 60;
@@ -7260,6 +7643,19 @@
             initMaps();
             loadDashboard();
             setInterval(showRandomTip, 30000);
+            
+            // Inicializar búsqueda
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    performSearch(e.target.value);
+                });
+            }
+            
+            // Cerrar búsqueda al hacer clic fuera
+            document.getElementById('search-modal').addEventListener('click', function(e) {
+                if (e.target === this) closeSearch();
+            });
         });
     </script>
 </body>
