@@ -7490,7 +7490,7 @@
         function prepareExamenQuestions(categoria, cantidad) {
             let questions = [];
             
-            // 1. Agregar preguntas del banco general (questionsDB)
+            // 1. Agregar preguntas del banco general (questionsDB) - Prioridad máxima
             Object.keys(questionsDB).forEach(topic => {
                 const topicCat = mapTopicToCategory(topic);
                 if (categoria === 'all' || topicCat === categoria) {
@@ -7501,33 +7501,44 @@
                             correct: q.a,
                             explanation: q.e || '',
                             category: topicCat,
-                            source: 'questionsDB'
+                            source: 'questionsDB',
+                            priority: 1
                         });
                     });
                 }
             });
             
-            // 2. Agregar V/F convertidas a opciones
+            // 2. Agregar V/F reformuladas como preguntas claras
             vofQuestionsDB.forEach(vof => {
                 if (categoria === 'all' || vof.category === categoria) {
+                    // Reformular la afirmación como pregunta
+                    let questionText = vof.statement;
+                    if (!questionText.includes('?')) {
+                        questionText = '¿Es correcto afirmar que: "' + vof.statement + '"?';
+                    }
+                    
                     questions.push({
-                        question: vof.statement,
-                        options: ['Verdadero', 'Falso'],
+                        question: questionText,
+                        options: ['Sí, es correcto', 'No, es incorrecto'],
                         correct: vof.answer ? 0 : 1,
                         explanation: vof.explanation,
                         category: vof.category,
-                        source: 'vof'
+                        source: 'vof',
+                        priority: 2
                     });
                 }
             });
             
-            // 3. Convertir flashcards a preguntas de opción múltiple
+            // 3. Convertir SOLO flashcards con respuestas cortas a opción múltiple
             const flashcardsByCategory = {};
             flashcardsDB.forEach(fc => {
-                if (!flashcardsByCategory[fc.category]) {
-                    flashcardsByCategory[fc.category] = [];
+                // Solo usar flashcards con respuestas de menos de 50 caracteres
+                if (fc.a.length <= 50) {
+                    if (!flashcardsByCategory[fc.category]) {
+                        flashcardsByCategory[fc.category] = [];
+                    }
+                    flashcardsByCategory[fc.category].push(fc);
                 }
-                flashcardsByCategory[fc.category].push(fc);
             });
             
             Object.keys(flashcardsByCategory).forEach(cat => {
@@ -7536,16 +7547,15 @@
                     fcList.forEach(fc => {
                         // Generar opciones incorrectas de la misma categoría
                         const otherAnswers = fcList
-                            .filter(other => other.a !== fc.a)
-                            .map(other => other.a.substring(0, 80) + (other.a.length > 80 ? '...' : ''));
+                            .filter(other => other.a !== fc.a && other.a.length <= 50)
+                            .map(other => other.a);
                         
                         if (otherAnswers.length >= 3) {
                             shuffleArray(otherAnswers);
                             const incorrectOptions = otherAnswers.slice(0, 3);
-                            const correctAnswer = fc.a.substring(0, 80) + (fc.a.length > 80 ? '...' : '');
                             
                             // Crear array de opciones y mezclar
-                            const options = [correctAnswer, ...incorrectOptions];
+                            const options = [fc.a, ...incorrectOptions];
                             
                             // Mezclar opciones manteniendo el índice correcto
                             const shuffledOptions = options.map((opt, i) => ({ opt, isCorrect: i === 0 }));
@@ -7560,7 +7570,8 @@
                                 correct: finalCorrect,
                                 explanation: fc.a,
                                 category: cat,
-                                source: 'flashcard'
+                                source: 'flashcard',
+                                priority: 3
                             });
                         }
                     });
@@ -7570,14 +7581,46 @@
             // Eliminar duplicados por pregunta
             const seen = new Set();
             questions = questions.filter(q => {
-                const key = q.question.toLowerCase().trim();
+                const key = q.question.toLowerCase().trim().substring(0, 50);
                 if (seen.has(key)) return false;
                 seen.add(key);
                 return true;
             });
             
-            shuffleArray(questions);
-            return questions.slice(0, cantidad);
+            // Ordenar por prioridad y luego mezclar
+            questions.sort((a, b) => a.priority - b.priority);
+            
+            // Tomar preguntas balanceadas de cada fuente
+            const fromQuestionsDB = questions.filter(q => q.source === 'questionsDB');
+            const fromVoF = questions.filter(q => q.source === 'vof');
+            const fromFlashcards = questions.filter(q => q.source === 'flashcard');
+            
+            shuffleArray(fromQuestionsDB);
+            shuffleArray(fromVoF);
+            shuffleArray(fromFlashcards);
+            
+            // Balancear: 50% questionsDB, 30% V/F, 20% flashcards
+            let balanced = [];
+            const qdbCount = Math.ceil(cantidad * 0.5);
+            const vofCount = Math.ceil(cantidad * 0.3);
+            const fcCount = cantidad - qdbCount - vofCount;
+            
+            balanced = [
+                ...fromQuestionsDB.slice(0, qdbCount),
+                ...fromVoF.slice(0, vofCount),
+                ...fromFlashcards.slice(0, fcCount)
+            ];
+            
+            // Si no hay suficientes, completar con las que haya
+            if (balanced.length < cantidad) {
+                const remaining = [...fromQuestionsDB.slice(qdbCount), ...fromVoF.slice(vofCount), ...fromFlashcards.slice(fcCount)];
+                shuffleArray(remaining);
+                balanced = [...balanced, ...remaining.slice(0, cantidad - balanced.length)];
+            }
+            
+            shuffleArray(balanced);
+            return balanced.slice(0, cantidad);
+        }
         }
         
         function mapTopicToCategory(topic) {
