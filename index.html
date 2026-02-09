@@ -2487,12 +2487,181 @@
                 flex-direction: column;
             }
         }
+        
+        /* ============ MODAL CONCEPTOS MAPA ============ */
+        .concept-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: fadeIn 0.2s;
+        }
+        
+        .concept-modal.active {
+            display: flex;
+        }
+        
+        .concept-modal-content {
+            background: linear-gradient(135deg, var(--dark), var(--darker));
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255,255,255,0.15);
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .concept-modal-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 20px 25px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .concept-modal-header h3 {
+            margin: 0;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .concept-modal-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 1.3em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .concept-modal-close:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(90deg);
+        }
+        
+        .concept-modal-body {
+            padding: 25px;
+        }
+        
+        .concept-modal-body p {
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+        
+        .concept-modal-body ul {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+        
+        .concept-modal-body li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .concept-modal-body .highlight {
+            background: linear-gradient(135deg, rgba(102,126,234,0.3), rgba(118,75,162,0.3));
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            margin: 15px 0;
+        }
+        
+        .concept-modal-body .example {
+            background: rgba(76,175,80,0.15);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid var(--success);
+            margin: 15px 0;
+        }
+        
+        .concept-modal-body .warning {
+            background: rgba(255,152,0,0.15);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid var(--warning);
+            margin: 15px 0;
+        }
+        
+        .concept-modal-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .concept-modal-tag {
+            background: rgba(255,255,255,0.1);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            opacity: 0.8;
+        }
+        
+        /* Elementos clickeables en mapas */
+        .map-clickable {
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .map-clickable:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(102,126,234,0.4);
+        }
+        
+        .map-clickable::after {
+            content: '💡';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 0.8em;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        
+        .map-clickable:hover::after {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
     <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
     <button class="toggle-sidebar" onclick="toggleSidebar()">☰</button>
     <button class="search-btn" onclick="openSearch()" title="Buscar (Ctrl+K)">🔍</button>
+    
+    <!-- Modal de Conceptos para Mapas -->
+    <div class="concept-modal" id="concept-modal">
+        <div class="concept-modal-content">
+            <div class="concept-modal-header">
+                <h3 id="concept-modal-title">📚 Concepto</h3>
+                <button class="concept-modal-close" onclick="closeConceptModal()">✕</button>
+            </div>
+            <div class="concept-modal-body" id="concept-modal-body">
+                <!-- Contenido dinámico -->
+            </div>
+        </div>
+    </div>
     
     <!-- Modal de Búsqueda -->
     <div class="search-modal" id="search-modal">
@@ -3928,12 +4097,13 @@
                 <!-- Mapa GPON/FTTH -->
                 <div class="card" id="map-gpon" style="display: none;">
                     <h3 style="text-align: center; margin-bottom: 30px;">🔱 Arquitectura GPON / FTTH</h3>
+                    <p style="text-align: center; opacity: 0.7; margin-bottom: 20px; font-size: 0.9em;">💡 Haz clic en cada bloque para ver detalles</p>
                     
                     <!-- Diagrama Visual -->
                     <div style="background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(118,75,162,0.1)); border-radius: 15px; padding: 25px; margin-bottom: 25px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
                             <!-- OLT -->
-                            <div style="text-align: center; flex: 1; min-width: 120px;">
+                            <div class="map-clickable" style="text-align: center; flex: 1; min-width: 120px;" onclick="showConceptModal('gpon-olt')">
                                 <div style="font-size: 3em;">🏢</div>
                                 <div style="font-weight: bold; color: var(--primary);">OLT</div>
                                 <div style="font-size: 0.8em; opacity: 0.8;">Central</div>
@@ -3949,7 +4119,7 @@
                             </div>
                             
                             <!-- Splitter -->
-                            <div style="text-align: center; flex: 1; min-width: 120px;">
+                            <div class="map-clickable" style="text-align: center; flex: 1; min-width: 120px;" onclick="showConceptModal('gpon-splitter')">
                                 <div style="font-size: 2.5em;">🔀</div>
                                 <div style="font-weight: bold; color: var(--warning);">SPLITTER</div>
                                 <div style="font-size: 0.8em; opacity: 0.8;">Pasivo (sin energía)</div>
@@ -3965,7 +4135,7 @@
                             </div>
                             
                             <!-- ONTs -->
-                            <div style="text-align: center; flex: 1; min-width: 120px;">
+                            <div class="map-clickable" style="text-align: center; flex: 1; min-width: 120px;" onclick="showConceptModal('gpon-ont')">
                                 <div style="font-size: 2em;">🏠 🏠 🏠</div>
                                 <div style="font-weight: bold; color: var(--success);">ONT/ONU</div>
                                 <div style="font-size: 0.8em; opacity: 0.8;">Usuarios</div>
@@ -3979,25 +4149,25 @@
                     <!-- Velocidades GPON -->
                     <h4 style="text-align: center; margin: 25px 0 15px;">📊 Velocidades PON</h4>
                     <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));">
-                        <div class="card" style="text-align: center; border-top: 4px solid #2196f3;">
+                        <div class="card map-clickable" style="text-align: center; border-top: 4px solid #2196f3;" onclick="showConceptModal('gpon-tipos')">
                             <h4 style="color: #2196f3;">GPON</h4>
                             <div style="font-size: 1.1em;">↓ 2.488 Gbps</div>
                             <div style="font-size: 1.1em;">↑ 1.244 Gbps</div>
                             <div style="font-size: 0.8em; opacity: 0.7; margin-top: 5px;">ITU-T G.984</div>
                         </div>
-                        <div class="card" style="text-align: center; border-top: 4px solid #9c27b0;">
+                        <div class="card map-clickable" style="text-align: center; border-top: 4px solid #9c27b0;" onclick="showConceptModal('gpon-tipos')">
                             <h4 style="color: #9c27b0;">XG-PON</h4>
                             <div style="font-size: 1.1em;">↓ 10 Gbps</div>
                             <div style="font-size: 1.1em;">↑ 2.5 Gbps</div>
                             <div style="font-size: 0.8em; opacity: 0.7; margin-top: 5px;">ITU-T G.987</div>
                         </div>
-                        <div class="card" style="text-align: center; border-top: 4px solid #4caf50;">
+                        <div class="card map-clickable" style="text-align: center; border-top: 4px solid #4caf50;" onclick="showConceptModal('gpon-tipos')">
                             <h4 style="color: #4caf50;">XGS-PON</h4>
                             <div style="font-size: 1.1em;">↓ 10 Gbps</div>
                             <div style="font-size: 1.1em;">↑ 10 Gbps</div>
                             <div style="font-size: 0.8em; opacity: 0.7; margin-top: 5px;">Simétrico</div>
                         </div>
-                        <div class="card" style="text-align: center; border-top: 4px solid #ff9800;">
+                        <div class="card map-clickable" style="text-align: center; border-top: 4px solid #ff9800;" onclick="showConceptModal('gpon-tipos')">
                             <h4 style="color: #ff9800;">NG-PON2</h4>
                             <div style="font-size: 1.1em;">↓ 40 Gbps</div>
                             <div style="font-size: 1.1em;">↑ 10 Gbps</div>
@@ -4008,7 +4178,7 @@
                     <!-- Características -->
                     <h4 style="text-align: center; margin: 25px 0 15px;">⚙️ Características GPON</h4>
                     <div class="cards-grid">
-                        <div class="card" style="border-left: 4px solid var(--primary);">
+                        <div class="card map-clickable" style="border-left: 4px solid var(--primary);" onclick="showConceptModal('gpon-downstream')">
                             <h4>📤 Downstream (OLT→ONT)</h4>
                             <ul style="list-style: none; opacity: 0.9;">
                                 <li>• Broadcast a todas las ONTs</li>
@@ -4017,7 +4187,7 @@
                                 <li>• λ = 1490 nm</li>
                             </ul>
                         </div>
-                        <div class="card" style="border-left: 4px solid var(--success);">
+                        <div class="card map-clickable" style="border-left: 4px solid var(--success);" onclick="showConceptModal('gpon-upstream')">
                             <h4>📥 Upstream (ONT→OLT)</h4>
                             <ul style="list-style: none; opacity: 0.9;">
                                 <li>• TDMA (ventanas de tiempo)</li>
@@ -4031,7 +4201,7 @@
                     <!-- Elementos -->
                     <h4 style="text-align: center; margin: 25px 0 15px;">🔧 Elementos de Red PON</h4>
                     <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-                        <div class="card" style="text-align: center;">
+                        <div class="card map-clickable" style="text-align: center;" onclick="showConceptModal('gpon-olt')">
                             <div style="font-size: 2em;">🏢</div>
                             <h4>OLT</h4>
                             <p style="font-size: 0.9em;">Optical Line Terminal</p>
@@ -4041,7 +4211,7 @@
                                 <li>Conexión a red core</li>
                             </ul>
                         </div>
-                        <div class="card" style="text-align: center;">
+                        <div class="card map-clickable" style="text-align: center;" onclick="showConceptModal('gpon-splitter')">
                             <div style="font-size: 2em;">🔀</div>
                             <h4>Splitter</h4>
                             <p style="font-size: 0.9em;">Divisor Óptico Pasivo</p>
@@ -4051,7 +4221,7 @@
                                 <li>Divide potencia óptica</li>
                             </ul>
                         </div>
-                        <div class="card" style="text-align: center;">
+                        <div class="card map-clickable" style="text-align: center;" onclick="showConceptModal('gpon-ont')">
                             <div style="font-size: 2em;">📦</div>
                             <h4>ONT/ONU</h4>
                             <p style="font-size: 0.9em;">Optical Network Terminal</p>
@@ -4061,7 +4231,7 @@
                                 <li>Puertos ETH, WiFi, Tel</li>
                             </ul>
                         </div>
-                        <div class="card" style="text-align: center;">
+                        <div class="card map-clickable" style="text-align: center;" onclick="showConceptModal('gpon-mdu')">
                             <div style="font-size: 2em;">🏗️</div>
                             <h4>MDU</h4>
                             <p style="font-size: 0.9em;">Multi Dwelling Unit</p>
@@ -4075,7 +4245,7 @@
                     
                     <!-- Power Budget -->
                     <h4 style="text-align: center; margin: 25px 0 15px;">💡 Power Budget GPON</h4>
-                    <div class="card" style="background: linear-gradient(135deg, rgba(76,175,80,0.2), rgba(33,150,243,0.2));">
+                    <div class="card map-clickable" style="background: linear-gradient(135deg, rgba(76,175,80,0.2), rgba(33,150,243,0.2));" onclick="showConceptModal('gpon-powerbudget')">
                         <div style="text-align: center; margin-bottom: 15px;">
                             <span style="font-size: 1.3em; font-weight: bold;">Clase B+ = 28 dB</span>
                             <span style="margin: 0 15px;">|</span>
@@ -4098,17 +4268,17 @@
                     <!-- Protocolos -->
                     <h4 style="text-align: center; margin: 25px 0 15px;">📡 Protocolos y Gestión</h4>
                     <div class="cards-grid">
-                        <div class="card" style="text-align: center; background: rgba(156,39,176,0.1);">
+                        <div class="card map-clickable" style="text-align: center; background: rgba(156,39,176,0.1);" onclick="showConceptModal('gpon-gem')">
                             <h4>GEM</h4>
                             <p>GPON Encapsulation Method</p>
                             <div style="font-size: 0.85em; opacity: 0.8;">Encapsula Ethernet, TDM, etc.</div>
                         </div>
-                        <div class="card" style="text-align: center; background: rgba(33,150,243,0.1);">
+                        <div class="card map-clickable" style="text-align: center; background: rgba(33,150,243,0.1);" onclick="showConceptModal('gpon-omci')">
                             <h4>OMCI</h4>
                             <p>ONT Management & Control</p>
                             <div style="font-size: 0.85em; opacity: 0.8;">Gestión remota de ONTs</div>
                         </div>
-                        <div class="card" style="text-align: center; background: rgba(76,175,80,0.1);">
+                        <div class="card map-clickable" style="text-align: center; background: rgba(76,175,80,0.1);" onclick="showConceptModal('gpon-ploam')">
                             <h4>PLOAM</h4>
                             <p>Physical Layer OAM</p>
                             <div style="font-size: 0.85em; opacity: 0.8;">Activación, ranging, alarmas</div>
@@ -4119,11 +4289,12 @@
                 <!-- Mapa OSI -->
                 <div class="card" id="map-osi">
                     <h3 style="text-align: center; margin-bottom: 30px;">Modelo OSI vs TCP/IP</h3>
+                    <p style="text-align: center; opacity: 0.7; margin-bottom: 20px; font-size: 0.9em;">💡 Haz clic en cada capa para ver más detalles</p>
                     
                     <div class="layer">
                         <div class="layer-number">7</div>
                         <div class="layer-content">
-                            <div class="layer-box" style="background: rgba(156,39,176,0.2);">
+                            <div class="layer-box map-clickable" style="background: rgba(156,39,176,0.2);" onclick="showConceptModal('osi-capa7')">
                                 <h4>Aplicación</h4>
                                 <ul><li>HTTP, FTP, DNS</li><li>SMTP, POP3</li></ul>
                             </div>
@@ -4133,7 +4304,7 @@
                     <div class="layer">
                         <div class="layer-number">6</div>
                         <div class="layer-content">
-                            <div class="layer-box" style="background: rgba(103,58,183,0.2);">
+                            <div class="layer-box map-clickable" style="background: rgba(103,58,183,0.2);" onclick="showConceptModal('osi-capa6')">
                                 <h4>Presentación</h4>
                                 <ul><li>Formato datos</li><li>Cifrado</li></ul>
                             </div>
@@ -4143,7 +4314,7 @@
                     <div class="layer">
                         <div class="layer-number">5</div>
                         <div class="layer-content">
-                            <div class="layer-box" style="background: rgba(63,81,181,0.2);">
+                            <div class="layer-box map-clickable" style="background: rgba(63,81,181,0.2);" onclick="showConceptModal('osi-capa5')">
                                 <h4>Sesión</h4>
                                 <ul><li>Control diálogos</li><li>Sincronización</li></ul>
                             </div>
@@ -4153,7 +4324,7 @@
                     <div class="layer">
                         <div class="layer-number">4</div>
                         <div class="layer-content">
-                            <div class="layer-box" style="background: rgba(33,150,243,0.2);">
+                            <div class="layer-box map-clickable" style="background: rgba(33,150,243,0.2);" onclick="showConceptModal('osi-capa4')">
                                 <h4>Transporte</h4>
                                 <ul><li>TCP: Conexión, confiable</li><li>UDP: Sin conexión, rápido</li><li>Puertos 0-65535</li></ul>
                             </div>
@@ -4163,7 +4334,7 @@
                     <div class="layer">
                         <div class="layer-number">3</div>
                         <div class="layer-content">
-                            <div class="layer-box" style="background: rgba(0,188,212,0.2);">
+                            <div class="layer-box map-clickable" style="background: rgba(0,188,212,0.2);" onclick="showConceptModal('osi-capa3')">
                                 <h4>Red</h4>
                                 <ul><li>IP: 32 bits (IPv4)</li><li>Routing: RIP, OSPF</li><li>ICMP, ARP, NAT</li></ul>
                             </div>
@@ -4173,7 +4344,7 @@
                     <div class="layer">
                         <div class="layer-number">2</div>
                         <div class="layer-content">
-                            <div class="layer-box" style="background: rgba(76,175,80,0.2);">
+                            <div class="layer-box map-clickable" style="background: rgba(76,175,80,0.2);" onclick="showConceptModal('osi-capa2')">
                                 <h4>Enlace</h4>
                                 <ul><li>MAC: 48 bits</li><li>Ethernet, WiFi</li><li>Switch opera aquí</li></ul>
                             </div>
@@ -4183,7 +4354,7 @@
                     <div class="layer">
                         <div class="layer-number">1</div>
                         <div class="layer-content">
-                            <div class="layer-box" style="background: rgba(255,152,0,0.2);">
+                            <div class="layer-box map-clickable" style="background: rgba(255,152,0,0.2);" onclick="showConceptModal('osi-capa1')">
                                 <h4>Física</h4>
                                 <ul><li>Cables: UTP, Fibra</li><li>Conectores: RJ-45, LC</li><li>Hub opera aquí</li></ul>
                             </div>
@@ -4197,7 +4368,7 @@
                     
                     <!-- Clasificación de Redes -->
                     <div class="cards-grid">
-                        <div class="card" style="border-top: 4px solid var(--primary);">
+                        <div class="card map-clickable" style="border-top: 4px solid var(--primary);" onclick="showConceptModal('ethernet-lan')">
                             <h4 style="color: var(--primary);">🏢 LAN</h4>
                             <p>Local Area Network</p>
                             <ul style="list-style: none; opacity: 0.9;">
@@ -4206,7 +4377,7 @@
                                 <li>• Propiedad privada</li>
                             </ul>
                         </div>
-                        <div class="card" style="border-top: 4px solid var(--success);">
+                        <div class="card map-clickable" style="border-top: 4px solid var(--success);" onclick="showConceptModal('ethernet-man')">
                             <h4 style="color: var(--success);">🌆 MAN</h4>
                             <p>Metropolitan Area Network</p>
                             <ul style="list-style: none; opacity: 0.9;">
@@ -4215,7 +4386,7 @@
                                 <li>• Interconecta LANs</li>
                             </ul>
                         </div>
-                        <div class="card" style="border-top: 4px solid var(--warning);">
+                        <div class="card map-clickable" style="border-top: 4px solid var(--warning);" onclick="showConceptModal('ethernet-wan')">
                             <h4 style="color: var(--warning);">🌍 WAN</h4>
                             <p>Wide Area Network</p>
                             <ul style="list-style: none; opacity: 0.9;">
@@ -4229,7 +4400,7 @@
                     <!-- Dispositivos por Capa -->
                     <h4 style="text-align: center; margin: 30px 0 20px;">📍 Dispositivos por Capa</h4>
                     <div class="cards-grid">
-                        <div class="card" style="text-align: center; border-left: 4px solid #ff9800;">
+                        <div class="card map-clickable" style="text-align: center; border-left: 4px solid #ff9800;" onclick="showConceptModal('dispositivo-hub')">
                             <div style="font-size: 2em;">🔌</div>
                             <h4>Hub</h4>
                             <p style="font-weight: bold; color: #ff9800;">Capa 1 - Física</p>
@@ -4239,7 +4410,7 @@
                                 <li>Half Duplex</li>
                             </ul>
                         </div>
-                        <div class="card" style="text-align: center; border-left: 4px solid #4caf50;">
+                        <div class="card map-clickable" style="text-align: center; border-left: 4px solid #4caf50;" onclick="showConceptModal('dispositivo-switch')">
                             <div style="font-size: 2em;">🔀</div>
                             <h4>Switch</h4>
                             <p style="font-weight: bold; color: #4caf50;">Capa 2 - Enlace</p>
@@ -4249,7 +4420,7 @@
                                 <li>Full Duplex</li>
                             </ul>
                         </div>
-                        <div class="card" style="text-align: center; border-left: 4px solid #2196f3;">
+                        <div class="card map-clickable" style="text-align: center; border-left: 4px solid #2196f3;" onclick="showConceptModal('dispositivo-router')">
                             <div style="font-size: 2em;">🌐</div>
                             <h4>Router</h4>
                             <p style="font-weight: bold; color: #2196f3;">Capa 3 - Red</p>
@@ -4263,7 +4434,7 @@
                     
                     <!-- Trama Ethernet -->
                     <h4 style="text-align: center; margin: 30px 0 20px;">📦 Trama Ethernet</h4>
-                    <div class="card" style="background: linear-gradient(135deg, rgba(33,150,243,0.2), rgba(156,39,176,0.2));">
+                    <div class="card map-clickable" style="background: linear-gradient(135deg, rgba(33,150,243,0.2), rgba(156,39,176,0.2));" onclick="showConceptModal('ethernet-trama')">
                         <div style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; text-align: center;">
                             <div style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px; min-width: 80px;">
                                 <div style="font-weight: bold;">Preámbulo</div>
@@ -4375,8 +4546,9 @@
                 <!-- Mapa Fibra -->
                 <div class="card" id="map-fibra" style="display: none;">
                     <h3 style="text-align: center; margin-bottom: 30px;">Tipos de Fibra Óptica</h3>
+                    <p style="text-align: center; opacity: 0.7; margin-bottom: 20px; font-size: 0.9em;">💡 Haz clic en cada tipo para ver más detalles</p>
                     
-                    <div class="fiber-section fiber-sm">
+                    <div class="fiber-section fiber-sm map-clickable" onclick="showConceptModal('fibra-monomodo')">
                         <div class="fiber-visual">
                             <div class="fiber-circle"></div>
                             <p style="margin-top: 10px;">Núcleo pequeño</p>
@@ -4405,7 +4577,7 @@
                         </div>
                     </div>
                     
-                    <div class="fiber-section fiber-mm">
+                    <div class="fiber-section fiber-mm map-clickable" onclick="showConceptModal('fibra-multimodo')">
                         <div class="fiber-visual">
                             <div class="fiber-circle"></div>
                             <p style="margin-top: 10px;">Núcleo grande</p>
@@ -4458,7 +4630,7 @@
                     <h3 style="text-align: center; margin-bottom: 30px;">Configuraciones de Radioenlaces</h3>
                     
                     <div class="cards-grid">
-                        <div class="card">
+                        <div class="card map-clickable" onclick="showConceptModal('radio-accp')">
                             <h4 style="color: var(--warning); margin-bottom: 15px;">ACCP</h4>
                             <p style="margin-bottom: 10px;"><strong>Adjacent Channel Co-Polarization</strong></p>
                             <ul style="list-style: none; opacity: 0.9;">
@@ -4469,7 +4641,7 @@
                             </ul>
                         </div>
                         
-                        <div class="card">
+                        <div class="card map-clickable" onclick="showConceptModal('radio-acap')">
                             <h4 style="color: var(--warning); margin-bottom: 15px;">ACAP</h4>
                             <p style="margin-bottom: 10px;"><strong>Adjacent Channel Alternate Polarized</strong></p>
                             <ul style="list-style: none; opacity: 0.9;">
@@ -4480,7 +4652,7 @@
                             </ul>
                         </div>
                         
-                        <div class="card">
+                        <div class="card map-clickable" onclick="showConceptModal('radio-ccdp')">
                             <h4 style="color: var(--warning); margin-bottom: 15px;">CCDP</h4>
                             <p style="margin-bottom: 10px;"><strong>Co-Channel Dual Polarized</strong></p>
                             <ul style="list-style: none; opacity: 0.9;">
@@ -4492,7 +4664,7 @@
                             </ul>
                         </div>
                         
-                        <div class="card">
+                        <div class="card map-clickable" onclick="showConceptModal('radio-1plus1')">
                             <h4 style="color: var(--warning); margin-bottom: 15px;">1+1 Hot Standby</h4>
                             <p style="margin-bottom: 10px;"><strong>Con Diversidad de Espacio</strong></p>
                             <ul style="list-style: none; opacity: 0.9;">
@@ -4504,7 +4676,7 @@
                         </div>
                     </div>
                     
-                    <div class="card" style="margin-top: 20px;">
+                    <div class="card map-clickable" style="margin-top: 20px;" onclick="showConceptModal('radio-xpic')">
                         <h4 style="color: var(--warning); margin-bottom: 15px;">⚡ XPIC - Cross-Polar Interference Canceller</h4>
                         <p>Cancela la interferencia entre polarizaciones cruzadas. Requerido únicamente en configuración CCDP para permitir duplicar la capacidad del enlace usando el mismo canal en ambas polarizaciones.</p>
                     </div>
@@ -4515,22 +4687,22 @@
                     <h3 style="text-align: center; margin-bottom: 30px;">Transceptores Ópticos</h3>
                     
                     <div class="cards-grid">
-                        <div class="card" style="text-align: center;">
+                        <div class="card map-clickable" style="text-align: center;" onclick="showConceptModal('sfp-sfp')">
                             <div style="font-size: 2.5em; margin-bottom: 10px;">🔌</div>
                             <h4>SFP</h4>
                             <p style="color: var(--success); font-size: 1.2em; font-weight: bold;">1G / 2.5G</p>
                         </div>
-                        <div class="card" style="text-align: center;">
+                        <div class="card map-clickable" style="text-align: center;" onclick="showConceptModal('sfp-sfpp')">
                             <div style="font-size: 2.5em; margin-bottom: 10px;">🔌</div>
                             <h4>SFP+</h4>
                             <p style="color: var(--success); font-size: 1.2em; font-weight: bold;">10G</p>
                         </div>
-                        <div class="card" style="text-align: center;">
+                        <div class="card map-clickable" style="text-align: center;" onclick="showConceptModal('sfp-qsfp')">
                             <div style="font-size: 2.5em; margin-bottom: 10px;">🔌</div>
                             <h4>QSFP+</h4>
                             <p style="color: var(--success); font-size: 1.2em; font-weight: bold;">40G</p>
                         </div>
-                        <div class="card" style="text-align: center;">
+                        <div class="card map-clickable" style="text-align: center;" onclick="showConceptModal('sfp-qsfp28')">
                             <div style="font-size: 2.5em; margin-bottom: 10px;">🔌</div>
                             <h4>QSFP28</h4>
                             <p style="color: var(--success); font-size: 1.2em; font-weight: bold;">100G</p>
@@ -4540,22 +4712,22 @@
                     <h4 style="text-align: center; margin: 30px 0 20px;">Alcances por Tipo</h4>
                     
                     <div class="cards-grid">
-                        <div class="card" style="text-align: center; border-top: 4px solid var(--success);">
+                        <div class="card map-clickable" style="text-align: center; border-top: 4px solid var(--success);" onclick="showConceptModal('sfp-sr')">
                             <h4>SR - Short Reach</h4>
                             <p style="font-size: 1.5em; font-weight: bold; margin: 10px 0;">~100-300m</p>
                             <p style="opacity: 0.8;">Fibra Multimodo</p>
                         </div>
-                        <div class="card" style="text-align: center; border-top: 4px solid #2196f3;">
+                        <div class="card map-clickable" style="text-align: center; border-top: 4px solid #2196f3;" onclick="showConceptModal('sfp-lr')">
                             <h4>LR - Long Reach</h4>
                             <p style="font-size: 1.5em; font-weight: bold; margin: 10px 0;">~10 km</p>
                             <p style="opacity: 0.8;">Fibra Monomodo</p>
                         </div>
-                        <div class="card" style="text-align: center; border-top: 4px solid #9c27b0;">
+                        <div class="card map-clickable" style="text-align: center; border-top: 4px solid #9c27b0;" onclick="showConceptModal('sfp-er')">
                             <h4>ER - Extended</h4>
                             <p style="font-size: 1.5em; font-weight: bold; margin: 10px 0;">~40 km</p>
                             <p style="opacity: 0.8;">Fibra Monomodo</p>
                         </div>
-                        <div class="card" style="text-align: center; border-top: 4px solid var(--danger);">
+                        <div class="card map-clickable" style="text-align: center; border-top: 4px solid var(--danger);" onclick="showConceptModal('sfp-zr')">
                             <h4>ZR - Very Long</h4>
                             <p style="font-size: 1.5em; font-weight: bold; margin: 10px 0;">~80 km+</p>
                             <p style="opacity: 0.8;">Fibra Monomodo</p>
@@ -4568,7 +4740,7 @@
                     <h3 style="text-align: center; margin-bottom: 30px;">📚 Conceptos Avanzados Críticos</h3>
                     
                     <div class="cards-grid">
-                        <div class="card" style="border-left: 4px solid var(--primary);">
+                        <div class="card map-clickable" style="border-left: 4px solid var(--primary);" onclick="showConceptModal('avanzado-radio-propagacion')">
                             <h4 style="color: var(--primary); margin-bottom: 15px;">📡 Radio Propagación</h4>
                             <ul style="list-style: none;">
                                 <li>• <strong>k = 4/3</strong>: Factor corrección Tierra</li>
@@ -4580,7 +4752,7 @@
                             </ul>
                         </div>
                         
-                        <div class="card" style="border-left: 4px solid var(--success);">
+                        <div class="card map-clickable" style="border-left: 4px solid var(--success);" onclick="showConceptModal('avanzado-radio-capacidad')">
                             <h4 style="color: var(--success); margin-bottom: 15px;">⚡ Radio Capacidad</h4>
                             <ul style="list-style: none;">
                                 <li>• <strong>MIMO 2x2</strong>: Duplica capacidad</li>
@@ -4591,7 +4763,7 @@
                             </ul>
                         </div>
                         
-                        <div class="card" style="border-left: 4px solid #2196f3;">
+                        <div class="card map-clickable" style="border-left: 4px solid #2196f3;" onclick="showConceptModal('avanzado-ipv6-routing')">
                             <h4 style="color: #2196f3; margin-bottom: 15px;">🌐 IPv6 y Routing</h4>
                             <ul style="list-style: none;">
                                 <li>• <strong>IPv6</strong>: 128 bits</li>
@@ -4603,7 +4775,7 @@
                             </ul>
                         </div>
                         
-                        <div class="card" style="border-left: 4px solid #9c27b0;">
+                        <div class="card map-clickable" style="border-left: 4px solid #9c27b0;" onclick="showConceptModal('avanzado-protocolos')">
                             <h4 style="color: #9c27b0; margin-bottom: 15px;">🔧 Protocolos Esenciales</h4>
                             <ul style="list-style: none;">
                                 <li>• <strong>DHCP</strong>: Asigna IP automático</li>
@@ -4615,7 +4787,7 @@
                             </ul>
                         </div>
                         
-                        <div class="card" style="border-left: 4px solid var(--warning);">
+                        <div class="card map-clickable" style="border-left: 4px solid var(--warning);" onclick="showConceptModal('avanzado-fibra')">
                             <h4 style="color: var(--warning); margin-bottom: 15px;">💡 Fibra Avanzado</h4>
                             <ul style="list-style: none;">
                                 <li>• <strong>1310nm atenuación</strong>: 0.35 dB/km</li>
@@ -4627,7 +4799,7 @@
                             </ul>
                         </div>
                         
-                        <div class="card" style="border-left: 4px solid var(--danger);">
+                        <div class="card map-clickable" style="border-left: 4px solid var(--danger);" onclick="showConceptModal('avanzado-ber-testing')">
                             <h4 style="color: var(--danger); margin-bottom: 15px;">📊 BER y Testing</h4>
                             <ul style="list-style: none;">
                                 <li>• <strong>BER estándar</strong>: 10⁻⁹</li>
@@ -4640,7 +4812,7 @@
                         </div>
                     </div>
                     
-                    <div class="card" style="margin-top: 20px; background: linear-gradient(135deg, var(--primary), var(--secondary));">
+                    <div class="card map-clickable" style="margin-top: 20px; background: linear-gradient(135deg, var(--primary), var(--secondary));" onclick="showConceptModal('avanzado-valores-criticos')">
                         <h4 style="margin-bottom: 15px;">🔑 Valores Críticos para Memorizar</h4>
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
                             <div style="text-align: center; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 8px;">
@@ -4677,7 +4849,7 @@
                     
                     <!-- Diagrama Visual Radio -->
                     <h4 style="text-align: center; margin-bottom: 20px;">📡 Link Budget Radio</h4>
-                    <div style="background: linear-gradient(135deg, rgba(255,152,0,0.1), rgba(244,67,54,0.1)); border-radius: 15px; padding: 25px; margin-bottom: 25px;">
+                    <div class="map-clickable" style="background: linear-gradient(135deg, rgba(255,152,0,0.1), rgba(244,67,54,0.1)); border-radius: 15px; padding: 25px; margin-bottom: 25px;" onclick="showConceptModal('radio-linkbudget')">
                         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                             <div style="text-align: center; flex: 1; min-width: 100px;">
                                 <div style="font-size: 2.5em;">📡</div>
@@ -4740,7 +4912,7 @@
                     
                     <!-- Diagrama Visual Fibra -->
                     <h4 style="text-align: center; margin: 30px 0 20px;">💡 Power Budget Fibra</h4>
-                    <div style="background: linear-gradient(135deg, rgba(76,175,80,0.1), rgba(33,150,243,0.1)); border-radius: 15px; padding: 25px; margin-bottom: 25px;">
+                    <div class="map-clickable" style="background: linear-gradient(135deg, rgba(76,175,80,0.1), rgba(33,150,243,0.1)); border-radius: 15px; padding: 25px; margin-bottom: 25px;" onclick="showConceptModal('linkbudget-fibra')">
                         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                             <div style="text-align: center; flex: 1; min-width: 80px;">
                                 <div style="font-size: 2em;">💡</div>
@@ -4834,22 +5006,22 @@
                                 <div style="font-weight: bold;">Cliente A</div>
                                 <div style="font-size: 0.8em; opacity: 0.7;">IP: 10.1.1.0/24</div>
                             </div>
-                            <div style="text-align: center; flex: 1; min-width: 100px;">
+                            <div class="map-clickable" style="text-align: center; flex: 1; min-width: 100px;" onclick="showConceptModal('mpls-concepto')">
                                 <div style="font-size: 2.5em; color: var(--primary);">🔷</div>
                                 <div style="font-weight: bold; color: var(--primary);">LER</div>
                                 <div style="font-size: 0.75em;">Ingress<br><span style="background: #9c27b0; color: white; padding: 2px 6px; border-radius: 3px;">PUSH</span></div>
                             </div>
-                            <div style="text-align: center; flex: 1; min-width: 80px;">
+                            <div class="map-clickable" style="text-align: center; flex: 1; min-width: 80px;" onclick="showConceptModal('mpls-concepto')">
                                 <div style="font-size: 2em; color: var(--warning);">🔶</div>
                                 <div style="font-weight: bold; color: var(--warning);">LSR</div>
                                 <div style="font-size: 0.75em;">Transit<br><span style="background: #ff9800; color: white; padding: 2px 6px; border-radius: 3px;">SWAP</span></div>
                             </div>
-                            <div style="text-align: center; flex: 1; min-width: 80px;">
+                            <div class="map-clickable" style="text-align: center; flex: 1; min-width: 80px;" onclick="showConceptModal('mpls-concepto')">
                                 <div style="font-size: 2em; color: var(--warning);">🔶</div>
                                 <div style="font-weight: bold; color: var(--warning);">LSR</div>
                                 <div style="font-size: 0.75em;">Transit<br><span style="background: #ff9800; color: white; padding: 2px 6px; border-radius: 3px;">SWAP</span></div>
                             </div>
-                            <div style="text-align: center; flex: 1; min-width: 100px;">
+                            <div class="map-clickable" style="text-align: center; flex: 1; min-width: 100px;" onclick="showConceptModal('mpls-concepto')">
                                 <div style="font-size: 2.5em; color: var(--success);">🔷</div>
                                 <div style="font-weight: bold; color: var(--success);">LER</div>
                                 <div style="font-size: 0.75em;">Egress<br><span style="background: #4caf50; color: white; padding: 2px 6px; border-radius: 3px;">POP</span></div>
@@ -4990,7 +5162,7 @@
                     <!-- Casos de uso 5G -->
                     <h4 style="text-align: center; margin: 20px 0;">🎯 Casos de Uso 5G</h4>
                     <div class="cards-grid">
-                        <div class="card" style="text-align: center; border-top: 4px solid #2196f3;">
+                        <div class="card map-clickable" style="text-align: center; border-top: 4px solid #2196f3;" onclick="showConceptModal('5g-embb')">
                             <div style="font-size: 2em;">📺</div>
                             <h4 style="color: #2196f3;">eMBB</h4>
                             <p style="font-size: 0.85em;">Enhanced Mobile Broadband</p>
@@ -5000,7 +5172,7 @@
                                 • Realidad Virtual
                             </div>
                         </div>
-                        <div class="card" style="text-align: center; border-top: 4px solid #4caf50;">
+                        <div class="card map-clickable" style="text-align: center; border-top: 4px solid #4caf50;" onclick="showConceptModal('5g-mmtc')">
                             <div style="font-size: 2em;">🌡️</div>
                             <h4 style="color: #4caf50;">mMTC</h4>
                             <p style="font-size: 0.85em;">Massive Machine Type Comm</p>
@@ -5010,7 +5182,7 @@
                                 • Sensores
                             </div>
                         </div>
-                        <div class="card" style="text-align: center; border-top: 4px solid #f44336;">
+                        <div class="card map-clickable" style="text-align: center; border-top: 4px solid #f44336;" onclick="showConceptModal('5g-urllc')">
                             <div style="font-size: 2em;">🚗</div>
                             <h4 style="color: #f44336;">URLLC</h4>
                             <p style="font-size: 0.85em;">Ultra Reliable Low Latency</p>
@@ -5025,32 +5197,32 @@
                     <!-- Tecnologías clave -->
                     <h4 style="text-align: center; margin: 25px 0 15px;">⚡ Tecnologías Clave</h4>
                     <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
-                        <div class="card" style="text-align: center; padding: 15px;">
+                        <div class="card map-clickable" style="text-align: center; padding: 15px;" onclick="showConceptModal('5g-massive-mimo')">
                             <div style="font-size: 1.8em;">📡</div>
                             <div style="font-weight: bold;">Massive MIMO</div>
                             <div style="font-size: 0.8em; opacity: 0.7;">64-256 antenas</div>
                         </div>
-                        <div class="card" style="text-align: center; padding: 15px;">
+                        <div class="card map-clickable" style="text-align: center; padding: 15px;" onclick="showConceptModal('5g-beamforming')">
                             <div style="font-size: 1.8em;">🎯</div>
                             <div style="font-weight: bold;">Beamforming</div>
                             <div style="font-size: 0.8em; opacity: 0.7;">Haz dirigido</div>
                         </div>
-                        <div class="card" style="text-align: center; padding: 15px;">
+                        <div class="card map-clickable" style="text-align: center; padding: 15px;" onclick="showConceptModal('5g-mmwave')">
                             <div style="font-size: 1.8em;">📊</div>
                             <div style="font-weight: bold;">mmWave</div>
                             <div style="font-size: 0.8em; opacity: 0.7;">24-100 GHz</div>
                         </div>
-                        <div class="card" style="text-align: center; padding: 15px;">
+                        <div class="card map-clickable" style="text-align: center; padding: 15px;" onclick="showConceptModal('5g-slicing')">
                             <div style="font-size: 1.8em;">🔀</div>
                             <div style="font-weight: bold;">Network Slicing</div>
                             <div style="font-size: 0.8em; opacity: 0.7;">Redes virtuales</div>
                         </div>
-                        <div class="card" style="text-align: center; padding: 15px;">
+                        <div class="card map-clickable" style="text-align: center; padding: 15px;" onclick="showConceptModal('5g-ofdma')">
                             <div style="font-size: 1.8em;">📶</div>
                             <div style="font-weight: bold;">OFDMA</div>
                             <div style="font-size: 0.8em; opacity: 0.7;">Subportadoras</div>
                         </div>
-                        <div class="card" style="text-align: center; padding: 15px;">
+                        <div class="card map-clickable" style="text-align: center; padding: 15px;" onclick="showConceptModal('5g-smallcells')">
                             <div style="font-size: 1.8em;">📱</div>
                             <div style="font-weight: bold;">Small Cells</div>
                             <div style="font-size: 0.8em; opacity: 0.7;">Densificación</div>
@@ -5059,7 +5231,7 @@
                     
                     <!-- Comparación LTE vs 5G -->
                     <h4 style="text-align: center; margin: 25px 0 15px;">📊 LTE vs 5G NR</h4>
-                    <div class="card" style="overflow-x: auto;">
+                    <div class="card map-clickable" style="overflow-x: auto;" onclick="showConceptModal('seguridad-radius-tacacs')">
                         <table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">
                             <tr style="background: rgba(255,255,255,0.1);">
                                 <th style="padding: 10px; text-align: left;">Característica</th>
@@ -5082,19 +5254,19 @@
                     <h4 style="text-align: center; margin-bottom: 20px;">🔑 Modelo AAA</h4>
                     <div style="background: linear-gradient(135deg, rgba(244,67,54,0.1), rgba(255,152,0,0.1)); border-radius: 15px; padding: 25px; margin-bottom: 25px;">
                         <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px;">
-                            <div style="text-align: center; flex: 1; min-width: 150px; padding: 20px; background: rgba(244,67,54,0.2); border-radius: 10px;">
+                            <div class="map-clickable" style="text-align: center; flex: 1; min-width: 150px; padding: 20px; background: rgba(244,67,54,0.2); border-radius: 10px;" onclick="showConceptModal('seguridad-aaa')">
                                 <div style="font-size: 2.5em;">🔐</div>
                                 <h4 style="color: #f44336;">Authentication</h4>
                                 <p style="font-size: 0.85em;">¿Quién eres?</p>
                                 <div style="font-size: 0.8em; opacity: 0.8;">Usuario + Contraseña<br>Certificados, Tokens</div>
                             </div>
-                            <div style="text-align: center; flex: 1; min-width: 150px; padding: 20px; background: rgba(255,152,0,0.2); border-radius: 10px;">
+                            <div class="map-clickable" style="text-align: center; flex: 1; min-width: 150px; padding: 20px; background: rgba(255,152,0,0.2); border-radius: 10px;" onclick="showConceptModal('seguridad-aaa')">
                                 <div style="font-size: 2.5em;">✅</div>
                                 <h4 style="color: #ff9800;">Authorization</h4>
                                 <p style="font-size: 0.85em;">¿Qué puedes hacer?</p>
                                 <div style="font-size: 0.8em; opacity: 0.8;">Permisos, Roles<br>Políticas de acceso</div>
                             </div>
-                            <div style="text-align: center; flex: 1; min-width: 150px; padding: 20px; background: rgba(76,175,80,0.2); border-radius: 10px;">
+                            <div class="map-clickable" style="text-align: center; flex: 1; min-width: 150px; padding: 20px; background: rgba(76,175,80,0.2); border-radius: 10px;" onclick="showConceptModal('seguridad-aaa')">
                                 <div style="font-size: 2.5em;">📝</div>
                                 <h4 style="color: #4caf50;">Accounting</h4>
                                 <p style="font-size: 0.85em;">¿Qué hiciste?</p>
@@ -5107,7 +5279,7 @@
                     <h4 style="text-align: center; margin: 20px 0;">🔄 Flujo 802.1X</h4>
                     <div style="background: rgba(33,150,243,0.1); border-radius: 15px; padding: 25px; margin-bottom: 25px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
-                            <div style="text-align: center; flex: 1; min-width: 100px;">
+                            <div class="map-clickable" style="text-align: center; flex: 1; min-width: 100px;" onclick="showConceptModal('seguridad-8021x')">
                                 <div style="font-size: 2.5em;">💻</div>
                                 <div style="font-weight: bold;">Supplicant</div>
                                 <div style="font-size: 0.75em; opacity: 0.7;">Cliente</div>
@@ -5117,7 +5289,7 @@
                                 <div style="height: 3px; background: var(--primary);"></div>
                                 <div style="font-size: 0.7em;">→ Request →</div>
                             </div>
-                            <div style="text-align: center; flex: 1; min-width: 100px;">
+                            <div class="map-clickable" style="text-align: center; flex: 1; min-width: 100px;" onclick="showConceptModal('seguridad-8021x')">
                                 <div style="font-size: 2.5em;">🔀</div>
                                 <div style="font-weight: bold; color: var(--warning);">Authenticator</div>
                                 <div style="font-size: 0.75em; opacity: 0.7;">Switch/AP</div>
@@ -5127,7 +5299,7 @@
                                 <div style="height: 3px; background: var(--success);"></div>
                                 <div style="font-size: 0.7em;">→ Verify →</div>
                             </div>
-                            <div style="text-align: center; flex: 1; min-width: 100px;">
+                            <div class="map-clickable" style="text-align: center; flex: 1; min-width: 100px;" onclick="showConceptModal('seguridad-8021x')">
                                 <div style="font-size: 2.5em;">🔐</div>
                                 <div style="font-weight: bold; color: var(--success);">Auth Server</div>
                                 <div style="font-size: 0.75em; opacity: 0.7;">RADIUS</div>
@@ -5141,32 +5313,32 @@
                     <!-- Protecciones de Switch -->
                     <h4 style="text-align: center; margin: 20px 0;">🛡️ Protecciones de Switch</h4>
                     <div class="cards-grid">
-                        <div class="card" style="border-left: 4px solid #f44336;">
+                        <div class="card map-clickable" style="border-left: 4px solid #f44336;" onclick="showConceptModal('seguridad-protecciones')">
                             <h4>🔒 Port Security</h4>
                             <p style="font-size: 0.85em;">Limita MACs por puerto</p>
                             <div style="font-size: 0.8em; opacity: 0.8;">Previene MAC flooding</div>
                         </div>
-                        <div class="card" style="border-left: 4px solid #ff9800;">
+                        <div class="card map-clickable" style="border-left: 4px solid #ff9800;" onclick="showConceptModal('seguridad-protecciones')">
                             <h4>🌊 Storm Control</h4>
                             <p style="font-size: 0.85em;">Limita broadcast/multicast</p>
                             <div style="font-size: 0.8em; opacity: 0.8;">Previene tormentas</div>
                         </div>
-                        <div class="card" style="border-left: 4px solid #9c27b0;">
+                        <div class="card map-clickable" style="border-left: 4px solid #9c27b0;" onclick="showConceptModal('seguridad-protecciones')">
                             <h4>🛑 BPDU Guard</h4>
                             <p style="font-size: 0.85em;">Bloquea si recibe BPDU</p>
                             <div style="font-size: 0.8em; opacity: 0.8;">Protege STP</div>
                         </div>
-                        <div class="card" style="border-left: 4px solid #2196f3;">
+                        <div class="card map-clickable" style="border-left: 4px solid #2196f3;" onclick="showConceptModal('seguridad-protecciones')">
                             <h4>🌳 Root Guard</h4>
                             <p style="font-size: 0.85em;">Previene root bridge</p>
                             <div style="font-size: 0.8em; opacity: 0.8;">Mantiene topología</div>
                         </div>
-                        <div class="card" style="border-left: 4px solid #4caf50;">
+                        <div class="card map-clickable" style="border-left: 4px solid #4caf50;" onclick="showConceptModal('seguridad-protecciones')">
                             <h4>📡 DHCP Snooping</h4>
                             <p style="font-size: 0.85em;">Filtra DHCP no autorizado</p>
                             <div style="font-size: 0.8em; opacity: 0.8;">Trusted/Untrusted</div>
                         </div>
-                        <div class="card" style="border-left: 4px solid #00bcd4;">
+                        <div class="card map-clickable" style="border-left: 4px solid #00bcd4;" onclick="showConceptModal('seguridad-protecciones')">
                             <h4>🔍 DAI</h4>
                             <p style="font-size: 0.85em;">Dynamic ARP Inspection</p>
                             <div style="font-size: 0.8em; opacity: 0.8;">Previene ARP spoofing</div>
@@ -5222,28 +5394,28 @@
                     <!-- Pruebas RFC 2544 -->
                     <h4 style="text-align: center; margin: 20px 0;">📋 Pruebas RFC 2544</h4>
                     <div class="cards-grid">
-                        <div class="card" style="border-top: 4px solid #2196f3;">
+                        <div class="card map-clickable" style="border-top: 4px solid #2196f3;" onclick="showConceptModal('testing-rfc2544')">
                             <h4 style="color: #2196f3;">📈 Throughput</h4>
                             <p style="font-size: 0.85em;">Tasa máxima sin pérdida</p>
                             <div style="font-size: 0.8em; margin-top: 10px; padding: 8px; background: rgba(33,150,243,0.1); border-radius: 5px;">
                                 <strong>Criterio:</strong> ≥99% line rate
                             </div>
                         </div>
-                        <div class="card" style="border-top: 4px solid #4caf50;">
+                        <div class="card map-clickable" style="border-top: 4px solid #4caf50;" onclick="showConceptModal('testing-rfc2544')">
                             <h4 style="color: #4caf50;">⏱️ Latency</h4>
                             <p style="font-size: 0.85em;">Tiempo de tránsito</p>
                             <div style="font-size: 0.8em; margin-top: 10px; padding: 8px; background: rgba(76,175,80,0.1); border-radius: 5px;">
                                 <strong>Criterio:</strong> ≤1ms @1G, ≤300μs @10G
                             </div>
                         </div>
-                        <div class="card" style="border-top: 4px solid #f44336;">
+                        <div class="card map-clickable" style="border-top: 4px solid #f44336;" onclick="showConceptModal('testing-rfc2544')">
                             <h4 style="color: #f44336;">📉 Frame Loss</h4>
                             <p style="font-size: 0.85em;">Tramas perdidas</p>
                             <div style="font-size: 0.8em; margin-top: 10px; padding: 8px; background: rgba(244,67,54,0.1); border-radius: 5px;">
                                 <strong>Criterio:</strong> ≤0.01%
                             </div>
                         </div>
-                        <div class="card" style="border-top: 4px solid #ff9800;">
+                        <div class="card map-clickable" style="border-top: 4px solid #ff9800;" onclick="showConceptModal('testing-rfc2544')">
                             <h4 style="color: #ff9800;">💥 Back-to-Back</h4>
                             <p style="font-size: 0.85em;">Capacidad de ráfagas</p>
                             <div style="font-size: 0.8em; margin-top: 10px; padding: 8px; background: rgba(255,152,0,0.1); border-radius: 5px;">
@@ -9548,6 +9720,1422 @@
             document.getElementById('search-modal').addEventListener('click', function(e) {
                 if (e.target === this) closeSearch();
             });
+        });
+        
+        // ============ SISTEMA DE MODALES PARA MAPAS CONCEPTUALES ============
+        const mapConceptsDB = {
+            // MODELO OSI
+            'osi-capa7': {
+                icon: '📨',
+                title: 'Capa 7 - Aplicación',
+                content: `
+                    <p>La <strong>capa de aplicación</strong> es la más cercana al usuario final. Proporciona servicios de red directamente a las aplicaciones.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Función principal:</strong> Interfaz entre el software del usuario y la red.
+                    </div>
+                    
+                    <p><strong>Protocolos más importantes:</strong></p>
+                    <ul>
+                        <li><strong>HTTP/HTTPS (80/443):</strong> Navegación web</li>
+                        <li><strong>FTP (20/21):</strong> Transferencia de archivos</li>
+                        <li><strong>DNS (53):</strong> Resolución de nombres → IP</li>
+                        <li><strong>SMTP (25):</strong> Envío de correo</li>
+                        <li><strong>POP3 (110) / IMAP (143):</strong> Recepción de correo</li>
+                        <li><strong>SSH (22):</strong> Acceso remoto seguro</li>
+                        <li><strong>Telnet (23):</strong> Acceso remoto (inseguro)</li>
+                    </ul>
+                    
+                    <div class="example">
+                        <strong>💡 Ejemplo:</strong> Cuando abres un navegador y escribes "google.com", tu navegador usa HTTP en esta capa.
+                    </div>
+                `,
+                tags: ['OSI', 'Protocolos', 'HTTP', 'DNS', 'FTP']
+            },
+            'osi-capa6': {
+                icon: '🔐',
+                title: 'Capa 6 - Presentación',
+                content: `
+                    <p>La <strong>capa de presentación</strong> actúa como traductor de datos entre la red y la aplicación.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Función principal:</strong> Traducción, compresión y cifrado de datos.
+                    </div>
+                    
+                    <p><strong>Funciones clave:</strong></p>
+                    <ul>
+                        <li><strong>Traducción:</strong> Convierte formatos de datos (ASCII ↔ EBCDIC)</li>
+                        <li><strong>Compresión:</strong> Reduce tamaño de datos para transmisión</li>
+                        <li><strong>Cifrado/Descifrado:</strong> SSL/TLS opera aquí</li>
+                        <li><strong>Serialización:</strong> Convierte objetos a bytes</li>
+                    </ul>
+                    
+                    <div class="example">
+                        <strong>💡 Ejemplo:</strong> Cuando ves un candado 🔒 en tu navegador, es porque TLS (en esta capa) está cifrando los datos.
+                    </div>
+                    
+                    <div class="warning">
+                        <strong>⚠️ Nota:</strong> En el modelo TCP/IP, esta capa se fusiona con la capa de Aplicación.
+                    </div>
+                `,
+                tags: ['OSI', 'Cifrado', 'TLS', 'SSL', 'Compresión']
+            },
+            'osi-capa5': {
+                icon: '🤝',
+                title: 'Capa 5 - Sesión',
+                content: `
+                    <p>La <strong>capa de sesión</strong> establece, mantiene y termina las conexiones (sesiones) entre aplicaciones.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Función principal:</strong> Control de diálogos y sincronización.
+                    </div>
+                    
+                    <p><strong>Funciones clave:</strong></p>
+                    <ul>
+                        <li><strong>Establecimiento:</strong> Inicia la comunicación entre aplicaciones</li>
+                        <li><strong>Mantenimiento:</strong> Mantiene la sesión activa</li>
+                        <li><strong>Terminación:</strong> Cierra la sesión ordenadamente</li>
+                        <li><strong>Checkpoints:</strong> Puntos de sincronización para reanudar transferencias</li>
+                    </ul>
+                    
+                    <p><strong>Modos de comunicación:</strong></p>
+                    <ul>
+                        <li><strong>Simplex:</strong> Un solo sentido</li>
+                        <li><strong>Half-duplex:</strong> Ambos sentidos, pero uno a la vez</li>
+                        <li><strong>Full-duplex:</strong> Ambos sentidos simultáneamente</li>
+                    </ul>
+                    
+                    <div class="example">
+                        <strong>💡 Ejemplo:</strong> NetBIOS y RPC operan en esta capa.
+                    </div>
+                `,
+                tags: ['OSI', 'Sesión', 'NetBIOS', 'RPC', 'Duplex']
+            },
+            'osi-capa4': {
+                icon: '🚚',
+                title: 'Capa 4 - Transporte',
+                content: `
+                    <p>La <strong>capa de transporte</strong> garantiza la entrega confiable de datos de extremo a extremo.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Función principal:</strong> Segmentación, control de flujo y confiabilidad.
+                    </div>
+                    
+                    <p><strong>Protocolos principales:</strong></p>
+                    <ul>
+                        <li><strong>TCP (Transmission Control Protocol):</strong>
+                            <ul>
+                                <li>Orientado a conexión (3-way handshake)</li>
+                                <li>Confiable: confirma recepción (ACK)</li>
+                                <li>Control de flujo y congestión</li>
+                                <li>Usado en: HTTP, FTP, SMTP, SSH</li>
+                            </ul>
+                        </li>
+                        <li><strong>UDP (User Datagram Protocol):</strong>
+                            <ul>
+                                <li>Sin conexión ("fire and forget")</li>
+                                <li>No confiable, pero rápido</li>
+                                <li>Sin retransmisiones</li>
+                                <li>Usado en: DNS, VoIP, streaming, gaming</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    
+                    <div class="example">
+                        <strong>💡 Puertos:</strong> Rango 0-65535. Puertos bien conocidos: 0-1023. Puertos registrados: 1024-49151.
+                    </div>
+                `,
+                tags: ['OSI', 'TCP', 'UDP', 'Puertos', 'Segmentos']
+            },
+            'osi-capa3': {
+                icon: '🗺️',
+                title: 'Capa 3 - Red',
+                content: `
+                    <p>La <strong>capa de red</strong> se encarga del direccionamiento lógico y el enrutamiento de paquetes entre redes diferentes.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Función principal:</strong> Direccionamiento IP y routing entre redes.
+                    </div>
+                    
+                    <p><strong>Conceptos clave:</strong></p>
+                    <ul>
+                        <li><strong>IPv4:</strong> 32 bits (4 octetos). Ej: 192.168.1.1</li>
+                        <li><strong>IPv6:</strong> 128 bits. Ej: 2001:0db8::1</li>
+                        <li><strong>Máscara de subred:</strong> Define red vs host</li>
+                        <li><strong>Gateway:</strong> Puerta de enlace a otras redes</li>
+                    </ul>
+                    
+                    <p><strong>Protocolos de routing:</strong></p>
+                    <ul>
+                        <li><strong>RIP:</strong> Distancia-vector, máx 15 saltos</li>
+                        <li><strong>OSPF:</strong> Estado de enlace, usa áreas</li>
+                        <li><strong>BGP:</strong> Entre sistemas autónomos (Internet)</li>
+                    </ul>
+                    
+                    <p><strong>Otros protocolos:</strong></p>
+                    <ul>
+                        <li><strong>ICMP:</strong> Mensajes de control (ping, traceroute)</li>
+                        <li><strong>ARP:</strong> Resuelve IP → MAC</li>
+                        <li><strong>NAT:</strong> Traduce IPs privadas a públicas</li>
+                    </ul>
+                    
+                    <div class="example">
+                        <strong>💡 Dispositivo:</strong> El ROUTER opera en esta capa, tomando decisiones basadas en direcciones IP.
+                    </div>
+                `,
+                tags: ['OSI', 'IP', 'Router', 'OSPF', 'Routing']
+            },
+            'osi-capa2': {
+                icon: '🔗',
+                title: 'Capa 2 - Enlace de Datos',
+                content: `
+                    <p>La <strong>capa de enlace</strong> proporciona transferencia confiable de datos a través del medio físico, usando direcciones MAC.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Función principal:</strong> Direccionamiento MAC, framing y control de acceso al medio.
+                    </div>
+                    
+                    <p><strong>Subcapas:</strong></p>
+                    <ul>
+                        <li><strong>LLC (Logical Link Control):</strong> Interface con capa superior</li>
+                        <li><strong>MAC (Media Access Control):</strong> Acceso al medio físico</li>
+                    </ul>
+                    
+                    <p><strong>Dirección MAC:</strong></p>
+                    <ul>
+                        <li>48 bits (6 bytes) en hexadecimal</li>
+                        <li>Formato: AA:BB:CC:DD:EE:FF</li>
+                        <li>Primeros 3 bytes: OUI (fabricante)</li>
+                        <li>Últimos 3 bytes: Identificador único</li>
+                    </ul>
+                    
+                    <p><strong>Trama Ethernet:</strong></p>
+                    <ul>
+                        <li>Preámbulo (7 bytes) + SFD (1 byte)</li>
+                        <li>MAC destino + MAC origen (12 bytes)</li>
+                        <li>Tipo/Longitud (2 bytes)</li>
+                        <li>Datos (46-1500 bytes)</li>
+                        <li>FCS - CRC (4 bytes)</li>
+                    </ul>
+                    
+                    <div class="example">
+                        <strong>💡 Dispositivo:</strong> El SWITCH opera aquí. Aprende MACs y envía tramas solo al puerto correcto.
+                    </div>
+                `,
+                tags: ['OSI', 'MAC', 'Switch', 'Ethernet', 'Trama']
+            },
+            'osi-capa1': {
+                icon: '⚡',
+                title: 'Capa 1 - Física',
+                content: `
+                    <p>La <strong>capa física</strong> define las especificaciones eléctricas, mecánicas y funcionales para activar y mantener el enlace físico.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Función principal:</strong> Transmitir bits como señales físicas (eléctricas, ópticas, radio).
+                    </div>
+                    
+                    <p><strong>Medios de transmisión:</strong></p>
+                    <ul>
+                        <li><strong>Cable UTP:</strong> Par trenzado, Cat5e/Cat6/Cat6a</li>
+                        <li><strong>Cable coaxial:</strong> TV, redes antiguas</li>
+                        <li><strong>Fibra óptica:</strong> Monomodo y multimodo</li>
+                        <li><strong>Inalámbrico:</strong> WiFi, radio microondas</li>
+                    </ul>
+                    
+                    <p><strong>Conectores:</strong></p>
+                    <ul>
+                        <li><strong>RJ-45:</strong> Ethernet (8 pines)</li>
+                        <li><strong>LC/SC:</strong> Fibra óptica</li>
+                        <li><strong>BNC:</strong> Coaxial</li>
+                    </ul>
+                    
+                    <p><strong>Especificaciones:</strong></p>
+                    <ul>
+                        <li>Voltajes y temporización de señales</li>
+                        <li>Tasas de transmisión (baudios)</li>
+                        <li>Distancias máximas</li>
+                        <li>Topologías: bus, estrella, anillo</li>
+                    </ul>
+                    
+                    <div class="example">
+                        <strong>💡 Dispositivo:</strong> El HUB opera aquí. Solo repite señales eléctricas a todos los puertos.
+                    </div>
+                `,
+                tags: ['OSI', 'Cables', 'Conectores', 'Hub', 'Física']
+            },
+            
+            // DISPOSITIVOS DE RED
+            'dispositivo-hub': {
+                icon: '🔌',
+                title: 'Hub - Concentrador',
+                content: `
+                    <p>El <strong>Hub</strong> es un dispositivo de Capa 1 que conecta múltiples dispositivos en una red.</p>
+                    
+                    <div class="warning">
+                        <strong>⚠️ Tecnología obsoleta:</strong> Los hubs han sido reemplazados por switches en redes modernas.
+                    </div>
+                    
+                    <p><strong>Características:</strong></p>
+                    <ul>
+                        <li>Opera en <strong>Capa 1</strong> (Física)</li>
+                        <li>Repite señales a <strong>TODOS</strong> los puertos</li>
+                        <li>No entiende direcciones MAC ni IP</li>
+                        <li>Crea un solo <strong>dominio de colisión</strong></li>
+                        <li>Solo permite <strong>half-duplex</strong></li>
+                    </ul>
+                    
+                    <div class="highlight">
+                        <strong>🔴 Problema:</strong> Cada paquete se envía a todos, causando colisiones y desperdicio de ancho de banda.
+                    </div>
+                    
+                    <p><strong>Comparación con Switch:</strong></p>
+                    <ul>
+                        <li>Hub: Envía a todos → Colisiones</li>
+                        <li>Switch: Envía solo al destino → Sin colisiones</li>
+                    </ul>
+                `,
+                tags: ['Capa 1', 'Hub', 'Colisiones', 'Half-duplex']
+            },
+            'dispositivo-switch': {
+                icon: '🔀',
+                title: 'Switch - Conmutador',
+                content: `
+                    <p>El <strong>Switch</strong> es un dispositivo de Capa 2 que conecta dispositivos de forma inteligente usando direcciones MAC.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Función principal:</strong> Reenviar tramas solo al puerto de destino correcto.
+                    </div>
+                    
+                    <p><strong>Características:</strong></p>
+                    <ul>
+                        <li>Opera en <strong>Capa 2</strong> (Enlace)</li>
+                        <li>Mantiene una <strong>tabla MAC</strong> (CAM table)</li>
+                        <li>Cada puerto es un <strong>dominio de colisión</strong> separado</li>
+                        <li>Permite <strong>full-duplex</strong></li>
+                        <li>Soporta VLANs para segmentación</li>
+                    </ul>
+                    
+                    <p><strong>Proceso de conmutación:</strong></p>
+                    <ol>
+                        <li><strong>Aprende:</strong> Asocia MAC origen con puerto de entrada</li>
+                        <li><strong>Busca:</strong> MAC destino en tabla CAM</li>
+                        <li><strong>Reenvía:</strong> Solo al puerto correspondiente</li>
+                        <li>Si no conoce el destino: <strong>Flooding</strong> (envía a todos menos origen)</li>
+                    </ol>
+                    
+                    <p><strong>Switches Layer 3:</strong> También pueden hacer routing (decisiones de Capa 3).</p>
+                `,
+                tags: ['Capa 2', 'Switch', 'MAC', 'VLAN', 'Full-duplex']
+            },
+            'dispositivo-router': {
+                icon: '🌐',
+                title: 'Router - Enrutador',
+                content: `
+                    <p>El <strong>Router</strong> es un dispositivo de Capa 3 que conecta diferentes redes y toma decisiones de enrutamiento.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Función principal:</strong> Determinar el mejor camino para que los paquetes lleguen a su destino.
+                    </div>
+                    
+                    <p><strong>Características:</strong></p>
+                    <ul>
+                        <li>Opera en <strong>Capa 3</strong> (Red)</li>
+                        <li>Usa <strong>direcciones IP</strong> para decisiones</li>
+                        <li>Cada interfaz es un <strong>dominio de broadcast</strong> separado</li>
+                        <li>Mantiene una <strong>tabla de enrutamiento</strong></li>
+                        <li>Puede hacer NAT, firewall, QoS</li>
+                    </ul>
+                    
+                    <p><strong>Tipos de enrutamiento:</strong></p>
+                    <ul>
+                        <li><strong>Estático:</strong> Rutas configuradas manualmente</li>
+                        <li><strong>Dinámico:</strong> Aprende rutas automáticamente (OSPF, BGP, RIP)</li>
+                    </ul>
+                    
+                    <p><strong>Proceso de routing:</strong></p>
+                    <ol>
+                        <li>Recibe paquete, extrae IP destino</li>
+                        <li>Busca mejor coincidencia en tabla</li>
+                        <li>Decrementa TTL</li>
+                        <li>Reenvía por interfaz correspondiente</li>
+                    </ol>
+                `,
+                tags: ['Capa 3', 'Router', 'IP', 'Routing', 'NAT']
+            },
+            'ethernet-lan': {
+                icon: '🏢',
+                title: 'LAN - Local Area Network',
+                content: `
+                    <p>Una <strong>LAN</strong> conecta dispositivos en un área pequeña, como una oficina o edificio.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Ventajas:</strong> Alta velocidad, baja latencia, control local.
+                    </div>
+                    
+                    <ul>
+                        <li>Área típica: edificio/campus</li>
+                        <li>Tecnología común: Ethernet / WiFi</li>
+                        <li>Propiedad privada</li>
+                    </ul>
+                `,
+                tags: ['LAN', 'Ethernet', 'Redes']
+            },
+            'ethernet-man': {
+                icon: '🌆',
+                title: 'MAN - Metropolitan Area Network',
+                content: `
+                    <p>Una <strong>MAN</strong> interconecta varias LAN dentro de una ciudad.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Uso típico:</strong> Conectar sedes de una empresa dentro de una ciudad.
+                    </div>
+                    
+                    <ul>
+                        <li>Área típica: ciudad</li>
+                        <li>Velocidad media-alta</li>
+                        <li>Puede usar fibra metropolitana</li>
+                    </ul>
+                `,
+                tags: ['MAN', 'Redes', 'Metro']
+            },
+            'ethernet-wan': {
+                icon: '🌍',
+                title: 'WAN - Wide Area Network',
+                content: `
+                    <p>Una <strong>WAN</strong> conecta redes a grandes distancias (países o continentes).</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Ejemplo:</strong> Internet es la WAN más grande.
+                    </div>
+                    
+                    <ul>
+                        <li>Área típica: país/continente</li>
+                        <li>Mayor latencia</li>
+                        <li>Usa enlaces de operadores</li>
+                    </ul>
+                `,
+                tags: ['WAN', 'Internet', 'Backbone']
+            },
+            'ethernet-trama': {
+                icon: '📦',
+                title: 'Trama Ethernet',
+                content: `
+                    <p>La <strong>trama Ethernet</strong> es la unidad de datos de Capa 2.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Longitud:</strong> 64 a 1518 bytes (sin VLAN). Jumbo frames hasta 9000 bytes.
+                    </div>
+                    
+                    <ul>
+                        <li><strong>Preámbulo + SFD:</strong> sincronización</li>
+                        <li><strong>MAC destino/origen:</strong> 6 bytes cada una</li>
+                        <li><strong>Tipo/Longitud:</strong> 2 bytes</li>
+                        <li><strong>Datos:</strong> 46–1500 bytes</li>
+                        <li><strong>FCS:</strong> CRC 4 bytes</li>
+                    </ul>
+                `,
+                tags: ['Ethernet', 'Trama', 'Capa 2', 'MAC']
+            },
+            
+            // FIBRA ÓPTICA
+            'fibra-monomodo': {
+                icon: '💡',
+                title: 'Fibra Monomodo (SMF)',
+                content: `
+                    <p>La <strong>fibra monomodo</strong> tiene un núcleo pequeño que permite un solo modo de propagación de luz.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Ideal para:</strong> Largas distancias (hasta 100+ km)
+                    </div>
+                    
+                    <p><strong>Especificaciones:</strong></p>
+                    <ul>
+                        <li><strong>Núcleo:</strong> 9 μm (muy pequeño)</li>
+                        <li><strong>Revestimiento:</strong> 125 μm</li>
+                        <li><strong>Color chaqueta:</strong> Amarillo (típicamente)</li>
+                        <li><strong>Fuente luz:</strong> Láser</li>
+                    </ul>
+                    
+                    <p><strong>Ventanas de transmisión:</strong></p>
+                    <ul>
+                        <li><strong>1310 nm:</strong> Atenuación ~0.35 dB/km</li>
+                        <li><strong>1550 nm:</strong> Atenuación ~0.22 dB/km (mínima)</li>
+                    </ul>
+                    
+                    <div class="example">
+                        <strong>💡 Uso típico:</strong> Enlaces de backbone, conexiones entre ciudades, redes GPON/FTTH.
+                    </div>
+                    
+                    <p><strong>Ventajas:</strong> Mayor distancia, menor atenuación, mayor ancho de banda.</p>
+                    <p><strong>Desventajas:</strong> Mayor costo, alineación precisa, equipos más caros.</p>
+                `,
+                tags: ['Fibra', 'Monomodo', 'SMF', 'Láser', 'GPON']
+            },
+            'fibra-multimodo': {
+                icon: '🌈',
+                title: 'Fibra Multimodo (MMF)',
+                content: `
+                    <p>La <strong>fibra multimodo</strong> tiene un núcleo grande que permite múltiples modos de propagación.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Ideal para:</strong> Cortas distancias (edificios, data centers)
+                    </div>
+                    
+                    <p><strong>Especificaciones:</strong></p>
+                    <ul>
+                        <li><strong>Núcleo:</strong> 50 μm o 62.5 μm</li>
+                        <li><strong>Revestimiento:</strong> 125 μm</li>
+                        <li><strong>Fuente luz:</strong> LED o VCSEL</li>
+                    </ul>
+                    
+                    <p><strong>Tipos (por color):</strong></p>
+                    <ul>
+                        <li><strong>OM1 (naranja):</strong> 62.5μm, hasta 275m @1G</li>
+                        <li><strong>OM2 (naranja):</strong> 50μm, hasta 550m @1G</li>
+                        <li><strong>OM3 (aqua):</strong> 50μm, hasta 300m @10G</li>
+                        <li><strong>OM4 (aqua/violeta):</strong> 50μm, hasta 400m @10G</li>
+                        <li><strong>OM5 (verde lima):</strong> 50μm, optimizada SWDM</li>
+                    </ul>
+                    
+                    <p><strong>Ventajas:</strong> Menor costo, fácil instalación, tolerante a alineación.</p>
+                    <p><strong>Desventajas:</strong> Dispersión modal limita distancia.</p>
+                `,
+                tags: ['Fibra', 'Multimodo', 'MMF', 'OM3', 'OM4', 'Data Center']
+            },
+            
+            // GPON
+            'gpon-arquitectura': {
+                icon: '🏠',
+                title: 'Arquitectura GPON',
+                content: `
+                    <p><strong>GPON</strong> (Gigabit Passive Optical Network) es una tecnología de acceso FTTH que usa splitters pasivos.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Ventaja principal:</strong> Red pasiva (sin equipos activos en campo) reduce costos de mantenimiento.
+                    </div>
+                    
+                    <p><strong>Componentes:</strong></p>
+                    <ul>
+                        <li><strong>OLT (Optical Line Terminal):</strong> En central, controla la red</li>
+                        <li><strong>Splitter:</strong> Divide señal óptica (1:8, 1:16, 1:32, 1:64)</li>
+                        <li><strong>ONT/ONU:</strong> En cliente, convierte óptico a eléctrico</li>
+                    </ul>
+                    
+                    <p><strong>Características técnicas:</strong></p>
+                    <ul>
+                        <li><strong>Downstream:</strong> 2.488 Gbps @1490 nm</li>
+                        <li><strong>Upstream:</strong> 1.244 Gbps @1310 nm</li>
+                        <li><strong>Alcance:</strong> Hasta 20 km</li>
+                        <li><strong>Ratio split:</strong> Hasta 1:128</li>
+                    </ul>
+                    
+                    <p><strong>Gestión:</strong></p>
+                    <ul>
+                        <li><strong>OMCI:</strong> Protocolo de gestión OLT↔ONT</li>
+                        <li><strong>TDMA:</strong> Acceso múltiple por tiempo (upstream)</li>
+                        <li><strong>Broadcast:</strong> Downstream a todas las ONTs</li>
+                    </ul>
+                `,
+                tags: ['GPON', 'FTTH', 'OLT', 'ONT', 'Splitter']
+            },
+            'gpon-olt': {
+                icon: '🏢',
+                title: 'OLT - Optical Line Terminal',
+                content: `
+                    <p>La <strong>OLT</strong> está en la central y controla toda la PON.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Función principal:</strong> Gestionar ONTs, asignar tiempos TDMA y conectar al core.
+                    </div>
+                    
+                    <ul>
+                        <li>Agrega tráfico hacia la red core</li>
+                        <li>Gestiona el scheduling del upstream</li>
+                        <li>Soporta OMCI para administración</li>
+                    </ul>
+                `,
+                tags: ['GPON', 'OLT', 'FTTH']
+            },
+            'gpon-splitter': {
+                icon: '🔀',
+                title: 'Splitter Óptico Pasivo',
+                content: `
+                    <p>El <strong>splitter</strong> divide la señal óptica sin energía eléctrica.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Ventaja:</strong> Red pasiva, menos fallas y menor OPEX.
+                    </div>
+                    
+                    <ul>
+                        <li>Divisiones típicas: 1:8, 1:16, 1:32, 1:64</li>
+                        <li>Pérdida aproximada: 3 dB por cada división doble</li>
+                        <li>No requiere energía ni mantenimiento</li>
+                    </ul>
+                `,
+                tags: ['GPON', 'Splitter', 'Pasivo']
+            },
+            'gpon-ont': {
+                icon: '🏠',
+                title: 'ONT/ONU - Terminal de Usuario',
+                content: `
+                    <p>La <strong>ONT/ONU</strong> está en el cliente y convierte óptico a eléctrico.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Función principal:</strong> Entregar servicios (Internet/TV/VoIP) al usuario.
+                    </div>
+                    
+                    <ul>
+                        <li>Recibe tráfico downstream broadcast</li>
+                        <li>Transmite upstream en su ventana TDMA</li>
+                        <li>Gestionada por OMCI</li>
+                    </ul>
+                `,
+                tags: ['GPON', 'ONT', 'ONU']
+            },
+            'gpon-tipos': {
+                icon: '📊',
+                title: 'Tipos de PON',
+                content: `
+                    <p>Las variantes PON aumentan velocidad y eficiencia.</p>
+                    
+                    <ul>
+                        <li><strong>GPON:</strong> 2.5G ↓ / 1.25G ↑</li>
+                        <li><strong>XG-PON:</strong> 10G ↓ / 2.5G ↑</li>
+                        <li><strong>XGS-PON:</strong> 10G ↓ / 10G ↑ (simétrico)</li>
+                        <li><strong>NG-PON2:</strong> 40G ↓ / 10G ↑ (TWDM)</li>
+                    </ul>
+                `,
+                tags: ['GPON', 'XG-PON', 'XGS-PON', 'NG-PON2']
+            },
+            'gpon-downstream': {
+                icon: '📤',
+                title: 'Downstream GPON',
+                content: `
+                    <p>El <strong>downstream</strong> es broadcast desde OLT hacia todas las ONTs.</p>
+                    
+                    <ul>
+                        <li>Longitud de onda típica: 1490 nm</li>
+                        <li>Cifrado AES para privacidad</li>
+                        <li>ONT filtra solo sus tramas</li>
+                    </ul>
+                `,
+                tags: ['GPON', 'Downstream', 'AES']
+            },
+            'gpon-upstream': {
+                icon: '📥',
+                title: 'Upstream GPON',
+                content: `
+                    <p>El <strong>upstream</strong> usa TDMA: cada ONT transmite en su ventana de tiempo.</p>
+                    
+                    <ul>
+                        <li>Longitud de onda típica: 1310 nm</li>
+                        <li>OLT asigna slots por DBA</li>
+                        <li>Ranging para sincronización</li>
+                    </ul>
+                `,
+                tags: ['GPON', 'Upstream', 'TDMA']
+            },
+            'gpon-mdu': {
+                icon: '🏗️',
+                title: 'MDU - Multi Dwelling Unit',
+                content: `
+                    <p>Una <strong>MDU</strong> concentra usuarios en edificios y distribuye servicios internamente.</p>
+                    
+                    <ul>
+                        <li>Ideal para edificios y condominios</li>
+                        <li>Entrega Ethernet o VDSL2</li>
+                        <li>Reduce fibra hasta cada unidad</li>
+                    </ul>
+                `,
+                tags: ['GPON', 'MDU', 'Edificios']
+            },
+            'gpon-powerbudget': {
+                icon: '💡',
+                title: 'Power Budget GPON',
+                content: `
+                    <p>El <strong>Power Budget</strong> define el máximo de pérdidas permitidas en la PON.</p>
+                    
+                    <ul>
+                        <li><strong>Clase B+:</strong> 28 dB</li>
+                        <li><strong>Clase C+:</strong> 32 dB</li>
+                        <li>Pérdidas: fibra, splitters, conectores, empalmes</li>
+                    </ul>
+                `,
+                tags: ['GPON', 'Power Budget', 'Clase B+', 'Clase C+']
+            },
+            'gpon-gem': {
+                icon: '📦',
+                title: 'GEM - GPON Encapsulation Method',
+                content: `
+                    <p><strong>GEM</strong> encapsula servicios (Ethernet, TDM, etc.) dentro de GPON.</p>
+                    
+                    <ul>
+                        <li>Multiplexación eficiente</li>
+                        <li>Soporta QoS</li>
+                    </ul>
+                `,
+                tags: ['GPON', 'GEM', 'Encapsulación']
+            },
+            'gpon-omci': {
+                icon: '🛠️',
+                title: 'OMCI - ONT Management & Control',
+                content: `
+                    <p><strong>OMCI</strong> es el protocolo de gestión entre OLT y ONT.</p>
+                    
+                    <ul>
+                        <li>Provisioning remoto</li>
+                        <li>Configuración de servicios</li>
+                        <li>Monitoreo y alarmas</li>
+                    </ul>
+                `,
+                tags: ['GPON', 'OMCI', 'Gestión']
+            },
+            'gpon-ploam': {
+                icon: '📡',
+                title: 'PLOAM - Physical Layer OAM',
+                content: `
+                    <p><strong>PLOAM</strong> gestiona activación, ranging y alarmas de capa física.</p>
+                    
+                    <ul>
+                        <li>Descubrimiento de ONTs</li>
+                        <li>Sincronización temporal</li>
+                        <li>Eventos y alarmas</li>
+                    </ul>
+                `,
+                tags: ['GPON', 'PLOAM', 'OAM']
+            },
+            
+            // RADIO
+            'radio-linkbudget': {
+                icon: '📊',
+                title: 'Link Budget Radio',
+                content: `
+                    <p>El <strong>Link Budget</strong> es el cálculo del balance de potencia en un enlace de radio.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Fórmula básica:</strong><br>
+                        RSL = PTx + GTx - Pérdidas + GRx
+                    </div>
+                    
+                    <p><strong>Componentes:</strong></p>
+                    <ul>
+                        <li><strong>PTx:</strong> Potencia del transmisor (dBm)</li>
+                        <li><strong>GTx/GRx:</strong> Ganancia de antenas (dBi)</li>
+                        <li><strong>ABF:</strong> Atenuación por espacio libre</li>
+                        <li><strong>RSL:</strong> Nivel de señal recibida (dBm)</li>
+                    </ul>
+                    
+                    <p><strong>Pérdidas a considerar:</strong></p>
+                    <ul>
+                        <li><strong>Free Space Loss:</strong> 92.4 + 20log(f) + 20log(d)</li>
+                        <li><strong>Absorción atmosférica:</strong> Oxígeno, vapor de agua</li>
+                        <li><strong>Pérdidas por lluvia:</strong> Crítico en >10 GHz</li>
+                        <li><strong>Pérdidas de cables/conectores</strong></li>
+                    </ul>
+                    
+                    <p><strong>Margen de fading:</strong></p>
+                    <ul>
+                        <li>Típicamente 30-40 dB</li>
+                        <li>Compensa variaciones atmosféricas</li>
+                        <li>Margen = RSL - Umbral Rx</li>
+                    </ul>
+                `,
+                tags: ['Radio', 'Link Budget', 'dBm', 'Fading', 'ABF']
+            },
+            'radio-accp': {
+                icon: '📡',
+                title: 'ACCP - Adjacent Channel Co-Polarization',
+                content: `
+                    <p><strong>ACCP</strong> usa canales adyacentes con la misma polarización (V-V).</p>
+                    
+                    <ul>
+                        <li>Antena simple polarización</li>
+                        <li>No requiere XPIC</li>
+                        <li>Menor complejidad</li>
+                    </ul>
+                `,
+                tags: ['Radio', 'ACCP', 'Polarización']
+            },
+            'radio-acap': {
+                icon: '📡',
+                title: 'ACAP - Adjacent Channel Alternate Polarized',
+                content: `
+                    <p><strong>ACAP</strong> usa canales adyacentes con polarización alternada (V-H).</p>
+                    
+                    <ul>
+                        <li>Antena doble polarización</li>
+                        <li>No requiere XPIC</li>
+                        <li>Mejor aislamiento entre canales</li>
+                    </ul>
+                `,
+                tags: ['Radio', 'ACAP', 'Polarización']
+            },
+            'radio-ccdp': {
+                icon: '📡',
+                title: 'CCDP - Co-Channel Dual Polarized',
+                content: `
+                    <p><strong>CCDP</strong> usa el mismo canal en polarización V y H simultáneamente.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Requiere XPIC</strong> para cancelar interferencia cruzada.
+                    </div>
+                    
+                    <ul>
+                        <li>Duplica capacidad</li>
+                        <li>Antena doble polarización</li>
+                        <li>Mayor eficiencia espectral</li>
+                    </ul>
+                `,
+                tags: ['Radio', 'CCDP', 'XPIC']
+            },
+            'radio-1plus1': {
+                icon: '🛡️',
+                title: '1+1 Hot Standby',
+                content: `
+                    <p><strong>1+1 Hot Standby</strong> proporciona protección con dos radios y dos antenas.</p>
+                    
+                    <ul>
+                        <li>Conmutación automática ante falla</li>
+                        <li>Diversidad de espacio</li>
+                        <li>Mejora disponibilidad del enlace</li>
+                    </ul>
+                `,
+                tags: ['Radio', 'Protección', '1+1']
+            },
+            'radio-xpic': {
+                icon: '⚡',
+                title: 'XPIC - Cross-Polar Interference Canceller',
+                content: `
+                    <p><strong>XPIC</strong> cancela interferencia entre polarizaciones cruzadas.</p>
+                    
+                    <ul>
+                        <li>Usado en CCDP para duplicar capacidad</li>
+                        <li>Mejora SINR y BER</li>
+                        <li>Permite reuse del mismo canal</li>
+                    </ul>
+                `,
+                tags: ['Radio', 'XPIC', 'Polarización']
+            },
+            'linkbudget-fibra': {
+                icon: '💡',
+                title: 'Power Budget Fibra',
+                content: `
+                    <p>El <strong>Power Budget</strong> en fibra es la diferencia entre la potencia mínima de Tx y la sensibilidad del Rx.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Fórmula básica:</strong><br>
+                        Presupuesto = PTx(min) − Sensibilidad Rx
+                    </div>
+                    
+                    <p><strong>Pérdidas típicas:</strong></p>
+                    <ul>
+                        <li><strong>Fibra:</strong> 0.35 dB/km @1310 nm, 0.22 dB/km @1550 nm</li>
+                        <li><strong>Conector:</strong> ~0.5–0.75 dB por conector</li>
+                        <li><strong>Empalme:</strong> ~0.1 dB por fusión</li>
+                        <li><strong>Splitters:</strong> 3 dB (1:2), 7 dB (1:8), 13.5 dB (1:32)</li>
+                    </ul>
+                    
+                    <p><strong>Margen:</strong></p>
+                    <ul>
+                        <li>Se recomienda 2–3 dB para envejecimiento y curvaturas</li>
+                        <li>Margen = Presupuesto − Pérdidas totales</li>
+                    </ul>
+                    
+                    <div class="example">
+                        <strong>💡 Ejemplo:</strong> Si PTx = -5 dBm y Rx = -28 dBm → Presupuesto = 23 dB.
+                    </div>
+                `,
+                tags: ['Fibra', 'Power Budget', 'dB', 'Atenuación', 'Splitters']
+            },
+            
+            // MPLS
+            'mpls-concepto': {
+                icon: '🏷️',
+                title: 'MPLS - Conceptos Básicos',
+                content: `
+                    <p><strong>MPLS</strong> (Multiprotocol Label Switching) es una técnica de conmutación que usa etiquetas en lugar de direcciones IP.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Ventaja principal:</strong> Conmutación rápida basada en etiquetas de 20 bits, sin examinar cabecera IP.
+                    </div>
+                    
+                    <p><strong>Dispositivos:</strong></p>
+                    <ul>
+                        <li><strong>LER (Label Edge Router):</strong>
+                            <ul>
+                                <li>Ingress: PUSH (agrega etiqueta)</li>
+                                <li>Egress: POP (remueve etiqueta)</li>
+                            </ul>
+                        </li>
+                        <li><strong>LSR (Label Switch Router):</strong>
+                            <ul>
+                                <li>SWAP: Intercambia etiquetas</li>
+                                <li>No examina cabecera IP</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    
+                    <p><strong>Conceptos clave:</strong></p>
+                    <ul>
+                        <li><strong>FEC:</strong> Forwarding Equivalence Class - agrupa paquetes con mismo tratamiento</li>
+                        <li><strong>LSP:</strong> Label Switched Path - camino unidireccional</li>
+                        <li><strong>LDP:</strong> Label Distribution Protocol - distribuye etiquetas</li>
+                    </ul>
+                    
+                    <p><strong>Aplicaciones:</strong> VPNs L2/L3, Traffic Engineering, QoS.</p>
+                `,
+                tags: ['MPLS', 'Label', 'LER', 'LSR', 'VPN']
+            },
+            
+            // 5G
+            '5g-embb': {
+                icon: '📺',
+                title: 'eMBB - Enhanced Mobile Broadband',
+                content: `
+                    <p><strong>eMBB</strong> es uno de los tres casos de uso principales de 5G, enfocado en alta velocidad de datos.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Objetivo:</strong> Velocidades de hasta 20 Gbps (pico) y 100 Mbps (usuario típico).
+                    </div>
+                    
+                    <p><strong>Aplicaciones:</strong></p>
+                    <ul>
+                        <li>Streaming video 4K/8K</li>
+                        <li>Realidad Virtual (VR) y Aumentada (AR)</li>
+                        <li>Cloud gaming</li>
+                        <li>Descarga de contenido masivo</li>
+                        <li>Hotspots de alta densidad</li>
+                    </ul>
+                    
+                    <p><strong>Tecnologías habilitadoras:</strong></p>
+                    <ul>
+                        <li><strong>Massive MIMO:</strong> 64-256 antenas</li>
+                        <li><strong>mmWave:</strong> Frecuencias 24-100 GHz</li>
+                        <li><strong>Carrier Aggregation:</strong> Combina múltiples portadoras</li>
+                        <li><strong>256-QAM / 1024-QAM:</strong> Mayor eficiencia espectral</li>
+                    </ul>
+                `,
+                tags: ['5G', 'eMBB', 'Alta velocidad', 'VR', 'Streaming']
+            },
+            '5g-urllc': {
+                icon: '🚗',
+                title: 'URLLC - Ultra Reliable Low Latency',
+                content: `
+                    <p><strong>URLLC</strong> proporciona comunicaciones con latencia ultra baja y alta confiabilidad.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Objetivo:</strong> Latencia ≤1 ms con confiabilidad 99.999%.
+                    </div>
+                    
+                    <p><strong>Aplicaciones críticas:</strong></p>
+                    <ul>
+                        <li>Vehículos autónomos (V2X)</li>
+                        <li>Cirugía remota / telemedicina</li>
+                        <li>Control industrial en tiempo real</li>
+                        <li>Drones de misión crítica</li>
+                        <li>Redes eléctricas inteligentes</li>
+                    </ul>
+                    
+                    <p><strong>Técnicas utilizadas:</strong></p>
+                    <ul>
+                        <li><strong>Mini-slots:</strong> Intervalos de transmisión más cortos</li>
+                        <li><strong>Scheduling preemptivo:</strong> Priorización de tráfico crítico</li>
+                        <li><strong>Redundancia:</strong> Transmisión dual para confiabilidad</li>
+                        <li><strong>Edge Computing:</strong> Procesamiento cerca del usuario</li>
+                    </ul>
+                    
+                    <div class="warning">
+                        <strong>⚠️ Compromiso:</strong> URLLC sacrifica throughput por latencia.
+                    </div>
+                `,
+                tags: ['5G', 'URLLC', 'Latencia', 'Vehículos', 'Industrial']
+            },
+            '5g-mmtc': {
+                icon: '🌡️',
+                title: 'mMTC - Massive Machine Type Comm',
+                content: `
+                    <p><strong>mMTC</strong> permite la conexión masiva de dispositivos IoT con bajo consumo de energía.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Objetivo:</strong> Soportar hasta 1 millón de dispositivos por km².
+                    </div>
+                    
+                    <p><strong>Aplicaciones:</strong></p>
+                    <ul>
+                        <li>Sensores ambientales (temperatura, humedad)</li>
+                        <li>Medidores inteligentes (agua, electricidad, gas)</li>
+                        <li>Agricultura inteligente</li>
+                        <li>Ciudades inteligentes</li>
+                        <li>Asset tracking / logística</li>
+                    </ul>
+                    
+                    <p><strong>Características:</strong></p>
+                    <ul>
+                        <li><strong>Bajo consumo:</strong> Batería 10+ años</li>
+                        <li><strong>Bajo throughput:</strong> Datos pequeños, infrecuentes</li>
+                        <li><strong>Alta densidad:</strong> Millones de dispositivos</li>
+                        <li><strong>Bajo costo:</strong> Dispositivos económicos</li>
+                    </ul>
+                    
+                    <p><strong>Tecnologías relacionadas:</strong> NB-IoT, LTE-M, Cat-M1.</p>
+                `,
+                tags: ['5G', 'mMTC', 'IoT', 'Sensores', 'Smart City']
+            },
+            '5g-massive-mimo': {
+                icon: '📡',
+                title: 'Massive MIMO',
+                content: `
+                    <p><strong>Massive MIMO</strong> usa decenas o cientos de antenas para aumentar capacidad y cobertura.</p>
+                    <ul>
+                        <li>Mejora eficiencia espectral</li>
+                        <li>Permite beamforming avanzado</li>
+                        <li>Clave en 5G sub-6 y mmWave</li>
+                    </ul>
+                `,
+                tags: ['5G', 'MIMO', 'Antenas']
+            },
+            '5g-beamforming': {
+                icon: '🎯',
+                title: 'Beamforming',
+                content: `
+                    <p><strong>Beamforming</strong> concentra energía hacia el usuario para mejorar SNR.</p>
+                    <ul>
+                        <li>Reduce interferencia</li>
+                        <li>Mejora cobertura en mmWave</li>
+                        <li>Requiere antenas con phase shifting</li>
+                    </ul>
+                `,
+                tags: ['5G', 'Beamforming']
+            },
+            '5g-mmwave': {
+                icon: '📊',
+                title: 'mmWave',
+                content: `
+                    <p><strong>mmWave</strong> usa frecuencias altas (24–100 GHz) con gran ancho de banda.</p>
+                    <ul>
+                        <li>Altas velocidades</li>
+                        <li>Menor alcance</li>
+                        <li>Sensible a obstáculos</li>
+                    </ul>
+                `,
+                tags: ['5G', 'mmWave', 'Frecuencias']
+            },
+            '5g-slicing': {
+                icon: '🔀',
+                title: 'Network Slicing',
+                content: `
+                    <p><strong>Network Slicing</strong> crea redes virtuales con SLA específicos.</p>
+                    <ul>
+                        <li>Segmenta recursos por servicio</li>
+                        <li>Soporta eMBB, URLLC, mMTC simultáneamente</li>
+                    </ul>
+                `,
+                tags: ['5G', 'Slicing', 'SLA']
+            },
+            '5g-ofdma': {
+                icon: '📶',
+                title: 'OFDMA',
+                content: `
+                    <p><strong>OFDMA</strong> divide el canal en múltiples subportadoras para varios usuarios.</p>
+                    <ul>
+                        <li>Mejor eficiencia espectral</li>
+                        <li>Asignación flexible de recursos</li>
+                    </ul>
+                `,
+                tags: ['5G', 'OFDMA']
+            },
+            '5g-smallcells': {
+                icon: '📱',
+                title: 'Small Cells',
+                content: `
+                    <p><strong>Small Cells</strong> densifican la red para mejorar cobertura y capacidad.</p>
+                    <ul>
+                        <li>Micro/Pico/Femto cells</li>
+                        <li>Clave en áreas urbanas densas</li>
+                    </ul>
+                `,
+                tags: ['5G', 'Small Cells']
+            },
+            
+            // TRANSCEPTORES
+            'sfp-sfp': {
+                icon: '🔌',
+                title: 'SFP (Small Form-factor Pluggable)',
+                content: `
+                    <p>El <strong>SFP</strong> es un transceptor óptico/cobre de 1G o 2.5G.</p>
+                    <ul>
+                        <li>Formatos: SX (MM), LX (SM), Copper</li>
+                        <li>Hot-pluggable</li>
+                        <li>Muy común en switches de acceso</li>
+                    </ul>
+                `,
+                tags: ['SFP', 'Transceptores', '1G']
+            },
+            'sfp-sfpp': {
+                icon: '🔌',
+                title: 'SFP+ (10G)',
+                content: `
+                    <p><strong>SFP+</strong> soporta 10G con mismo tamaño que SFP.</p>
+                    <ul>
+                        <li>Usos: uplinks, agregación</li>
+                        <li>Tipos: SR (MM), LR (SM), ER</li>
+                    </ul>
+                `,
+                tags: ['SFP+', '10G', 'Transceptores']
+            },
+            'sfp-qsfp': {
+                icon: '🔌',
+                title: 'QSFP+ (40G)',
+                content: `
+                    <p><strong>QSFP+</strong> integra 4 carriles de 10G (4×10G).</p>
+                    <ul>
+                        <li>Usado en data centers</li>
+                        <li>Puede hacer breakout 4×10G</li>
+                    </ul>
+                `,
+                tags: ['QSFP+', '40G', 'Breakout']
+            },
+            'sfp-qsfp28': {
+                icon: '🔌',
+                title: 'QSFP28 (100G)',
+                content: `
+                    <p><strong>QSFP28</strong> integra 4 carriles de 25G (4×25G).</p>
+                    <ul>
+                        <li>Usado en 100G Ethernet</li>
+                        <li>Breakout 4×25G</li>
+                    </ul>
+                `,
+                tags: ['QSFP28', '100G', 'Transceptores']
+            },
+            'sfp-sr': {
+                icon: '📏',
+                title: 'SR - Short Reach',
+                content: `
+                    <p><strong>SR</strong> es para distancias cortas sobre fibra multimodo.</p>
+                    <ul>
+                        <li>Alcance típico: 100–300 m</li>
+                        <li>Longitud de onda: 850 nm</li>
+                    </ul>
+                `,
+                tags: ['SR', 'Multimodo', 'Transceptores']
+            },
+            'sfp-lr': {
+                icon: '📏',
+                title: 'LR - Long Reach',
+                content: `
+                    <p><strong>LR</strong> es para 10 km sobre fibra monomodo.</p>
+                    <ul>
+                        <li>Alcance típico: ~10 km</li>
+                        <li>Longitud de onda: 1310 nm</li>
+                    </ul>
+                `,
+                tags: ['LR', 'Monomodo', 'Transceptores']
+            },
+            'sfp-er': {
+                icon: '📏',
+                title: 'ER - Extended Reach',
+                content: `
+                    <p><strong>ER</strong> es para enlaces largos sobre monomodo.</p>
+                    <ul>
+                        <li>Alcance típico: ~40 km</li>
+                        <li>Longitud de onda: 1550 nm</li>
+                    </ul>
+                `,
+                tags: ['ER', 'Monomodo', 'Transceptores']
+            },
+            'sfp-zr': {
+                icon: '📏',
+                title: 'ZR - Very Long Reach',
+                content: `
+                    <p><strong>ZR</strong> es para enlaces muy largos sobre monomodo.</p>
+                    <ul>
+                        <li>Alcance típico: 80 km+</li>
+                        <li>Longitud de onda: 1550 nm</li>
+                    </ul>
+                `,
+                tags: ['ZR', 'Monomodo', 'Transceptores']
+            },
+            
+            // AVANZADO
+            'avanzado-radio-propagacion': {
+                icon: '📡',
+                title: 'Radio Propagación',
+                content: `
+                    <p>Parámetros críticos de propagación en microondas.</p>
+                    <ul>
+                        <li><strong>k = 4/3:</strong> Factor de refracción efectivo</li>
+                        <li><strong>Radio efectivo:</strong> ~8,500 km</li>
+                        <li><strong>dN/dh:</strong> -40 N/km típico</li>
+                        <li><strong>Absorciones:</strong> O₂ ~60 GHz, H₂O ~23 GHz</li>
+                    </ul>
+                `,
+                tags: ['Radio', 'Propagación']
+            },
+            'avanzado-radio-capacidad': {
+                icon: '⚡',
+                title: 'Radio Capacidad',
+                content: `
+                    <p>Factores que incrementan la capacidad en enlaces de radio.</p>
+                    <ul>
+                        <li>MIMO 2x2 duplica capacidad</li>
+                        <li>Carrier Aggregation suma ancho de banda</li>
+                        <li>Modulaciones altas (hasta 8192-QAM)</li>
+                    </ul>
+                `,
+                tags: ['Radio', 'Capacidad']
+            },
+            'avanzado-ipv6-routing': {
+                icon: '🌐',
+                title: 'IPv6 y Routing',
+                content: `
+                    <p>Conceptos clave de IPv6 y convergencia de routing.</p>
+                    <ul>
+                        <li><strong>IPv6:</strong> 128 bits</li>
+                        <li><strong>OSPF:</strong> 4–5 s convergencia</li>
+                        <li><strong>RIP:</strong> hasta 180 s</li>
+                        <li><strong>Área 0:</strong> backbone obligatorio</li>
+                    </ul>
+                `,
+                tags: ['IPv6', 'Routing']
+            },
+            'avanzado-protocolos': {
+                icon: '🔧',
+                title: 'Protocolos Esenciales',
+                content: `
+                    <p>Protocolos básicos para operación de red.</p>
+                    <ul>
+                        <li><strong>DHCP:</strong> asigna IP automáticamente</li>
+                        <li><strong>ARP:</strong> IP → MAC</li>
+                        <li><strong>DNS:</strong> nombre → IP</li>
+                        <li><strong>ICMP:</strong> ping y traceroute</li>
+                        <li><strong>NAT:</strong> traducción privada↔pública</li>
+                    </ul>
+                `,
+                tags: ['DHCP', 'ARP', 'DNS', 'ICMP', 'NAT']
+            },
+            'avanzado-fibra': {
+                icon: '💡',
+                title: 'Fibra Avanzado',
+                content: `
+                    <p>Valores críticos en fibra óptica.</p>
+                    <ul>
+                        <li>Atenuación 1310 nm: 0.35 dB/km</li>
+                        <li>Atenuación 1550 nm: 0.22 dB/km</li>
+                        <li>Margen de seguridad: 1.7–3 dB</li>
+                        <li>EEPROM: info del transceiver</li>
+                    </ul>
+                `,
+                tags: ['Fibra', 'Atenuación']
+            },
+            'avanzado-ber-testing': {
+                icon: '📊',
+                title: 'BER y Testing',
+                content: `
+                    <p>Indicadores y estándares clave de pruebas.</p>
+                    <ul>
+                        <li>BER estándar: 10⁻⁹</li>
+                        <li>BER crítico: 10⁻¹³</li>
+                        <li>RFC 2544 / ITU-T Y.1564</li>
+                    </ul>
+                `,
+                tags: ['BER', 'Testing']
+            },
+            'avanzado-valores-criticos': {
+                icon: '🔑',
+                title: 'Valores Críticos',
+                content: `
+                    <p>Valores que suelen aparecer en exámenes.</p>
+                    <ul>
+                        <li>IPv6: 128 bits</li>
+                        <li>OSPF: 4–5 s convergencia</li>
+                        <li>k = 4/3 (radio)</li>
+                        <li>Atenuación 1310 nm: 0.35 dB/km</li>
+                        <li>BER crítico: 10⁻¹³</li>
+                    </ul>
+                `,
+                tags: ['Memorización', 'Examen']
+            },
+            
+            // SEGURIDAD
+            'seguridad-aaa': {
+                icon: '🔑',
+                title: 'Modelo AAA',
+                content: `
+                    <p>El modelo <strong>AAA</strong> (Authentication, Authorization, Accounting) es el framework estándar para control de acceso a redes.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Tres pilares de seguridad de acceso a red.</strong>
+                    </div>
+                    
+                    <p><strong>Authentication (Autenticación):</strong></p>
+                    <ul>
+                        <li>¿Quién eres?</li>
+                        <li>Verifica identidad del usuario</li>
+                        <li>Métodos: Usuario/contraseña, certificados, tokens, biometría</li>
+                    </ul>
+                    
+                    <p><strong>Authorization (Autorización):</strong></p>
+                    <ul>
+                        <li>¿Qué puedes hacer?</li>
+                        <li>Define permisos y recursos accesibles</li>
+                        <li>Basado en roles, políticas, atributos</li>
+                    </ul>
+                    
+                    <p><strong>Accounting (Contabilidad):</strong></p>
+                    <ul>
+                        <li>¿Qué hiciste?</li>
+                        <li>Registro de actividades y recursos usados</li>
+                        <li>Logs, auditoría, billing</li>
+                    </ul>
+                    
+                    <p><strong>Protocolos:</strong> RADIUS (UDP 1812/1813), TACACS+ (TCP 49)</p>
+                `,
+                tags: ['Seguridad', 'AAA', 'RADIUS', 'TACACS', 'Autenticación']
+            },
+            'seguridad-8021x': {
+                icon: '🔐',
+                title: '802.1X - Port-Based Access Control',
+                content: `
+                    <p><strong>802.1X</strong> es un estándar IEEE para control de acceso a red basado en puertos.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Concepto:</strong> Puerto bloqueado hasta autenticación exitosa.
+                    </div>
+                    
+                    <p><strong>Componentes:</strong></p>
+                    <ul>
+                        <li><strong>Supplicant:</strong> Cliente que solicita acceso</li>
+                        <li><strong>Authenticator:</strong> Switch/AP que controla puerto</li>
+                        <li><strong>Authentication Server:</strong> RADIUS que valida credenciales</li>
+                    </ul>
+                    
+                    <p><strong>Flujo de autenticación:</strong></p>
+                    <ol>
+                        <li>Cliente conecta → Puerto bloqueado</li>
+                        <li>Switch solicita identidad (EAP-Request)</li>
+                        <li>Cliente responde con credenciales</li>
+                        <li>Switch reenvía a RADIUS</li>
+                        <li>RADIUS valida → Access-Accept/Reject</li>
+                        <li>Si acepta → Puerto habilitado</li>
+                    </ol>
+                    
+                    <p><strong>Métodos EAP:</strong> EAP-TLS (certificados), PEAP, EAP-TTLS, EAP-MD5.</p>
+                `,
+                tags: ['Seguridad', '802.1X', 'EAP', 'RADIUS', 'NAC']
+            },
+            'seguridad-protecciones': {
+                icon: '🛡️',
+                title: 'Protecciones de Switch',
+                content: `
+                    <p>Conjunto de <strong>mecanismos L2/L3</strong> para endurecer el acceso y evitar ataques en la capa de enlace.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Objetivo:</strong> Reducir ataques como spoofing, loops, flooding y rogue DHCP.
+                    </div>
+                    
+                    <p><strong>Principales protecciones:</strong></p>
+                    <ul>
+                        <li><strong>Port Security:</strong> Limita MACs por puerto (evita MAC flooding)</li>
+                        <li><strong>Storm Control:</strong> Limita broadcast/multicast (evita tormentas)</li>
+                        <li><strong>BPDU Guard:</strong> Bloquea puertos si reciben BPDUs (protege STP)</li>
+                        <li><strong>Root Guard:</strong> Evita que un switch externo sea root</li>
+                        <li><strong>DHCP Snooping:</strong> Permite DHCP solo desde puertos trusted</li>
+                        <li><strong>DAI:</strong> Valida ARP contra tabla DHCP (previene ARP spoofing)</li>
+                    </ul>
+                    
+                    <div class="warning">
+                        <strong>⚠️ Nota:</strong> Se recomienda habilitar estas protecciones en puertos de acceso.
+                    </div>
+                `,
+                tags: ['Seguridad', 'Switch', 'L2', 'STP', 'ARP', 'DHCP']
+            },
+            'seguridad-radius-tacacs': {
+                icon: '🔐',
+                title: 'RADIUS vs TACACS+',
+                content: `
+                    <p>Ambos son protocolos AAA, pero con diferencias clave.</p>
+                    <ul>
+                        <li><strong>RADIUS:</strong> UDP 1812/1813, cifra solo password, estándar abierto</li>
+                        <li><strong>TACACS+:</strong> TCP 49, cifra todo el paquete, separa AAA</li>
+                    </ul>
+                    <div class="highlight">
+                        <strong>🎯 Regla rápida:</strong> TACACS+ es más seguro para administración de dispositivos.
+                    </div>
+                `,
+                tags: ['Seguridad', 'RADIUS', 'TACACS+']
+            },
+            
+            // TESTING
+            'testing-rfc2544': {
+                icon: '🧪',
+                title: 'RFC 2544 - Benchmarking',
+                content: `
+                    <p><strong>RFC 2544</strong> define metodología estándar para pruebas de rendimiento de equipos de red.</p>
+                    
+                    <div class="highlight">
+                        <strong>🎯 Propósito:</strong> Validar rendimiento de enlaces Ethernet con pruebas reproducibles.
+                    </div>
+                    
+                    <p><strong>Pruebas definidas:</strong></p>
+                    <ul>
+                        <li><strong>Throughput:</strong> Máxima tasa sin pérdida de tramas</li>
+                        <li><strong>Latency:</strong> Tiempo de tránsito de tramas</li>
+                        <li><strong>Frame Loss Rate:</strong> Porcentaje de tramas perdidas</li>
+                        <li><strong>Back-to-Back:</strong> Capacidad de buffer (ráfagas)</li>
+                    </ul>
+                    
+                    <p><strong>Tamaños de trama estándar:</strong></p>
+                    <p>64, 128, 256, 512, 1024, 1280, 1518 bytes</p>
+                    
+                    <p><strong>Criterios típicos:</strong></p>
+                    <ul>
+                        <li>Throughput: ≥99% line rate</li>
+                        <li>Latencia: ≤1ms @1G</li>
+                        <li>Frame Loss: ≤0.01%</li>
+                    </ul>
+                    
+                    <div class="warning">
+                        <strong>⚠️ Limitación:</strong> Pruebas secuenciales, un servicio a la vez. Para multiservicio usar Y.1564.
+                    </div>
+                `,
+                tags: ['Testing', 'RFC 2544', 'Throughput', 'Latencia', 'BERT']
+            }
+        };
+        
+        // Función para mostrar modal de concepto
+        function showConceptModal(conceptId) {
+            const concepto = mapConceptsDB[conceptId];
+            if (!concepto) {
+                console.warn('Concepto no encontrado:', conceptId);
+                return;
+            }
+            
+            document.getElementById('concept-modal-title').innerHTML = `${concepto.icon} ${concepto.title}`;
+            
+            let tagsHTML = '';
+            if (concepto.tags && concepto.tags.length > 0) {
+                tagsHTML = `<div class="concept-modal-tags">${concepto.tags.map(t => `<span class="concept-modal-tag">${t}</span>`).join('')}</div>`;
+            }
+            
+            document.getElementById('concept-modal-body').innerHTML = concepto.content + tagsHTML;
+            document.getElementById('concept-modal').classList.add('active');
+        }
+        
+        // Función para cerrar modal
+        function closeConceptModal() {
+            document.getElementById('concept-modal').classList.remove('active');
+        }
+        
+        // Cerrar modal al hacer clic fuera
+        document.getElementById('concept-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeConceptModal();
+        });
+        
+        // Cerrar con Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('concept-modal').classList.contains('active')) {
+                closeConceptModal();
+            }
         });
     </script>
 </body>
