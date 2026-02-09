@@ -1621,6 +1621,14 @@
         }
         
         @media (max-width: 768px) {
+            .sidebar {
+                width: 84vw;
+                padding: 16px;
+            }
+            .nav-item {
+                padding: 12px 12px;
+                border-radius: 10px;
+            }
             /* Layout general móvil */
             .main-content {
                 padding: 15px;
@@ -1716,11 +1724,47 @@
                 font-size: 1.1em;
                 padding: 20px;
             }
+
+            .flashcard-hint {
+                bottom: 12px;
+                font-size: 0.85em;
+            }
+
+            .fc-tools {
+                gap: 10px;
+            }
+
+            .tag-filter {
+                gap: 6px;
+            }
+
+            .tag-chip {
+                font-size: 0.8em;
+                padding: 5px 10px;
+            }
+
+            #fc-sprint .input-row {
+                grid-template-columns: 1fr;
+            }
+
+            #fc-sprint .btn {
+                width: 100%;
+            }
+
+            .fc-progress-row {
+                grid-template-columns: 110px 1fr 40px;
+                font-size: 0.85em;
+            }
             
             /* Card general */
             .card {
                 padding: 18px;
                 border-radius: 15px;
+            }
+
+            .tip-banner {
+                flex-direction: column;
+                text-align: center;
             }
             
             /* Calculadoras móvil */
@@ -1943,6 +1987,11 @@
             
             .flashcard {
                 min-height: 220px;
+            }
+
+            .fc-progress-row {
+                grid-template-columns: 95px 1fr 36px;
+                font-size: 0.8em;
             }
             
             .concepto-card h3 {
