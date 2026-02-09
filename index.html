@@ -3299,9 +3299,10 @@
                     <div class="examen-option">
                         <label>✅ Porcentaje aprobación:</label>
                         <select id="examen-aprobacion">
-                            <option value="60">60%</option>
-                            <option value="70" selected>70%</option>
-                            <option value="80">80%</option>
+                            <option value="25">25%</option>
+                            <option value="50">50%</option>
+                            <option value="75" selected>75%</option>
+                            <option value="100">100%</option>
                         </select>
                     </div>
                 </div>
@@ -8323,7 +8324,7 @@
         let examenTimeLimit = 20;
         let examenStartTime = null;
         let examenTimerId = null;
-        let examenAprobacion = 70;
+        let examenAprobacion = 75;
         
         function showExamenConfig() {
             document.getElementById('examen-config').style.display = 'block';
@@ -8619,7 +8620,8 @@
                 }
             });
             
-            const percentage = Math.round((correct / examenQuestions.length) * 100);
+            const rawPercentage = Math.round((correct / examenQuestions.length) * 100);
+            const percentage = rawPercentage === 0 ? 0 : Math.min(100, Math.max(25, Math.round(rawPercentage / 25) * 25));
             const passed = percentage >= examenAprobacion;
             
             document.getElementById('examen-active').style.display = 'none';
